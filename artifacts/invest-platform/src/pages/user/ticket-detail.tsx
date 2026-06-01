@@ -17,7 +17,7 @@ const statusConfig: Record<string, { label: string; class: string }> = {
 
 export default function TicketDetail({ id }: { id: string }) {
   const numId = parseInt(id);
-  const { data: ticket, isLoading, refetch } = useGetTicket(numId, { query: { enabled: !isNaN(numId) } });
+  const { data: ticket, isLoading, refetch } = useGetTicket(numId, { query: { enabled: !isNaN(numId) } as any });
   const replyTicket = useReplyTicket();
   const { toast } = useToast();
   const [message, setMessage] = useState("");

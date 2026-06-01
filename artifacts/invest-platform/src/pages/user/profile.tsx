@@ -28,7 +28,7 @@ export default function Profile() {
     e.preventDefault();
     setProfileError("");
     updateProfile.mutate(
-      { data: { phone: profileForm.phone, country: profileForm.country, city: profileForm.city, ...(profileForm.newPassword ? { password: profileForm.newPassword } : {}) } },
+      { data: { phone: profileForm.phone, country: profileForm.country, city: profileForm.city, ...(profileForm.newPassword ? { password: profileForm.newPassword } : {}) } as any },
       {
         onSuccess: () => {
           toast({ title: "Profile updated!" });
@@ -43,7 +43,7 @@ export default function Profile() {
     e.preventDefault();
     setKycError("");
     submitKyc.mutate(
-      { data: { documentType: kycForm.documentType, documentNumber: kycForm.documentNumber, documentFrontUrl: kycForm.documentFront, documentBackUrl: kycForm.documentBack, selfieUrl: kycForm.selfie } },
+      { data: { documentType: kycForm.documentType, documentNumber: kycForm.documentNumber, documentFrontUrl: kycForm.documentFront, documentBackUrl: kycForm.documentBack, selfieUrl: kycForm.selfie } as any },
       {
         onSuccess: () => {
           toast({ title: "KYC submitted!", description: "Your documents are under review." });

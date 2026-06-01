@@ -81,7 +81,7 @@ router.post("/withdrawals", authenticate, async (req, res) => {
 
 router.get("/withdrawals/:id", authenticate, async (req, res) => {
   const user = (req as any).user;
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const [withdrawal] = await db.select().from(withdrawalsTable)
     .where(and(eq(withdrawalsTable.id, id), eq(withdrawalsTable.userId, user.id))).limit(1);
   if (!withdrawal) {

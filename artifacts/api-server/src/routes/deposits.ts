@@ -55,7 +55,7 @@ router.post("/deposits", authenticate, async (req, res) => {
 
 router.get("/deposits/:id", authenticate, async (req, res) => {
   const user = (req as any).user;
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const [deposit] = await db.select().from(depositsTable)
     .where(and(eq(depositsTable.id, id), eq(depositsTable.userId, user.id))).limit(1);
   if (!deposit) {

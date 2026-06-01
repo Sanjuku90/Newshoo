@@ -30,7 +30,7 @@ router.get("/plans", async (req, res) => {
 });
 
 router.get("/plans/:id", async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const [plan] = await db.select().from(plansTable).where(eq(plansTable.id, id)).limit(1);
   if (!plan) {
     res.status(404).json({ error: "Plan not found" });

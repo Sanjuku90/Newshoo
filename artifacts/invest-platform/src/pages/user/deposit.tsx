@@ -37,7 +37,7 @@ export default function Deposit() {
     e.preventDefault();
     setError("");
     createDeposit.mutate(
-      { data: { amount: form.amount, txHash: form.txHash } },
+      { data: { amount: form.amount as any, txHash: form.txHash } },
       {
         onSuccess: () => {
           toast({ title: "Deposit submitted!", description: "Your deposit is pending verification." });

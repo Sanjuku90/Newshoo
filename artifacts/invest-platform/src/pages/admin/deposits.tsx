@@ -22,7 +22,7 @@ export default function AdminDeposits() {
   const [rejectTarget, setRejectTarget] = useState<any>(null);
   const [reason, setReason] = useState("");
 
-  const { data, isLoading, refetch } = useListAdminDeposits({ status: statusFilter as any, page, limit: 20 });
+  const { data, isLoading, refetch } = useListAdminDeposits({ status: statusFilter as any, page, limit: 20 } as any);
   const approve = useApproveDeposit();
   const reject = useRejectDeposit();
   const { toast } = useToast();

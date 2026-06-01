@@ -147,7 +147,7 @@ router.post("/investments", authenticate, async (req, res) => {
 
 router.get("/investments/:id", authenticate, async (req, res) => {
   const user = (req as any).user;
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const [inv] = await db.select().from(investmentsTable)
     .where(and(eq(investmentsTable.id, id), eq(investmentsTable.userId, user.id))).limit(1);
   if (!inv) {

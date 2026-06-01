@@ -21,7 +21,7 @@ export default function AdminTickets() {
   const [selectedTicket, setSelectedTicket] = useState<any>(null);
   const [reply, setReply] = useState("");
 
-  const { data, isLoading, refetch } = useListAdminTickets({ status: statusFilter as any, page, limit: 20 });
+  const { data, isLoading, refetch } = useListAdminTickets({ status: statusFilter as any, page, limit: 20 } as any);
   const adminReply = useAdminReplyTicket();
   const closeTicket = useCloseTicket();
   const { toast } = useToast();

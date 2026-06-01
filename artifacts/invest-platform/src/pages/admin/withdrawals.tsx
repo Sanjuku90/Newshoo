@@ -22,7 +22,7 @@ export default function AdminWithdrawals() {
   const [rejectTarget, setRejectTarget] = useState<any>(null);
   const [reason, setReason] = useState("");
 
-  const { data, isLoading, refetch } = useListAdminWithdrawals({ status: statusFilter as any, page, limit: 20 });
+  const { data, isLoading, refetch } = useListAdminWithdrawals({ status: statusFilter as any, page, limit: 20 } as any);
   const approve = useApproveWithdrawal();
   const reject = useRejectWithdrawal();
   const { toast } = useToast();

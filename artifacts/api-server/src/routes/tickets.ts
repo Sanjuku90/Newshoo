@@ -61,7 +61,7 @@ router.post("/tickets", authenticate, async (req, res) => {
 
 router.get("/tickets/:id", authenticate, async (req, res) => {
   const user = (req as any).user;
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const [ticket] = await db.select().from(ticketsTable)
     .where(and(eq(ticketsTable.id, id), eq(ticketsTable.userId, user.id))).limit(1);
   if (!ticket) {
@@ -101,7 +101,7 @@ router.get("/tickets/:id", authenticate, async (req, res) => {
 
 router.post("/tickets/:id/reply", authenticate, async (req, res) => {
   const user = (req as any).user;
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const parsed = ReplyTicketBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Validation failed" });

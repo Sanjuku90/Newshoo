@@ -24,7 +24,7 @@ export default function Investments() {
     if (!selectedPlan) return;
     setError("");
     createInvestment.mutate(
-      { data: { planId: selectedPlan.id, amount } },
+      { data: { planId: selectedPlan.id, amount: amount as any } },
       {
         onSuccess: () => {
           toast({ title: "Investment created!", description: `You invested ${amount} USDT in ${selectedPlan.name}` });
@@ -63,7 +63,7 @@ export default function Investments() {
             {(plans || []).map((plan, i) => {
               const features: string[] = Array.isArray(plan.features)
                 ? plan.features as string[]
-                : JSON.parse((plan.features as string) || "[]");
+                : JSON.parse((plan.features as unknown as string) || "[]");
               return (
                 <Card key={plan.id} className={`border-border cursor-pointer transition-all hover:border-primary/50 ${i === 1 ? 'border-primary/30' : ''}`}>
                   <CardHeader>
@@ -87,7 +87,7 @@ export default function Investments() {
                         </li>
                       ))}
                     </ul>
-                    <Button className="w-full" size="sm" onClick={() => { setSelectedPlan(plan); setAmount(plan.minDeposit); setError(""); }}>
+                    <Button className="w-full" size="sm" onClick={() => { setSelectedPlan(plan); setAmount(String(plan.minDeposit)); setError(""); }}>
                       Invest Now
                     </Button>
                   </CardContent>

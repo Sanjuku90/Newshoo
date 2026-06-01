@@ -33,7 +33,7 @@ export default function Withdraw() {
     e.preventDefault();
     setError("");
     createWithdrawal.mutate(
-      { data: { amount: form.amount, walletAddress: form.walletAddress } },
+      { data: { amount: form.amount as any, walletAddress: form.walletAddress } },
       {
         onSuccess: () => {
           toast({ title: "Withdrawal requested!", description: "Your request is pending admin approval." });

@@ -102,7 +102,7 @@ export default function AdminPlans() {
           {(plans || []).map((plan) => {
             const features: string[] = Array.isArray(plan.features)
               ? plan.features as string[]
-              : JSON.parse((plan.features as string) || "[]");
+              : JSON.parse((plan.features as unknown as string) || "[]");
             return (
               <Card key={plan.id} className="border-border">
                 <CardContent className="p-4 flex items-center justify-between">

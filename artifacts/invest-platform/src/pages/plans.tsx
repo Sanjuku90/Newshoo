@@ -46,7 +46,7 @@ export default function Plans() {
               {(plans || []).map((plan, i) => {
                 const features: string[] = Array.isArray(plan.features)
                   ? plan.features as string[]
-                  : JSON.parse((plan.features as string) || "[]");
+                  : JSON.parse((plan.features as unknown as string) || "[]");
                 const dailyUSD = Math.round(parseFloat(String(plan.minDeposit)) * parseFloat(String(plan.dailyRate)) / 100);
                 const totalUSD = dailyUSD * plan.durationDays;
                 const isPopular = i === 1;

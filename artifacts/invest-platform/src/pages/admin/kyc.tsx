@@ -17,7 +17,7 @@ export default function AdminKyc() {
   const [rejectTarget, setRejectTarget] = useState<any>(null);
   const [reason, setReason] = useState("");
 
-  const { data, isLoading, refetch } = useListAdminKyc({ status: statusFilter as any, page, limit: 20 });
+  const { data, isLoading, refetch } = useListAdminKyc({ status: statusFilter as any, page, limit: 20 } as any);
   const approve = useApproveKyc();
   const reject = useRejectKyc();
   const { toast } = useToast();

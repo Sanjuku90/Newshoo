@@ -50,7 +50,7 @@ router.get("/admin/users", requireAdmin, async (req, res) => {
 });
 
 router.get("/admin/users/:id", requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const [user] = await db.select().from(usersTable).where(eq(usersTable.id, id)).limit(1);
   if (!user) { res.status(404).json({ error: "User not found" }); return; }
   const { passwordHash: _, ...safeUser } = user;
@@ -67,7 +67,7 @@ router.get("/admin/users/:id", requireAdmin, async (req, res) => {
 });
 
 router.patch("/admin/users/:id", requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const parsed = UpdateAdminUserBody.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: "Validation failed" }); return; }
   const updates: any = {};
@@ -100,7 +100,7 @@ router.get("/admin/deposits", requireAdmin, async (req, res) => {
 });
 
 router.post("/admin/deposits/:id/approve", requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const [deposit] = await db.select().from(depositsTable).where(eq(depositsTable.id, id)).limit(1);
   if (!deposit) { res.status(404).json({ error: "Not found" }); return; }
   await db.update(depositsTable).set({ status: "approved", approvedAt: new Date(), updatedAt: new Date() }).where(eq(depositsTable.id, id));
@@ -123,7 +123,7 @@ router.post("/admin/deposits/:id/approve", requireAdmin, async (req, res) => {
 });
 
 router.post("/admin/deposits/:id/reject", requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const parsed = RejectDepositBody.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: "Reason required" }); return; }
   await db.update(depositsTable).set({ status: "rejected", rejectionReason: parsed.data.reason, updatedAt: new Date() }).where(eq(depositsTable.id, id));
@@ -151,7 +151,7 @@ router.get("/admin/withdrawals", requireAdmin, async (req, res) => {
 });
 
 router.post("/admin/withdrawals/:id/approve", requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   await db.update(withdrawalsTable).set({ status: "approved", processedAt: new Date(), updatedAt: new Date() }).where(eq(withdrawalsTable.id, id));
   const [updated] = await db.select().from(withdrawalsTable).where(eq(withdrawalsTable.id, id)).limit(1);
   const [user] = await db.select().from(usersTable).where(eq(usersTable.id, updated.userId)).limit(1);
@@ -163,7 +163,7 @@ router.post("/admin/withdrawals/:id/approve", requireAdmin, async (req, res) => 
 });
 
 router.post("/admin/withdrawals/:id/reject", requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const parsed = RejectWithdrawalBody.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: "Reason required" }); return; }
   const [withdrawal] = await db.select().from(withdrawalsTable).where(eq(withdrawalsTable.id, id)).limit(1);
@@ -191,7 +191,7 @@ router.get("/admin/kyc", requireAdmin, async (req, res) => {
 });
 
 router.post("/admin/kyc/:id/approve", requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const [doc] = await db.select().from(kycDocumentsTable).where(eq(kycDocumentsTable.id, id)).limit(1);
   if (!doc) { res.status(404).json({ error: "Not found" }); return; }
   await db.update(kycDocumentsTable).set({ status: "approved", reviewedAt: new Date() }).where(eq(kycDocumentsTable.id, id));
@@ -205,7 +205,7 @@ router.post("/admin/kyc/:id/approve", requireAdmin, async (req, res) => {
 });
 
 router.post("/admin/kyc/:id/reject", requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const parsed = RejectKycBody.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: "Reason required" }); return; }
   const [doc] = await db.select().from(kycDocumentsTable).where(eq(kycDocumentsTable.id, id)).limit(1);
@@ -228,7 +228,7 @@ router.post("/admin/plans", requireAdmin, async (req, res) => {
 });
 
 router.patch("/admin/plans/:id", requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const parsed = UpdatePlanBody.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: "Validation failed" }); return; }
   const updates: any = {};
@@ -261,7 +261,7 @@ router.get("/admin/tickets", requireAdmin, async (req, res) => {
 
 router.post("/admin/tickets/:id/reply", requireAdmin, async (req, res) => {
   const adminUser = (req as any).user;
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const parsed = AdminReplyTicketBody.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: "Validation failed" }); return; }
   const [msg] = await db.insert(ticketMessagesTable).values({ ticketId: id, userId: adminUser.id, message: parsed.data.message, isAdmin: "true" }).returning();
@@ -271,7 +271,7 @@ router.post("/admin/tickets/:id/reply", requireAdmin, async (req, res) => {
 });
 
 router.post("/admin/tickets/:id/close", requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   await db.update(ticketsTable).set({ status: "closed", updatedAt: new Date() }).where(eq(ticketsTable.id, id));
   const [ticket] = await db.select().from(ticketsTable).where(eq(ticketsTable.id, id)).limit(1);
   const msgs = await db.select().from(ticketMessagesTable).where(eq(ticketMessagesTable.ticketId, id));
@@ -316,7 +316,7 @@ router.post("/admin/promo-codes", requireAdmin, async (req, res) => {
 });
 
 router.patch("/admin/promo-codes/:id", requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   const { isActive } = req.body;
   const [promo] = await db.update(promoCodesTable).set({ isActive }).where(eq(promoCodesTable.id, id)).returning();
   await logAdminAction(req, isActive ? "activate_promo_code" : "deactivate_promo_code", "promo_code", id);
@@ -324,7 +324,7 @@ router.patch("/admin/promo-codes/:id", requireAdmin, async (req, res) => {
 });
 
 router.delete("/admin/promo-codes/:id", requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(String(req.params.id));
   await db.delete(promoCodesTable).where(eq(promoCodesTable.id, id));
   await logAdminAction(req, "delete_promo_code", "promo_code", id);
   res.json({ success: true });
