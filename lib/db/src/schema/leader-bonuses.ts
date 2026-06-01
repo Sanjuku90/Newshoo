@@ -1,14 +1,14 @@
-import { pgTable, serial, integer, numeric, text, timestamp } from "drizzle-orm/pg-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
-export const leaderBonusesTable = pgTable("leader_bonuses", {
-  id: serial("id").primaryKey(),
+export const leaderBonusesTable = sqliteTable("leader_bonuses", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   userId: integer("user_id").notNull(),
   milestone: integer("milestone").notNull(),
-  amount: numeric("amount", { precision: 18, scale: 8 }).notNull(),
+  amount: text("amount").notNull(),
   status: text("status").notNull().default("awarded"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull().defaultNow(),
 });
 
 export const insertLeaderBonusSchema = createInsertSchema(leaderBonusesTable).omit({ id: true, createdAt: true });

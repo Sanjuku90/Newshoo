@@ -1,19 +1,19 @@
-import { pgTable, serial, text, numeric, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
-export const plansTable = pgTable("plans", {
-  id: serial("id").primaryKey(),
+export const plansTable = sqliteTable("plans", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   description: text("description"),
-  minDeposit: numeric("min_deposit", { precision: 18, scale: 2 }).notNull(),
-  maxDeposit: numeric("max_deposit", { precision: 18, scale: 2 }),
-  dailyRate: numeric("daily_rate", { precision: 5, scale: 2 }).notNull(),
+  minDeposit: text("min_deposit").notNull(),
+  maxDeposit: text("max_deposit"),
+  dailyRate: text("daily_rate").notNull(),
   durationDays: integer("duration_days").notNull(),
-  isActive: boolean("is_active").notNull().default(true),
-  features: jsonb("features").$type<string[]>().default([]),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
+  features: text("features").notNull().default("[]"),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull().defaultNow(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().defaultNow(),
 });
 
 export const insertPlanSchema = createInsertSchema(plansTable).omit({ id: true, createdAt: true, updatedAt: true });

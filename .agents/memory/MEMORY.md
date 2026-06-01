@@ -1,1 +1,2 @@
 - [Orval hook naming & mutation signatures](orval-hook-naming.md) — GET hooks use `useListX`/`useGetX` pattern; mutations always wrap body in `{ data: ... }`.
+- [Turso/LibSQL migration decisions](turso-migration.md) — schema types, esbuild externals, env var path format for local dev.

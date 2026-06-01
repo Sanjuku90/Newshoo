@@ -5,6 +5,12 @@ import { eq } from "drizzle-orm";
 const router = Router();
 
 function formatPlan(plan: any) {
+  let features: string[] = [];
+  try {
+    features = JSON.parse(plan.features || "[]");
+  } catch {
+    features = [];
+  }
   return {
     id: plan.id,
     name: plan.name,
@@ -14,7 +20,7 @@ function formatPlan(plan: any) {
     dailyRate: parseFloat(plan.dailyRate),
     durationDays: plan.durationDays,
     isActive: plan.isActive,
-    features: plan.features ?? [],
+    features,
   };
 }
 

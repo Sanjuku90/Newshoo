@@ -1,22 +1,22 @@
-import { pgTable, serial, integer, numeric, timestamp, text } from "drizzle-orm/pg-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 import { usersTable } from "./users";
 import { plansTable } from "./plans";
 
-export const investmentsTable = pgTable("investments", {
-  id: serial("id").primaryKey(),
+export const investmentsTable = sqliteTable("investments", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   userId: integer("user_id").notNull().references(() => usersTable.id),
   planId: integer("plan_id").notNull().references(() => plansTable.id),
-  amount: numeric("amount", { precision: 18, scale: 8 }).notNull(),
-  dailyRate: numeric("daily_rate", { precision: 5, scale: 2 }).notNull(),
+  amount: text("amount").notNull(),
+  dailyRate: text("daily_rate").notNull(),
   durationDays: integer("duration_days").notNull(),
-  startDate: timestamp("start_date").notNull().defaultNow(),
-  endDate: timestamp("end_date").notNull(),
+  startDate: integer("start_date", { mode: "timestamp" }).notNull().defaultNow(),
+  endDate: integer("end_date", { mode: "timestamp" }).notNull(),
   status: text("status").notNull().default("active"),
-  totalEarned: numeric("total_earned", { precision: 18, scale: 8 }).notNull().default("0"),
-  lastProfitAt: timestamp("last_profit_at"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  totalEarned: text("total_earned").notNull().default("0"),
+  lastProfitAt: integer("last_profit_at", { mode: "timestamp" }),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull().defaultNow(),
 });
 
 export const insertInvestmentSchema = createInsertSchema(investmentsTable).omit({ id: true, createdAt: true });

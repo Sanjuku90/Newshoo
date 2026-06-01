@@ -1,25 +1,25 @@
-import { pgTable, serial, text, integer, numeric, timestamp, boolean } from "drizzle-orm/pg-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
-export const promoCodesTable = pgTable("promo_codes", {
-  id: serial("id").primaryKey(),
+export const promoCodesTable = sqliteTable("promo_codes", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   code: text("code").notNull().unique(),
   type: text("type").notNull().default("fixed"),
-  value: numeric("value", { precision: 18, scale: 8 }).notNull(),
+  value: text("value").notNull(),
   maxUses: integer("max_uses"),
   usedCount: integer("used_count").notNull().default(0),
-  isActive: boolean("is_active").notNull().default(true),
+  isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
   description: text("description"),
-  expiresAt: timestamp("expires_at"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  expiresAt: integer("expires_at", { mode: "timestamp" }),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull().defaultNow(),
 });
 
-export const promoCodeUsagesTable = pgTable("promo_code_usages", {
-  id: serial("id").primaryKey(),
+export const promoCodeUsagesTable = sqliteTable("promo_code_usages", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   promoCodeId: integer("promo_code_id").notNull(),
   userId: integer("user_id").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull().defaultNow(),
 });
 
 export const insertPromoCodeSchema = createInsertSchema(promoCodesTable).omit({ id: true, createdAt: true, usedCount: true });

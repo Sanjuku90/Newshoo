@@ -222,9 +222,9 @@ router.post("/admin/plans", requireAdmin, async (req, res) => {
   const parsed = CreatePlanBody.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: "Validation failed" }); return; }
   const { name, description, minDeposit, maxDeposit, dailyRate, durationDays, features } = parsed.data;
-  const [plan] = await db.insert(plansTable).values({ name, description, minDeposit: minDeposit.toString(), maxDeposit: maxDeposit ? maxDeposit.toString() : null, dailyRate: dailyRate.toString(), durationDays, isActive: true, features: features ?? [] }).returning();
+  const [plan] = await db.insert(plansTable).values({ name, description, minDeposit: minDeposit.toString(), maxDeposit: maxDeposit ? maxDeposit.toString() : null, dailyRate: dailyRate.toString(), durationDays, isActive: true, features: JSON.stringify(features ?? []) }).returning();
   await logAdminAction(req, "create_plan", "plan", plan.id, name);
-  res.status(201).json({ id: plan.id, name: plan.name, description: plan.description, minDeposit: parseFloat(plan.minDeposit), maxDeposit: plan.maxDeposit ? parseFloat(plan.maxDeposit) : null, dailyRate: parseFloat(plan.dailyRate), durationDays: plan.durationDays, isActive: plan.isActive, features: plan.features ?? [] });
+  res.status(201).json({ id: plan.id, name: plan.name, description: plan.description, minDeposit: parseFloat(plan.minDeposit), maxDeposit: plan.maxDeposit ? parseFloat(plan.maxDeposit) : null, dailyRate: parseFloat(plan.dailyRate), durationDays: plan.durationDays, isActive: plan.isActive, features: JSON.parse(plan.features || "[]") });
 });
 
 router.patch("/admin/plans/:id", requireAdmin, async (req, res) => {
@@ -239,11 +239,11 @@ router.patch("/admin/plans/:id", requireAdmin, async (req, res) => {
   if (parsed.data.dailyRate !== undefined) updates.dailyRate = parsed.data.dailyRate.toString();
   if (parsed.data.durationDays !== undefined) updates.durationDays = parsed.data.durationDays;
   if (parsed.data.isActive !== undefined) updates.isActive = parsed.data.isActive;
-  if (parsed.data.features !== undefined) updates.features = parsed.data.features;
+  if (parsed.data.features !== undefined) updates.features = JSON.stringify(parsed.data.features);
   updates.updatedAt = new Date();
   const [plan] = await db.update(plansTable).set(updates).where(eq(plansTable.id, id)).returning();
   await logAdminAction(req, "update_plan", "plan", id);
-  res.json({ id: plan.id, name: plan.name, description: plan.description, minDeposit: parseFloat(plan.minDeposit), maxDeposit: plan.maxDeposit ? parseFloat(plan.maxDeposit) : null, dailyRate: parseFloat(plan.dailyRate), durationDays: plan.durationDays, isActive: plan.isActive, features: plan.features ?? [] });
+  res.json({ id: plan.id, name: plan.name, description: plan.description, minDeposit: parseFloat(plan.minDeposit), maxDeposit: plan.maxDeposit ? parseFloat(plan.maxDeposit) : null, dailyRate: parseFloat(plan.dailyRate), durationDays: plan.durationDays, isActive: plan.isActive, features: JSON.parse(plan.features || "[]") });
 });
 
 // ── Tickets ───────────────────────────────────────────────────────────────────

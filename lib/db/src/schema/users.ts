@@ -1,9 +1,9 @@
-import { pgTable, serial, text, integer, numeric, timestamp, boolean } from "drizzle-orm/pg-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
-export const usersTable = pgTable("users", {
-  id: serial("id").primaryKey(),
+export const usersTable = sqliteTable("users", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   firstName: text("first_name").notNull(),
   lastName: text("last_name").notNull(),
   email: text("email").notNull().unique(),
@@ -19,17 +19,17 @@ export const usersTable = pgTable("users", {
   referralCode: text("referral_code").notNull().unique(),
   referredById: integer("referred_by_id"),
   walletAddress: text("wallet_address"),
-  mainBalance: numeric("main_balance", { precision: 18, scale: 8 }).notNull().default("0"),
-  investedBalance: numeric("invested_balance", { precision: 18, scale: 8 }).notNull().default("0"),
-  totalEarnings: numeric("total_earnings", { precision: 18, scale: 8 }).notNull().default("0"),
-  bonusBalance: numeric("bonus_balance", { precision: 18, scale: 8 }).notNull().default("0"),
-  totalDeposited: numeric("total_deposited", { precision: 18, scale: 8 }).notNull().default("0"),
-  totalWithdrawn: numeric("total_withdrawn", { precision: 18, scale: 8 }).notNull().default("0"),
-  dailyEarnings: numeric("daily_earnings", { precision: 18, scale: 8 }).notNull().default("0"),
-  totalInvested: numeric("total_invested", { precision: 18, scale: 8 }).notNull().default("0"),
-  lastLoginAt: timestamp("last_login_at"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  mainBalance: text("main_balance").notNull().default("0"),
+  investedBalance: text("invested_balance").notNull().default("0"),
+  totalEarnings: text("total_earnings").notNull().default("0"),
+  bonusBalance: text("bonus_balance").notNull().default("0"),
+  totalDeposited: text("total_deposited").notNull().default("0"),
+  totalWithdrawn: text("total_withdrawn").notNull().default("0"),
+  dailyEarnings: text("daily_earnings").notNull().default("0"),
+  totalInvested: text("total_invested").notNull().default("0"),
+  lastLoginAt: integer("last_login_at", { mode: "timestamp" }),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull().defaultNow(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().defaultNow(),
 });
 
 export const insertUserSchema = createInsertSchema(usersTable).omit({ id: true, createdAt: true, updatedAt: true });

@@ -1,26 +1,26 @@
-import { pgTable, serial, integer, text, timestamp } from "drizzle-orm/pg-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 import { usersTable } from "./users";
 
-export const ticketsTable = pgTable("tickets", {
-  id: serial("id").primaryKey(),
+export const ticketsTable = sqliteTable("tickets", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   userId: integer("user_id").notNull().references(() => usersTable.id),
   subject: text("subject").notNull(),
   category: text("category").notNull(),
   status: text("status").notNull().default("open"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
-  lastReplyAt: timestamp("last_reply_at").notNull().defaultNow(),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull().defaultNow(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().defaultNow(),
+  lastReplyAt: integer("last_reply_at", { mode: "timestamp" }).notNull().defaultNow(),
 });
 
-export const ticketMessagesTable = pgTable("ticket_messages", {
-  id: serial("id").primaryKey(),
+export const ticketMessagesTable = sqliteTable("ticket_messages", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   ticketId: integer("ticket_id").notNull().references(() => ticketsTable.id),
   userId: integer("user_id").references(() => usersTable.id),
   message: text("message").notNull(),
   isAdmin: text("is_admin").notNull().default("false"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull().defaultNow(),
 });
 
 export const insertTicketSchema = createInsertSchema(ticketsTable).omit({ id: true, createdAt: true, updatedAt: true, lastReplyAt: true });
