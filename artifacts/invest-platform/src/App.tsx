@@ -30,6 +30,7 @@ import Tickets from "@/pages/user/tickets";
 import TicketDetail from "@/pages/user/ticket-detail";
 
 // Admin Pages
+import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
 import AdminUsers from "@/pages/admin/users";
 import AdminDeposits from "@/pages/admin/deposits";
@@ -91,6 +92,11 @@ function Router() {
       </Route>
       <Route path="/tickets/:id">
         {(params) => <UserLayout><TicketDetail id={params.id} /></UserLayout>}
+      </Route>
+
+      {/* Admin Login */}
+      <Route path="/admin-login">
+        <AdminLogin />
       </Route>
 
       {/* Admin */}

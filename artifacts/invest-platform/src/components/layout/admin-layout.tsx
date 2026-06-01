@@ -11,7 +11,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!isLoading && !user) {
-      setLocation("/login");
+      setLocation("/admin-login");
     } else if (!isLoading && user && user.role !== "admin") {
       setLocation("/dashboard");
     }
@@ -21,7 +21,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     logoutMutation.mutate(undefined, {
       onSettled: () => {
         clearAuth();
-        setLocation("/login");
+        setLocation("/admin-login");
       }
     });
   };
