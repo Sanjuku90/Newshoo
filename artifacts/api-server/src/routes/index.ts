@@ -10,6 +10,7 @@ import kycRouter from "./kyc";
 import ticketsRouter from "./tickets";
 import dashboardRouter from "./dashboard";
 import adminRouter from "./admin";
+import promoCodesRouter from "./promo-codes";
 
 const router: IRouter = Router();
 
@@ -24,5 +25,6 @@ router.use(kycRouter);
 router.use(ticketsRouter);
 router.use(dashboardRouter);
 router.use(adminRouter);
+router.use(promoCodesRouter);
 
 export default router;

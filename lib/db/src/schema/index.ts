@@ -7,3 +7,6 @@ export * from "./transactions";
 export * from "./referrals";
 export * from "./kyc";
 export * from "./tickets";
+export * from "./admin-logs";
+export * from "./promo-codes";
+export * from "./leader-bonuses";

@@ -15,11 +15,12 @@ export default function Home() {
           <span className="text-xl font-bold text-primary">InvestPro</span>
           <div className="flex items-center gap-4">
             <Link href="/plans" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Plans</Link>
+            <Link href="/faq" className="text-sm text-muted-foreground hover:text-foreground transition-colors">FAQ</Link>
             <Link href="/login">
-              <Button variant="ghost" size="sm">Sign In</Button>
+              <Button variant="ghost" size="sm">Connexion</Button>
             </Link>
             <Link href="/register">
-              <Button size="sm">Get Started</Button>
+              <Button size="sm">Commencer</Button>
             </Link>
           </div>
         </div>
@@ -27,23 +28,23 @@ export default function Home() {
 
       <section className="container mx-auto px-4 py-24 text-center">
         <Badge className="mb-6 bg-primary/20 text-primary border-primary/30 hover:bg-primary/20">
-          USDT TRC20 Investment Platform
+          Plateforme d'investissement USDT TRC20
         </Badge>
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
-          Grow Your Wealth<br />
-          <span className="text-primary">Every Day</span>
+          Faites Fructifier<br />
+          <span className="text-primary">Votre Capital</span>
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-          Earn up to 3% daily returns on your USDT investments. Secure, transparent, and professional crypto investment management.
+          Jusqu'à 4% de rendement journalier sur vos investissements USDT. Sécurisé, transparent et professionnel.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/register">
             <Button size="lg" className="px-8">
-              Start Investing <ArrowRight className="ml-2 h-4 w-4" />
+              Commencer à investir <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
           <Link href="/plans">
-            <Button size="lg" variant="outline" className="px-8">View Plans</Button>
+            <Button size="lg" variant="outline" className="px-8">Voir les plans</Button>
           </Link>
         </div>
       </section>
@@ -51,10 +52,10 @@ export default function Home() {
       <section className="border-y border-border bg-card/30">
         <div className="container mx-auto px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
-            { label: "Daily Returns", value: "Up to 3%" },
-            { label: "Min. Deposit", value: "69 USDT" },
-            { label: "Referral Levels", value: "3 Levels" },
-            { label: "Withdrawal Fee", value: "2% only" },
+            { label: "Rendement max.", value: "4%/jour" },
+            { label: "Dépôt minimum", value: "69 USDT" },
+            { label: "Niveaux parrainage", value: "3 niveaux" },
+            { label: "Frais de retrait", value: "2% seulement" },
           ].map((stat) => (
             <div key={stat.label}>
               <div className="text-3xl font-bold text-primary mb-1">{stat.value}</div>
@@ -66,14 +67,14 @@ export default function Home() {
 
       <section className="container mx-auto px-4 py-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Investment Plans</h2>
-          <p className="text-muted-foreground">Choose the plan that fits your investment goals</p>
+          <h2 className="text-3xl font-bold mb-4">Plans d'investissement</h2>
+          <p className="text-muted-foreground">Choisissez le plan adapté à votre capacité d'investissement</p>
         </div>
         <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {(plans || [
-            { id: "1", name: "Starter", minDeposit: "69", maxDeposit: "98", dailyRate: "1.5", durationDays: 30, features: ["Daily profit distribution", "24/7 monitoring", "Withdrawal at maturity", "Email support"] },
-            { id: "2", name: "Premium", minDeposit: "99", maxDeposit: "198", dailyRate: "2.2", durationDays: 30, features: ["Higher daily returns", "Priority email support", "Bonus on referrals", "Monthly profit boost"] },
-            { id: "3", name: "VIP", minDeposit: "199", maxDeposit: null, dailyRate: "3.0", durationDays: 30, features: ["Maximum daily returns", "Dedicated account manager", "Priority KYC processing", "VIP support line"] },
+            { id: "1", name: "STARTER", minDeposit: "69", maxDeposit: "98", dailyRate: "1.5", durationDays: 30, features: ["Profit journalier", "Retrait des bénéfices autorisé", "Support standard", "Accès tableau de bord"] },
+            { id: "2", name: "PREMIUM", minDeposit: "99", maxDeposit: "198", dailyRate: "2.5", durationDays: 30, features: ["Profit journalier élevé", "Bonus supplémentaire", "Support prioritaire", "Rapports avancés"] },
+            { id: "3", name: "VIP", minDeposit: "199", maxDeposit: null, dailyRate: "4.0", durationDays: 30, features: ["Profit VIP maximum", "Support dédié 24/7", "Bonus exclusifs", "Accès VIP complet"] },
           ]).map((plan, i) => {
             const features: string[] = Array.isArray(plan.features)
               ? plan.features as string[]
@@ -82,19 +83,19 @@ export default function Home() {
               <Card key={plan.id} className={`border-border ${i === 1 ? 'border-primary/50 relative' : ''}`}>
                 {i === 1 && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <Badge className="bg-primary text-primary-foreground">Most Popular</Badge>
+                    <Badge className="bg-primary text-primary-foreground">Le plus populaire</Badge>
                   </div>
                 )}
                 <CardHeader>
                   <CardTitle className="text-xl">{plan.name}</CardTitle>
                   <CardDescription>
                     <span className="text-3xl font-bold text-primary">{plan.dailyRate}%</span>
-                    <span className="text-muted-foreground"> / day</span>
+                    <span className="text-muted-foreground"> / jour</span>
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="text-sm text-muted-foreground">
-                    {plan.minDeposit} – {plan.maxDeposit ? plan.maxDeposit : "∞"} USDT · {plan.durationDays} days
+                    {plan.minDeposit} – {plan.maxDeposit ? plan.maxDeposit : "∞"} USDT · {plan.durationDays} jours
                   </div>
                   <ul className="space-y-2">
                     {features.map((f) => (
@@ -106,7 +107,7 @@ export default function Home() {
                   </ul>
                   <Link href="/register">
                     <Button className="w-full" variant={i === 1 ? "default" : "outline"}>
-                      Get Started
+                      Commencer
                     </Button>
                   </Link>
                 </CardContent>
@@ -119,10 +120,10 @@ export default function Home() {
       <section className="container mx-auto px-4 py-16 border-t border-border">
         <div className="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto">
           {[
-            { icon: Shield, title: "Secure", desc: "USDT TRC20 blockchain-based deposits and withdrawals" },
-            { icon: TrendingUp, title: "Daily Returns", desc: "Profits credited to your account every single day" },
-            { icon: Users, title: "3-Level Referrals", desc: "Earn commissions on 3 levels of your referral network" },
-            { icon: Zap, title: "Fast Withdrawals", desc: "Withdraw your earnings with only a 2% processing fee" },
+            { icon: Shield, title: "Sécurisé", desc: "Dépôts et retraits via blockchain USDT TRC20" },
+            { icon: TrendingUp, title: "Profits quotidiens", desc: "Bénéfices crédités sur votre compte chaque jour" },
+            { icon: Users, title: "Parrainage 3 niveaux", desc: "Gagnez des commissions sur 3 niveaux de filleuls" },
+            { icon: Zap, title: "Retraits rapides", desc: "Retirez vos gains avec seulement 2% de frais" },
           ].map(({ icon: Icon, title, desc }) => (
             <div key={title} className="text-center">
               <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -135,9 +136,41 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t border-border bg-card/30 py-8">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          © 2024 InvestPro. All rights reserved. Deposits via USDT TRC20 only.
+      <footer className="border-t border-border bg-card/30 py-10">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="text-lg font-bold text-primary mb-3">InvestPro</div>
+              <p className="text-sm text-muted-foreground">Plateforme d'investissement USDT TRC20 sécurisée et transparente.</p>
+            </div>
+            <div>
+              <div className="text-sm font-semibold text-foreground mb-3">Plateforme</div>
+              <div className="space-y-2">
+                <Link href="/plans" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Plans d'investissement</Link>
+                <Link href="/faq" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">FAQ</Link>
+                <Link href="/register" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Inscription</Link>
+              </div>
+            </div>
+            <div>
+              <div className="text-sm font-semibold text-foreground mb-3">Légal</div>
+              <div className="space-y-2">
+                <Link href="/terms" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Conditions d'utilisation</Link>
+                <Link href="/privacy" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Politique de confidentialité</Link>
+                <Link href="/aml" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Politique AML</Link>
+                <Link href="/kyc-policy" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Politique KYC</Link>
+              </div>
+            </div>
+            <div>
+              <div className="text-sm font-semibold text-foreground mb-3">Support</div>
+              <div className="space-y-2">
+                <Link href="/login" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Connexion</Link>
+                <Link href="/register" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Créer un compte</Link>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-border pt-6 text-center text-sm text-muted-foreground">
+            © 2025 InvestPro. Tous droits réservés. Dépôts via USDT TRC20 uniquement.
+          </div>
         </div>
       </footer>
     </div>

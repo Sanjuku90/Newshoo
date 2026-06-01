@@ -1,10 +1,13 @@
 import { Router } from "express";
-import { db, investmentsTable, plansTable, usersTable, transactionsTable } from "@workspace/db";
+import { db, investmentsTable, plansTable, usersTable, transactionsTable, commissionsTable } from "@workspace/db";
 import { eq, and } from "drizzle-orm";
 import { authenticate } from "../middlewares/authenticate";
 import { CreateInvestmentBody } from "@workspace/api-zod";
+import { updateVipLevel, checkAndAwardLeaderBonuses } from "../lib/vip";
 
 const router = Router();
+
+const COMMISSION_RATES = [0.10, 0.05, 0.02];
 
 function formatInvestment(inv: any, planName: string) {
   const amount = parseFloat(inv.amount);
@@ -28,12 +31,12 @@ router.get("/investments", authenticate, async (req, res) => {
   const user = (req as any).user;
   const investments = await db.select().from(investmentsTable)
     .where(eq(investmentsTable.userId, user.id));
-  
+
   const result = await Promise.all(investments.map(async (inv) => {
     const [plan] = await db.select().from(plansTable).where(eq(plansTable.id, inv.planId)).limit(1);
     return formatInvestment(inv, plan?.name ?? "Unknown");
   }));
-  
+
   res.json(result);
 });
 
@@ -83,21 +86,61 @@ router.post("/investments", authenticate, async (req, res) => {
     totalEarned: "0",
   }).returning();
 
-  // Deduct from main balance, add to invested
+  const newTotalInvested = parseFloat(user.totalInvested ?? "0") + amount;
+
   await db.update(usersTable).set({
     mainBalance: (mainBalance - amount).toString(),
     investedBalance: (parseFloat(user.investedBalance ?? "0") + amount).toString(),
-    totalInvested: (parseFloat(user.totalInvested ?? "0") + amount).toString(),
+    totalInvested: newTotalInvested.toString(),
+    updatedAt: new Date(),
   }).where(eq(usersTable.id, user.id));
+
+  await updateVipLevel(user.id, newTotalInvested);
 
   await db.insert(transactionsTable).values({
     userId: user.id,
-    type: "deposit",
+    type: "investment",
     amount: amount.toString(),
     status: "completed",
     description: `Investment in ${plan.name} plan`,
     referenceId: investment.id,
   });
+
+  // Pay referral commissions (3 levels)
+  let currentUserId = user.referredById;
+  for (let level = 1; level <= 3 && currentUserId; level++) {
+    const [referrer] = await db.select().from(usersTable)
+      .where(eq(usersTable.id, currentUserId)).limit(1);
+    if (!referrer) break;
+
+    const commAmount = amount * COMMISSION_RATES[level - 1];
+
+    await db.insert(commissionsTable).values({
+      userId: referrer.id,
+      fromUserId: user.id,
+      investmentId: investment.id,
+      level,
+      amount: commAmount.toString(),
+      status: "completed",
+    });
+
+    await db.update(usersTable).set({
+      bonusBalance: (parseFloat(referrer.bonusBalance ?? "0") + commAmount).toString(),
+      updatedAt: new Date(),
+    }).where(eq(usersTable.id, referrer.id));
+
+    await db.insert(transactionsTable).values({
+      userId: referrer.id,
+      type: "commission",
+      amount: commAmount.toString(),
+      status: "completed",
+      description: `Level ${level} commission from ${user.firstName} ${user.lastName}`,
+    });
+
+    await checkAndAwardLeaderBonuses(referrer.id);
+
+    currentUserId = referrer.referredById;
+  }
 
   res.status(201).json(formatInvestment(investment, plan.name));
 });
