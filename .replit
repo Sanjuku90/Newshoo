@@ -1,4 +1,4 @@
-modules = ["nodejs-24", "postgresql-16"]
+modules = ["nodejs-20", "web", "bash"]
 
 [deployment]
 router = "application"
@@ -18,38 +18,22 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "API Server"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "InvestPro Frontend"
+args = "Start application"
 
 [[workflows.workflow]]
-name = "API Server"
+name = "Start application"
 author = "agent"
-
-[workflows.workflow.metadata]
-outputType = "console"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "PORT=8080 pnpm --filter @workspace/api-server run dev"
-waitForPort = 8080
-
-[[workflows.workflow]]
-name = "InvestPro Frontend"
-author = "agent"
+args = "pnpm --filter @workspace/invest-platform run build && pnpm --filter @workspace/api-server run dev"
+waitForPort = 5000
 
 [workflows.workflow.metadata]
 outputType = "webview"
 
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "PORT=21045 BASE_PATH=/ pnpm --filter @workspace/invest-platform run dev"
-waitForPort = 21045
-
 [agent]
-stack = "PNPM_WORKSPACE"
+stack = "BEST_EFFORT_FALLBACK"
 expertMode = true
 
 [postMerge]
@@ -68,6 +52,10 @@ externalPort = 8081
 localPort = 21045
 externalPort = 3000
 
+[[ports]]
+localPort = 5000
+externalPort = 80
+
 [nix]
 channel = "stable-25_05"
 
@@ -75,3 +63,4 @@ channel = "stable-25_05"
 
 [userenv.shared]
 TURSO_DATABASE_URL = "file:/home/runner/workspace/lib/db/local.db"
+PORT = "5000"

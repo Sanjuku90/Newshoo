@@ -40,19 +40,17 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
 
-// Serve frontend static files in production
-if (process.env.NODE_ENV === "production") {
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
-  // In production, the frontend is built at artifacts/invest-platform/dist/public
-  // The start command runs from the repo root, so we use process.cwd()
-  const staticPath = path.join(process.cwd(), "artifacts/invest-platform/dist/public");
+// Serve frontend static files (always, since we pre-build before starting)
+// Resolve from workspace root (two levels up from artifacts/api-server/)
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const workspaceRoot = path.resolve(__dirname, "../../..");
+const staticPath = path.join(workspaceRoot, "artifacts/invest-platform/dist/public");
 
-  app.use(express.static(staticPath));
+app.use(express.static(staticPath));
 
-  // SPA fallback: serve index.html for all non-API routes
-  app.get("*", (_req, res) => {
-    res.sendFile(path.join(staticPath, "index.html"));
-  });
-}
+// SPA fallback: serve index.html for all non-API routes
+app.get("*splat", (_req, res) => {
+  res.sendFile(path.join(staticPath, "index.html"));
+});
 
 export default app;
