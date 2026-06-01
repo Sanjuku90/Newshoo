@@ -15,6 +15,7 @@ export const investmentsTable = pgTable("investments", {
   endDate: timestamp("end_date").notNull(),
   status: text("status").notNull().default("active"),
   totalEarned: numeric("total_earned", { precision: 18, scale: 8 }).notNull().default("0"),
+  lastProfitAt: timestamp("last_profit_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

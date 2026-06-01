@@ -11,6 +11,7 @@ import ticketsRouter from "./tickets";
 import dashboardRouter from "./dashboard";
 import adminRouter from "./admin";
 import promoCodesRouter from "./promo-codes";
+import cronAdminRouter from "./cron-admin";
 
 const router: IRouter = Router();
 
@@ -26,5 +27,6 @@ router.use(ticketsRouter);
 router.use(dashboardRouter);
 router.use(adminRouter);
 router.use(promoCodesRouter);
+router.use(cronAdminRouter);
 
 export default router;
