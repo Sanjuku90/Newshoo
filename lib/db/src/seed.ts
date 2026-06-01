@@ -4,44 +4,61 @@ import { createHash } from "crypto";
 
 function hashPassword(password: string): string {
   return createHash("sha256")
-    .update(`investpro_salt_2024${password}`)
+    .update(`${password}investpro_salt_2024`)
     .digest("hex");
-}
-
-function generateCode(): string {
-  return Math.random().toString(36).slice(2, 8).toUpperCase();
 }
 
 const PLANS = [
   {
-    name: "STARTER",
-    description: "Plan d'entrée — parfait pour commencer",
+    name: "Pack BRONZE",
+    description: "Idéal pour tester la plateforme",
     minDeposit: "69",
     maxDeposit: "98",
-    dailyRate: "1.5",
-    durationDays: 30,
+    dailyRate: "14.4928",
+    durationDays: 15,
     isActive: true,
-    features: JSON.stringify(["Profit journalier 1.5%", "Retrait des bénéfices autorisé", "Support standard", "Accès tableau de bord"]),
+    // daily: $10/day · total: $150
+    features: JSON.stringify([
+      "10 $ de gain par jour",
+      "Retour total : 150 $ en 15 jours",
+      "Capital récupéré dès le 7e jour",
+      "Retrait dès 9 $ de solde",
+      "Capital sécurisé & séparé",
+    ]),
   },
   {
-    name: "PREMIUM",
-    description: "Plan intermédiaire — rendement optimisé",
+    name: "Pack SILVER",
+    description: "Le meilleur ratio de rentabilité",
     minDeposit: "99",
     maxDeposit: "198",
-    dailyRate: "2.5",
-    durationDays: 30,
+    dailyRate: "17.1717",
+    durationDays: 15,
     isActive: true,
-    features: JSON.stringify(["Profit journalier 2.5%", "Bonus supplémentaire", "Support prioritaire", "Rapports avancés"]),
+    // daily: $17/day · total: $255
+    features: JSON.stringify([
+      "17 $ de gain par jour",
+      "Retour total : 255 $ en 15 jours",
+      "Capital récupéré en seulement 6 jours",
+      "Retrait dès 9 $ de solde",
+      "Activation automatique instantanée",
+    ]),
   },
   {
-    name: "VIP",
-    description: "Plan premium — rendement maximum",
+    name: "Pack GOLD",
+    description: "Revenus maximaux garantis",
     minDeposit: "199",
     maxDeposit: null,
-    dailyRate: "4.0",
-    durationDays: 30,
+    dailyRate: "18.0905",
+    durationDays: 15,
     isActive: true,
-    features: JSON.stringify(["Profit VIP 4%/j maximum", "Support dédié 24/7", "Bonus exclusifs VIP", "Accès VIP complet"]),
+    // daily: $36/day · total: $540
+    features: JSON.stringify([
+      "36 $ de gain par jour",
+      "Retour total : 540 $ en 15 jours",
+      "Capital récupéré dès le 6e jour",
+      "Retrait dès 9 $ de solde",
+      "Revenus élite & priorité support",
+    ]),
   },
 ];
 
@@ -83,6 +100,6 @@ export async function seedDatabase() {
     for (const plan of PLANS) {
       await db.insert(plansTable).values(plan);
     }
-    console.log("[seed] 3 investment plans created");
+    console.log("[seed] 3 investment plans created (BRONZE / SILVER / GOLD)");
   }
 }

@@ -3,8 +3,12 @@ import { useListPlans } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, ArrowLeft } from "lucide-react";
+import { CheckCircle2, ArrowLeft, TrendingUp } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+
+const BADGES = ["🥉 Essai", "🔥 POPULAIRE", "👑 Elite"];
+
+const SILVER_PITCH = "C'est le choix favori de notre communauté. Pour seulement 30 $ de plus que le pack de base, vous débloquez un boost de gains quotidiens et récupérez l'intégralité de votre investissement de départ en seulement 6 jours.";
 
 export default function Plans() {
   const { data: plans, isLoading } = useListPlans();
@@ -15,74 +19,135 @@ export default function Plans() {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="text-xl font-bold text-primary">InvestPro</Link>
           <div className="flex items-center gap-4">
-            <Link href="/login"><Button variant="ghost" size="sm">Sign In</Button></Link>
-            <Link href="/register"><Button size="sm">Get Started</Button></Link>
+            <Link href="/login"><Button variant="ghost" size="sm">Connexion</Button></Link>
+            <Link href="/register"><Button size="sm">Commencer</Button></Link>
           </div>
         </div>
       </nav>
-      <div className="container mx-auto px-4 py-16">
+
+      <div className="container mx-auto px-4 py-16 max-w-6xl">
         <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8">
-          <ArrowLeft className="h-4 w-4" /> Back to Home
+          <ArrowLeft className="h-4 w-4" /> Retour à l'accueil
         </Link>
+
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Investment Plans</h1>
-          <p className="text-muted-foreground text-lg">Choose the plan that matches your investment capacity</p>
+          <Badge className="mb-4 bg-primary/20 text-primary border-primary/30">Haute Performance</Badge>
+          <h1 className="text-4xl font-bold mb-4">🚀 Nos Plans d'Investissement</h1>
+          <p className="text-muted-foreground text-lg">Des gains quotidiens en USD — dès la première minute</p>
         </div>
+
         {isLoading ? (
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {[1,2,3].map(i => <Skeleton key={i} className="h-80" />)}
+          <div className="grid md:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => <Skeleton key={i} className="h-[460px]" />)}
           </div>
         ) : (
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {(plans || []).map((plan, i) => {
-              const features: string[] = Array.isArray(plan.features)
-                ? plan.features as string[]
-                : JSON.parse((plan.features as string) || "[]");
-              return (
-                <Card key={plan.id} className={`border-border ${i === 1 ? 'border-primary/50 relative' : ''}`}>
-                  {i === 1 && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-primary text-primary-foreground">Most Popular</Badge>
-                    </div>
-                  )}
-                  <CardHeader>
-                    <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                    <CardDescription className="text-base">{plan.description}</CardDescription>
-                    <div className="pt-2">
-                      <span className="text-4xl font-bold text-primary">{plan.dailyRate}%</span>
-                      <span className="text-muted-foreground"> / day</span>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="bg-secondary/50 rounded-lg p-3 space-y-1 text-sm">
-                      <div className="flex justify-between"><span className="text-muted-foreground">Minimum</span><span className="font-medium">{plan.minDeposit} USDT</span></div>
-                      <div className="flex justify-between"><span className="text-muted-foreground">Maximum</span><span className="font-medium">{plan.maxDeposit ? plan.maxDeposit + " USDT" : "Unlimited"}</span></div>
-                      <div className="flex justify-between"><span className="text-muted-foreground">Duration</span><span className="font-medium">{plan.durationDays} days</span></div>
-                      <div className="flex justify-between"><span className="text-muted-foreground">Total Return</span><span className="font-medium text-accent">{(parseFloat(plan.dailyRate) * plan.durationDays).toFixed(0)}%</span></div>
-                    </div>
-                    <ul className="space-y-2">
-                      {features.map((f) => (
-                        <li key={f} className="flex items-center gap-2 text-sm">
-                          <CheckCircle2 className="h-4 w-4 text-accent shrink-0" />
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                    <Link href="/register">
-                      <Button className="w-full" variant={i === 1 ? "default" : "outline"}>
-                        Start with {plan.name}
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+          <>
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              {(plans || []).map((plan, i) => {
+                const features: string[] = Array.isArray(plan.features)
+                  ? plan.features as string[]
+                  : JSON.parse((plan.features as string) || "[]");
+                const dailyUSD = Math.round(parseFloat(String(plan.minDeposit)) * parseFloat(String(plan.dailyRate)) / 100);
+                const totalUSD = dailyUSD * plan.durationDays;
+                const isPopular = i === 1;
+
+                return (
+                  <Card key={plan.id} className={`relative border-border ${isPopular ? "border-primary/60 shadow-xl shadow-primary/10 scale-[1.02]" : ""}`}>
+                    {isPopular && (
+                      <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+                        <Badge className="bg-primary text-primary-foreground px-4 py-1.5 text-sm font-semibold">
+                          ⭐ Le plus populaire
+                        </Badge>
+                      </div>
+                    )}
+                    <CardHeader className="pb-2 pt-6">
+                      <div className="flex items-center justify-between mb-2">
+                        <Badge variant="outline" className="text-xs">{BADGES[i]}</Badge>
+                        <span className="text-xs text-muted-foreground">{plan.durationDays} jours</span>
+                      </div>
+                      <CardTitle className="text-2xl">{plan.name}</CardTitle>
+                      <CardDescription className="text-sm mt-1">{plan.description}</CardDescription>
+                      <div className="pt-4 pb-1">
+                        <div className="flex items-end gap-1">
+                          <span className="text-5xl font-bold text-primary">{dailyUSD}</span>
+                          <span className="text-2xl font-semibold text-primary mb-1">$</span>
+                          <span className="text-muted-foreground text-base mb-1.5 ml-1">/ jour</span>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="bg-secondary/50 rounded-xl p-4 space-y-2 text-sm">
+                        <div className="flex justify-between items-center">
+                          <span className="text-muted-foreground">Dépôt requis</span>
+                          <span className="font-bold text-base">{plan.minDeposit} $</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-muted-foreground">Durée du cycle</span>
+                          <span className="font-medium">{plan.durationDays} jours</span>
+                        </div>
+                        <div className="border-t border-border/50 my-1" />
+                        <div className="flex justify-between items-center">
+                          <span className="text-muted-foreground font-medium">Retour total</span>
+                          <span className="font-bold text-lg text-primary">{totalUSD} $</span>
+                        </div>
+                      </div>
+                      <ul className="space-y-2.5">
+                        {features.map((f) => (
+                          <li key={f} className="flex items-start gap-2 text-sm">
+                            <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                            <span>{f}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <Link href="/register">
+                        <Button className="w-full h-11 text-base" variant={isPopular ? "default" : "outline"}>
+                          Commencer avec {plan.name}
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+
+            {/* Silver pitch highlight */}
+            <div className="max-w-2xl mx-auto bg-primary/5 border border-primary/20 rounded-2xl p-6 text-center mb-12">
+              <TrendingUp className="h-8 w-8 text-primary mx-auto mb-3" />
+              <h3 className="font-bold text-lg mb-2">⭐ Pourquoi choisir le Pack SILVER (99 $) ?</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{SILVER_PITCH}</p>
+            </div>
+          </>
         )}
-        <div className="mt-16 max-w-2xl mx-auto bg-card border border-border rounded-xl p-6 text-center">
-          <h2 className="text-xl font-semibold mb-2">Referral Program</h2>
-          <p className="text-muted-foreground text-sm mb-4">Earn commissions on 3 levels: Level 1 (5%), Level 2 (3%), Level 3 (1%)</p>
-          <Link href="/register"><Button variant="outline">Join & Refer Friends</Button></Link>
+
+        {/* Security section */}
+        <div className="grid md:grid-cols-3 gap-4 mb-12">
+          {[
+            { icon: "🏦", title: "Capital Zéro Risque", desc: "Vos fonds de dépôt et vos gains sont strictement séparés." },
+            { icon: "⚡", title: "Retraits dès 9 $", desc: "Retirez vos gains à tout moment, 7j/7, dès 9 $ de solde." },
+            { icon: "🤖", title: "Activation Auto", desc: "Le plan se lance instantanément à la confirmation du dépôt." },
+          ].map(({ icon, title, desc }) => (
+            <div key={title} className="bg-card border border-border rounded-xl p-4 text-center">
+              <div className="text-2xl mb-2">{icon}</div>
+              <h4 className="font-semibold text-sm mb-1">{title}</h4>
+              <p className="text-xs text-muted-foreground">{desc}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Referral */}
+        <div className="bg-card border border-border rounded-2xl p-8 text-center">
+          <h2 className="text-xl font-bold mb-2">Programme de Parrainage 3 Niveaux</h2>
+          <p className="text-muted-foreground text-sm mb-2">
+            Invitez des amis et gagnez des commissions automatiques sur 3 niveaux :
+          </p>
+          <div className="flex justify-center gap-8 my-4 text-sm">
+            <div><span className="text-2xl font-bold text-primary">5%</span><br /><span className="text-muted-foreground">Niveau 1</span></div>
+            <div><span className="text-2xl font-bold text-primary">3%</span><br /><span className="text-muted-foreground">Niveau 2</span></div>
+            <div><span className="text-2xl font-bold text-primary">1%</span><br /><span className="text-muted-foreground">Niveau 3</span></div>
+          </div>
+          <Link href="/register">
+            <Button variant="outline" className="mt-2">Rejoindre & Parrainer</Button>
+          </Link>
         </div>
       </div>
     </div>
