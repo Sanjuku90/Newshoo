@@ -1,0 +1,462 @@
+Si ton objectif est de faire développer la plateforme par une équipe ou une IA, il faut rédiger un cahier des charges extrêmement détaillé, avec toutes les règles métier, les sécurités, les automatisations et les cas particuliers.
+
+Concernant “2 comptes maximum par IP”, je te conseille plutôt :
+
+* Maximum 2 comptes par IP.
+* Détection VPN/Proxy.
+* Détection d’appareils (fingerprint).
+* Détection multi-comptes.
+* Alerte admin si plus de 2 comptes utilisent la même IP.
+* Possibilité pour l’admin d’autoriser manuellement des exceptions (famille, cybercafé, etc.).
+
+⸻
+
+CAHIER DES CHARGES COMPLET
+
+Nom du projet
+
+À définir
+
+Type
+
+Plateforme d’investissement avec système de dépôts, retraits, parrainage, KYC et administration complète.
+
+⸻
+
+RÈGLES PRINCIPALES
+
+Dépôt minimum
+
+69 USDT
+
+Dépôt maximum
+
+Illimité
+
+Réseau accepté
+
+USDT TRC20 uniquement
+
+Retrait minimum
+
+9 USDT
+
+Retrait maximum
+
+Configurable par l’administration
+
+Frais de retrait
+
+Configurable
+
+Validation des dépôts
+
+Automatique ou manuelle
+
+Validation des retraits
+
+Manuelle par défaut
+
+⸻
+
+PLANS D’INVESTISSEMENT
+
+STARTER
+
+* Dépôt : 69 à 98 USDT
+* Profit journalier
+* Durée configurable
+* Retrait des bénéfices autorisé
+
+⸻
+
+PREMIUM
+
+* Dépôt : 99 à 198 USDT
+* Profit supérieur
+* Bonus supplémentaire
+
+⸻
+
+VIP
+
+* Dépôt : 199 USDT+
+* Profit VIP
+* Support prioritaire
+
+⸻
+
+TABLEAU DE BORD UTILISATEUR
+
+Affichage de :
+
+* Solde principal
+* Solde investi
+* Gains quotidiens
+* Gains totaux
+* Dépôts totaux
+* Retraits totaux
+* Bonus de parrainage
+* Statut KYC
+* Niveau VIP
+* Nombre de filleuls
+* Dernières transactions
+
+Graphiques :
+
+* Historique des gains
+* Historique des investissements
+* Historique des retraits
+
+⸻
+
+INSCRIPTION
+
+Champs
+
+* Nom
+* Prénom
+* Pays
+* Ville
+* Email
+* Téléphone
+* Mot de passe
+* Confirmation
+* Code parrain
+
+Vérifications
+
+* Email unique
+* Téléphone unique
+* Vérification email
+* Captcha
+
+⸻
+
+SYSTÈME EMAIL
+
+Envoi automatique :
+
+* Bienvenue
+* Activation
+* Dépôt validé
+* Retrait validé
+* KYC accepté
+* KYC refusé
+* Réinitialisation mot de passe
+
+⸻
+
+PORTEFEUILLE UTILISATEUR
+
+Solde principal
+
+Argent disponible.
+
+Solde investi
+
+Capital actuellement dans un plan.
+
+Gains
+
+Bénéfices accumulés.
+
+Bonus
+
+Commissions de parrainage.
+
+⸻
+
+PARRAINAGE AVANCÉ
+
+Niveau 1
+
+10 %
+
+Niveau 2
+
+5 %
+
+Niveau 3
+
+2 %
+
+⸻
+
+BONUS DE LEADER
+
+10 filleuls actifs :
+
+* 25 USDT
+
+50 filleuls actifs :
+
+* 150 USDT
+
+100 filleuls actifs :
+
+* 500 USDT
+
+500 filleuls actifs :
+
+* 5 000 USDT
+
+⸻
+
+KYC
+
+Niveau 1
+
+Carte d’identité
+
+Niveau 2
+
+Selfie
+
+Niveau 3
+
+Justificatif domicile
+
+⸻
+
+CENTRE DE SUPPORT
+
+Tickets :
+
+* Ouvert
+* Répondu
+* Fermé
+
+Catégories :
+
+* Dépôt
+* Retrait
+* KYC
+* Technique
+* Autre
+
+⸻
+
+SÉCURITÉ
+
+Limitation comptes
+
+* Maximum 2 comptes par IP
+* Maximum 2 comptes par appareil
+* Détection VPN
+* Détection Proxy
+* Détection TOR
+
+Connexion
+
+* Historique complet
+* Adresse IP enregistrée
+* Localisation enregistrée
+
+Authentification
+
+* Double authentification Google Authenticator
+* Code email
+
+⸻
+
+SYSTÈME ANTI-FRAUDE
+
+Détection :
+
+* Multi-comptes
+* Auto-parrainage
+* Adresses TRC20 identiques
+* Retraits suspects
+* Changements IP fréquents
+
+Création automatique d’alertes.
+
+⸻
+
+NIVEAUX VIP
+
+VIP 1
+
+500 USDT investis
+
+VIP 2
+
+2 000 USDT investis
+
+VIP 3
+
+5 000 USDT investis
+
+VIP 4
+
+10 000 USDT investis
+
+VIP 5
+
+25 000 USDT investis
+
+⸻
+
+ADMINISTRATION
+
+Dashboard Admin
+
+Afficher :
+
+* Utilisateurs
+* Investissements
+* Dépôts
+* Retraits
+* KYC
+* Revenus
+* Statistiques
+
+⸻
+
+GESTION UTILISATEURS
+
+Actions :
+
+* Voir profil
+* Modifier profil
+* Bannir
+* Suspendre
+* Modifier solde
+* Modifier gains
+* Réinitialiser mot de passe
+* Vérifier KYC
+
+⸻
+
+GESTION DÉPÔTS
+
+* Validation
+* Refus
+* Historique
+
+⸻
+
+GESTION RETRAITS
+
+* Validation
+* Refus
+* Mise en attente
+
+⸻
+
+GESTION KYC
+
+* Accepter
+* Refuser
+* Commentaire
+
+⸻
+
+GESTION PLANS
+
+* Créer
+* Modifier
+* Désactiver
+
+⸻
+
+GESTION COMMISSIONS
+
+* Pourcentage personnalisable
+* Activation/Désactivation
+
+⸻
+
+GESTION DU SITE
+
+* Logo
+* Bannière
+* Couleurs
+* FAQ
+* Conditions
+
+⸻
+
+GESTION DES ANNONCES
+
+L’admin peut :
+
+* Créer des annonces
+* Envoyer des notifications
+* Envoyer des emails groupés
+
+⸻
+
+JOURNAL ADMIN
+
+Enregistrer :
+
+* Connexions
+* Modifications
+* Dépôts validés
+* Retraits validés
+* Changements de solde
+
+⸻
+
+MODULE MARKETING
+
+* Classement des meilleurs parrains
+* Concours hebdomadaire
+* Concours mensuel
+* Codes promo
+* Bonus anniversaire
+* Bonus premier dépôt
+* Bonus de réactivation
+
+⸻
+
+MODULE AUTOMATIQUE
+
+* Crédit des profits
+* Envoi emails
+* Blocage comptes frauduleux
+* Alertes administrateur
+* Sauvegardes automatiques
+
+⸻
+
+PAGES PUBLIQUES
+
+* Accueil
+* FAQ
+* Contact
+* Affiliation
+* Plans
+* Politique KYC
+* Politique AML
+* Conditions d’utilisation
+* Politique de confidentialité
+
+⸻
+
+FONCTIONNALITÉS “PREMIUM”
+
+* Mode sombre
+* Multi-langues
+* Notifications push
+* Application Android
+* Application iOS
+* Chat en direct
+* Centre d’aide
+* API publique
+* QR Code de parrainage
+* Générateur de lien d’affiliation
+* Historique exportable PDF/Excel
+* Système de badges utilisateurs
+* Tableau des derniers dépôts/retraits
+* Compteur des investisseurs actifs
+* Système de cashback
+* Système de récompenses quotidiennes
+* Roue de bonus quotidienne
+* Vérification de retrait par email
+* Vérification de retrait par code OTP
+* Blocage automatique après plusieurs échecs de connexion
+
+Ce document est déjà proche d’un cahier des charges professionnel de 40 à 60 pages une fois transformé en spécifications techniques détaillées (base de données, API, interfaces et workflows).

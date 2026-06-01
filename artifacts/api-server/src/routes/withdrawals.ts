@@ -1,0 +1,94 @@
+import { Router } from "express";
+import { db, withdrawalsTable, usersTable, transactionsTable } from "@workspace/db";
+import { eq, and } from "drizzle-orm";
+import { authenticate } from "../middlewares/authenticate";
+import { CreateWithdrawalBody } from "@workspace/api-zod";
+
+const router = Router();
+
+const WITHDRAWAL_FEE_RATE = 0.02; // 2%
+const MIN_WITHDRAWAL = 9;
+
+function formatWithdrawal(w: any) {
+  return {
+    id: w.id,
+    amount: parseFloat(w.amount),
+    fee: parseFloat(w.fee ?? "0"),
+    netAmount: parseFloat(w.netAmount),
+    status: w.status,
+    walletAddress: w.walletAddress,
+    rejectionReason: w.rejectionReason,
+    createdAt: w.createdAt?.toISOString(),
+  };
+}
+
+router.get("/withdrawals", authenticate, async (req, res) => {
+  const user = (req as any).user;
+  const withdrawals = await db.select().from(withdrawalsTable)
+    .where(eq(withdrawalsTable.userId, user.id));
+  res.json(withdrawals.map(formatWithdrawal));
+});
+
+router.post("/withdrawals", authenticate, async (req, res) => {
+  const user = (req as any).user;
+  const parsed = CreateWithdrawalBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Validation failed" });
+    return;
+  }
+
+  const { amount, walletAddress } = parsed.data;
+
+  if (amount < MIN_WITHDRAWAL) {
+    res.status(400).json({ error: `Minimum withdrawal is ${MIN_WITHDRAWAL} USDT` });
+    return;
+  }
+
+  const mainBalance = parseFloat(user.mainBalance ?? "0");
+  if (mainBalance < amount) {
+    res.status(400).json({ error: "Insufficient balance" });
+    return;
+  }
+
+  const fee = amount * WITHDRAWAL_FEE_RATE;
+  const netAmount = amount - fee;
+
+  const [withdrawal] = await db.insert(withdrawalsTable).values({
+    userId: user.id,
+    amount: amount.toString(),
+    fee: fee.toString(),
+    netAmount: netAmount.toString(),
+    status: "pending",
+    walletAddress,
+  }).returning();
+
+  // Deduct from balance
+  await db.update(usersTable).set({
+    mainBalance: (mainBalance - amount).toString(),
+  }).where(eq(usersTable.id, user.id));
+
+  await db.insert(transactionsTable).values({
+    userId: user.id,
+    type: "withdrawal",
+    amount: amount.toString(),
+    status: "pending",
+    description: `Withdrawal to ${walletAddress}`,
+    referenceId: withdrawal.id,
+  });
+
+  res.status(201).json(formatWithdrawal(withdrawal));
+});
+
+router.get("/withdrawals/:id", authenticate, async (req, res) => {
+  const user = (req as any).user;
+  const id = parseInt(req.params.id);
+  const [withdrawal] = await db.select().from(withdrawalsTable)
+    .where(and(eq(withdrawalsTable.id, id), eq(withdrawalsTable.userId, user.id))).limit(1);
+  if (!withdrawal) {
+    res.status(404).json({ error: "Withdrawal not found" });
+    return;
+  }
+  res.json(formatWithdrawal(withdrawal));
+});
+
+export default router;

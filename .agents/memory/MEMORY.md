@@ -1,0 +1,1 @@
+- [Orval hook naming & mutation signatures](orval-hook-naming.md) — GET hooks use `useListX`/`useGetX` pattern; mutations always wrap body in `{ data: ... }`.
