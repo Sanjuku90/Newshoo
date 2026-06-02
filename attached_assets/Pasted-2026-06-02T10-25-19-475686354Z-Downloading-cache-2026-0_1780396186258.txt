@@ -1,0 +1,45 @@
+2026-06-02T10:25:19.475686354Z ==> Downloading cache...
+2026-06-02T10:25:19.513446338Z ==> Cloning from https://github.com/Sanjuku90/Newshoo
+2026-06-02T10:25:25.159723109Z ==> Checking out commit 7a81c76ac08bc7626fc204c9dd89ee499e8c3984 in branch main
+2026-06-02T10:25:30.224684036Z ==> Downloaded 107MB in 8s. Extraction took 3s.
+2026-06-02T10:25:34.543694264Z ==> Using Node.js version 24.14.1 (default)
+2026-06-02T10:25:34.543707025Z ==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+2026-06-02T10:25:34.589481197Z ==> Running build command 'pnpm install --frozen-lockfile; pnpm run build'...
+2026-06-02T10:25:39.912909556Z 
+2026-06-02T10:25:39.912944608Z > workspace@0.0.0 build /opt/render/project/src
+2026-06-02T10:25:39.912950969Z > pnpm run typecheck && pnpm -r --if-present run build
+2026-06-02T10:25:39.912954869Z 
+2026-06-02T10:25:40.221734833Z 
+2026-06-02T10:25:40.221752814Z > workspace@0.0.0 typecheck /opt/render/project/src
+2026-06-02T10:25:40.221756524Z > pnpm run typecheck:libs && pnpm -r --filter "./artifacts/**" --filter "./scripts" --if-present run typecheck
+2026-06-02T10:25:40.221760554Z 
+2026-06-02T10:25:40.517910437Z 
+2026-06-02T10:25:40.517938409Z > workspace@0.0.0 typecheck:libs /opt/render/project/src
+2026-06-02T10:25:40.517943399Z > tsc --build
+2026-06-02T10:25:40.517947609Z 
+2026-06-02T10:26:01.577709385Z ==> Uploading build...
+2026-06-02T10:26:10.435609797Z ==> Uploaded in 4.6s. Compression took 4.3s
+2026-06-02T10:26:10.460337519Z ==> Build successful 🎉
+2026-06-02T10:26:13.766440901Z ==> Deploying...
+2026-06-02T10:26:13.903531507Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-06-02T10:26:34.663449729Z ==> Running 'yarn start'
+2026-06-02T10:26:36.45318119Z yarn run v1.22.22
+2026-06-02T10:26:36.651525531Z $ node --enable-source-maps ./artifacts/api-server/dist/index.mjs
+2026-06-02T10:26:39.161948799Z {"level":30,"time":1780395999160,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-6b5f7f69d4-bgnsv","port":10000,"msg":"Server listening"}
+2026-06-02T10:26:39.753715519Z {"level":30,"time":1780395999753,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-6b5f7f69d4-bgnsv","req":{"id":1,"method":"HEAD","url":"/"},"res":{"statusCode":200},"responseTime":81,"msg":"request completed"}
+2026-06-02T10:26:39.801146894Z {"level":30,"time":1780395999800,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-6b5f7f69d4-bgnsv","msg":"✅ Database connection OK"}
+2026-06-02T10:26:39.801266182Z [migrate] Running schema migrations...
+2026-06-02T10:26:41.149795481Z [migrate] Ensured table: notifications
+2026-06-02T10:26:41.152939558Z [migrate] Ensured table: leader_bonuses
+2026-06-02T10:26:41.155846028Z [migrate] Ensured table: promo_code_usages
+2026-06-02T10:26:41.155869869Z [migrate] Migrations complete.
+2026-06-02T10:26:42.055008887Z {"level":40,"time":1780396001174,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-6b5f7f69d4-bgnsv","err":{"type":"_DrizzleQueryError","message":"Failed query: insert into \"users\" (\"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\") values (null, ?, ?, ?, ?, ?, null, ?, ?, ?, ?, ?, ?, ?, null, null, ?, ?, ?, ?, ?, ?, ?, ?, null, (cast((julianday('now') - 2440587.5)*86400000 as integer)), (cast((julianday('now') - 2440587.5)*86400000 as integer))) on conflict do nothing\nparams: Admin,InvestPro,admin@investpro.com,+10000000000,International,02a231f4b23e26d8f9d21cc4180134c764fe2c4966e5bbbb47ab1b2b18ac957e,admin,active,3,approved,5,ADMIN01,0,0,0,0,0,0,0,0: SQLITE_CONSTRAINT: SQLite error: NOT NULL constraint failed: users.clerk_id: SQLite error: NOT NULL constraint failed: users.clerk_id","stack":"Error: Failed query: insert into \"users\" (\"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\") values (null, ?, ?, ?, ?, ?, null, ?, ?, ?, ?, ?, ?, ?, null, null, ?, ?, ?, ?, ?, ?, ?, ?, null, (cast((julianday('now') - 2440587.5)*86400000 as integer)), (cast((julianday('now') - 2440587.5)*86400000 as integer))) on conflict do nothing\nparams: Admin,InvestPro,admin@investpro.com,+10000000000,International,02a231f4b23e26d8f9d21cc4180134c764fe2c4966e5bbbb47ab1b2b18ac957e,admin,active,3,approved,5,ADMIN01,0,0,0,0,0,0,0,0\n    at LibSQLPreparedQuery.queryWithCache (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/sqlite-core/session.ts:80:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async LibSQLPreparedQuery.run (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:197:10)\n    at async seedDatabase (/opt/render/project/src/lib/db/src/seed.ts:71:3)\n    at async Server.<anonymous> (/opt/render/project/src/artifacts/api-server/src/index.ts:58:7)\ncaused by: LibsqlError: SQLITE_CONSTRAINT: SQLite error: NOT NULL constraint failed: users.clerk_id\n    at mapHranaError (file:///opt/render/project/src/node_modules/.pnpm/@libsql+client@0.14.0/node_modules/@libsql/client/lib-esm/hrana.js:268:16)\n    at file:///opt/render/project/src/node_modules/.pnpm/@libsql+client@0.14.0/node_modules/@libsql/client/lib-esm/http.js:76:23\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async LibSQLPreparedQuery.queryWithCache (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/sqlite-core/session.ts:78:12)\n    at async LibSQLPreparedQuery.run (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:197:10)\n    at async seedDatabase (/opt/render/project/src/lib/db/src/seed.ts:71:3)\n    at async Server.<anonymous> (/opt/render/project/src/artifacts/api-server/src/index.ts:58:7)\ncaused by: ","query":"insert into \"users\" (\"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\") values (null, ?, ?, ?, ?, ?, null, ?, ?, ?, ?, ?, ?, ?, null, null, ?, ?, ?, ?, ?, ?, ?, ?, null, (cast((julianday('now') - 2440587.5)*86400000 as integer)), (cast((julianday('now') - 2440587.5)*86400000 as integer))) on conflict do nothing","params":["Admin","InvestPro","admin@investpro.com","+10000000000","International","02a231f4b23e26d8f9d21cc4180134c764fe2c4966e5bbbb47ab1b2b18ac957e","admin","active",3,"approved",5,"ADMIN01","0","0","0","0","0","0","0","0"]},"msg":"Seed database failed (non-fatal)"}
+2026-06-02T10:26:42.161092229Z {"level":30,"time":1780396002160,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-6b5f7f69d4-bgnsv","msg":"Cron jobs scheduled (daily profits at 00:01)"}
+2026-06-02T10:26:45.073374927Z {"level":30,"time":1780396005073,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-6b5f7f69d4-bgnsv","req":{"id":2,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":3,"msg":"request completed"}
+2026-06-02T10:26:45.076150473Z ==> Your service is live 🎉
+2026-06-02T10:26:45.200456119Z ==> 
+2026-06-02T10:26:45.203254065Z ==> ///////////////////////////////////////////////////////////
+2026-06-02T10:26:45.205721607Z ==> 
+2026-06-02T10:26:45.208365722Z ==> Available at your primary URL https://letswin.onrender.com
+2026-06-02T10:26:45.211130658Z ==> 
+2026-06-02T10:26:45.213398567Z ==> ///////////////////////////////////////////////////////////

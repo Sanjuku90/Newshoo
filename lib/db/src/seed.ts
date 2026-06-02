@@ -66,33 +66,37 @@ export async function seedDatabase() {
   const adminHash = hashPassword("1289");
   const testHash  = hashPassword("test1234");
 
-  // INSERT OR IGNORE: silently skip if any unique constraint fires (email/phone/referral_code).
-  // The row may already exist from a previous deploy with stale column values — we fix those below.
-  await db.insert(usersTable).values({
-    firstName: "Admin",
-    lastName: "InvestPro",
-    email: "admin@investpro.com",
-    phone: "+10000000000",
-    country: "International",
-    passwordHash: adminHash,
-    role: "admin",
-    status: "active",
-    kycLevel: 3,
-    kycStatus: "approved",
-    vipLevel: 5,
-    referralCode: "ADMIN01",
-    mainBalance: "0",
-    investedBalance: "0",
-    totalEarnings: "0",
-    bonusBalance: "0",
-    totalDeposited: "0",
-    totalWithdrawn: "0",
-    dailyEarnings: "0",
-    totalInvested: "0",
-  }).onConflictDoNothing();
+  // Try inserting the admin row. If any unique constraint fires (email/phone/referral_code),
+  // ignore it — the row already exists and we will patch it below.
+  try {
+    await db.insert(usersTable).values({
+      firstName: "Admin",
+      lastName: "InvestPro",
+      email: "admin@investpro.com",
+      phone: "+10000000000",
+      country: "International",
+      passwordHash: adminHash,
+      role: "admin",
+      status: "active",
+      kycLevel: 3,
+      kycStatus: "approved",
+      vipLevel: 5,
+      referralCode: "ADMIN01",
+      mainBalance: "0",
+      investedBalance: "0",
+      totalEarnings: "0",
+      bonusBalance: "0",
+      totalDeposited: "0",
+      totalWithdrawn: "0",
+      dailyEarnings: "0",
+      totalInvested: "0",
+    });
+  } catch (e: any) {
+    const msg: string = (e?.message ?? "") + (e?.cause?.message ?? "");
+    if (!msg.includes("UNIQUE") && !msg.includes("unique")) throw e;
+  }
 
-  // Always patch the admin row to correct any stale defaults (e.g. role='user', email='').
-  // We identify it by phone since that's always been in the DB from the start.
+  // Always patch by phone to fix any stale defaults (role='user', email='', etc.)
   await db.update(usersTable).set({
     firstName: "Admin",
     lastName: "InvestPro",
@@ -108,29 +112,34 @@ export async function seedDatabase() {
 
   console.log("[seed] Admin account ensured (admin@investpro.com / 1289)");
 
-  // Test user — same pattern: insert-or-ignore then patch.
-  await db.insert(usersTable).values({
-    firstName: "Test",
-    lastName: "Utilisateur",
-    email: "test@investpro.com",
-    phone: "+10000000001",
-    country: "France",
-    passwordHash: testHash,
-    role: "user",
-    status: "active",
-    kycLevel: 1,
-    kycStatus: "approved",
-    vipLevel: 1,
-    referralCode: "TEST01",
-    mainBalance: "500",
-    investedBalance: "0",
-    totalEarnings: "0",
-    bonusBalance: "0",
-    totalDeposited: "500",
-    totalWithdrawn: "0",
-    dailyEarnings: "0",
-    totalInvested: "0",
-  }).onConflictDoNothing();
+  // Test user — same pattern.
+  try {
+    await db.insert(usersTable).values({
+      firstName: "Test",
+      lastName: "Utilisateur",
+      email: "test@investpro.com",
+      phone: "+10000000001",
+      country: "France",
+      passwordHash: testHash,
+      role: "user",
+      status: "active",
+      kycLevel: 1,
+      kycStatus: "approved",
+      vipLevel: 1,
+      referralCode: "TEST01",
+      mainBalance: "500",
+      investedBalance: "0",
+      totalEarnings: "0",
+      bonusBalance: "0",
+      totalDeposited: "500",
+      totalWithdrawn: "0",
+      dailyEarnings: "0",
+      totalInvested: "0",
+    });
+  } catch (e: any) {
+    const msg: string = (e?.message ?? "") + (e?.cause?.message ?? "");
+    if (!msg.includes("UNIQUE") && !msg.includes("unique")) throw e;
+  }
 
   await db.update(usersTable).set({
     firstName: "Test",
