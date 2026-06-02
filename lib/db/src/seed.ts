@@ -63,7 +63,8 @@ const PLANS = [
 ];
 
 export async function seedDatabase() {
-  const adminHash = hashPassword("1289");
+  const adminPassword = process.env.ADMIN_PASSWORD || "1289";
+  const adminHash = hashPassword(adminPassword);
   const testHash  = hashPassword("test1234");
 
   // Try inserting the admin row. If any unique constraint fires (email/phone/referral_code),
@@ -109,7 +110,7 @@ export async function seedDatabase() {
     referralCode: "ADMIN01",
   }).where(eq(usersTable.phone, "+10000000000"));
 
-  console.log("[seed] Admin account ensured (admin@investpro.com / 1289)");
+  console.log("[seed] Admin account ensured (admin@investpro.com)");
 
   // Test user — same pattern.
   try {
