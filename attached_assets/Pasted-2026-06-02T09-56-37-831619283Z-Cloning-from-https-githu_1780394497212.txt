@@ -1,0 +1,50 @@
+2026-06-02T09:56:37.831619283Z ==> Cloning from https://github.com/Sanjuku90/Newshoo
+2026-06-02T09:56:38.401219426Z ==> Checking out commit b9229cf085a46dfc32744790c5b5bc78e0c87450 in branch main
+2026-06-02T09:56:43.458885667Z ==> Downloaded 107MB in 3s. Extraction took 3s.
+2026-06-02T09:56:46.953405495Z ==> Using Node.js version 24.14.1 (default)
+2026-06-02T09:56:46.953420935Z ==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+2026-06-02T09:56:46.998491287Z ==> Running build command 'pnpm install --frozen-lockfile; pnpm run build'...
+2026-06-02T09:56:52.402108647Z 
+2026-06-02T09:56:52.402138907Z > workspace@0.0.0 build /opt/render/project/src
+2026-06-02T09:56:52.402145277Z > pnpm run typecheck && pnpm -r --if-present run build
+2026-06-02T09:56:52.402149448Z 
+2026-06-02T09:56:52.711002721Z 
+2026-06-02T09:56:52.711027132Z > workspace@0.0.0 typecheck /opt/render/project/src
+2026-06-02T09:56:52.711032862Z > pnpm run typecheck:libs && pnpm -r --filter "./artifacts/**" --filter "./scripts" --if-present run typecheck
+2026-06-02T09:56:52.711038952Z 
+2026-06-02T09:56:53.036843291Z 
+2026-06-02T09:56:53.036873601Z > workspace@0.0.0 typecheck:libs /opt/render/project/src
+2026-06-02T09:56:53.036880511Z > tsc --build
+2026-06-02T09:56:53.036886142Z 
+2026-06-02T09:57:15.108430005Z ==> Uploading build...
+2026-06-02T09:57:24.105025155Z ==> Uploaded in 4.9s. Compression took 4.1s
+2026-06-02T09:57:24.12888868Z ==> Build successful 🎉
+2026-06-02T09:57:26.775035166Z ==> Deploying...
+2026-06-02T09:57:26.839598412Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-06-02T09:57:48.848121301Z ==> Running 'yarn start'
+2026-06-02T09:57:50.743041506Z yarn run v1.22.22
+2026-06-02T09:57:50.943123206Z $ node --enable-source-maps ./artifacts/api-server/dist/index.mjs
+2026-06-02T09:57:53.447392519Z {"level":30,"time":1780394273446,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-7cf9b456c-bvrhr","port":10000,"msg":"Server listening"}
+2026-06-02T09:57:54.296500198Z {"level":30,"time":1780394274296,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-7cf9b456c-bvrhr","req":{"id":1,"method":"HEAD","url":"/"},"res":{"statusCode":200},"responseTime":5,"msg":"request completed"}
+2026-06-02T09:57:54.813232373Z {"level":30,"time":1780394274813,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-7cf9b456c-bvrhr","msg":"✅ Database connection OK"}
+2026-06-02T09:57:54.813318155Z [migrate] Running schema migrations...
+2026-06-02T09:57:54.907230773Z [migrate] Added column users.daily_earnings
+2026-06-02T09:57:55.04038298Z [migrate] Added column users.total_invested
+2026-06-02T09:57:55.066985375Z [migrate] Added column users.city
+2026-06-02T09:57:55.23864225Z [migrate] Added column users.wallet_address
+2026-06-02T09:57:55.325307211Z [migrate] Added column users.last_login_at
+2026-06-02T09:57:55.367388217Z [migrate] Ensured table: notifications
+2026-06-02T09:57:55.388374089Z [migrate] Ensured table: leader_bonuses
+2026-06-02T09:57:55.413041361Z [migrate] Ensured table: promo_code_usages
+2026-06-02T09:57:55.413067132Z [migrate] Migrations complete.
+2026-06-02T09:57:56.739430261Z {"level":40,"time":1780394275439,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-7cf9b456c-bvrhr","err":{"type":"_DrizzleQueryError","message":"Failed query: select \"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\" from \"users\" where \"users\".\"role\" = ? limit ?\nparams: admin,1: SQL_INPUT_ERROR: SQLite input error: no such column: first_name (at offset 13): SQLite input error: no such column: first_name (at offset 13)","stack":"Error: Failed query: select \"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\" from \"users\" where \"users\".\"role\" = ? limit ?\nparams: admin,1\n    at LibSQLPreparedQuery.queryWithCache (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/sqlite-core/session.ts:80:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async LibSQLPreparedQuery.values (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:286:10)\n    at async LibSQLPreparedQuery.all (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:214:16)\n    at async seedDatabase (/opt/render/project/src/lib/db/src/seed.ts:67:20)\n    at async Server.<anonymous> (/opt/render/project/src/artifacts/api-server/src/index.ts:58:7)\ncaused by: LibsqlError: SQL_INPUT_ERROR: SQLite input error: no such column: first_name (at offset 13)\n    at mapHranaError (file:///opt/render/project/src/node_modules/.pnpm/@libsql+client@0.14.0/node_modules/@libsql/client/lib-esm/hrana.js:268:16)\n    at file:///opt/render/project/src/node_modules/.pnpm/@libsql+client@0.14.0/node_modules/@libsql/client/lib-esm/http.js:76:23\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async LibSQLPreparedQuery.queryWithCache (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/sqlite-core/session.ts:78:12)\n    at async LibSQLPreparedQuery.values (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:286:10)\n    at async LibSQLPreparedQuery.all (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:214:16)\n    at async seedDatabase (/opt/render/project/src/lib/db/src/seed.ts:67:20)\n    at async Server.<anonymous> (/opt/render/project/src/artifacts/api-server/src/index.ts:58:7)\ncaused by: ","query":"select \"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\" from \"users\" where \"users\".\"role\" = ? limit ?","params":["admin",1]},"msg":"Seed database failed (non-fatal)"}
+2026-06-02T09:57:57.043844123Z {"level":30,"time":1780394277042,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-7cf9b456c-bvrhr","msg":"Cron jobs scheduled (daily profits at 00:01)"}
+2026-06-02T09:57:57.043869963Z {"level":30,"time":1780394277042,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-7cf9b456c-bvrhr","pingUrl":"https://letswin.onrender.com/api/healthz","intervalMinutes":14,"msg":"Keep-alive started"}
+2026-06-02T09:57:57.838417844Z ==> Your service is live 🎉
+2026-06-02T09:57:57.939473239Z {"level":30,"time":1780394277939,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-7cf9b456c-bvrhr","req":{"id":2,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":5,"msg":"request completed"}
+2026-06-02T09:57:57.95903066Z ==> 
+2026-06-02T09:57:57.961294125Z ==> ///////////////////////////////////////////////////////////
+2026-06-02T09:57:57.96358665Z ==> 
+2026-06-02T09:57:57.965623089Z ==> Available at your primary URL https://letswin.onrender.com
+2026-06-02T09:57:57.96815311Z ==> 
+2026-06-02T09:57:57.970389764Z ==> ///////////////////////////////////////////////////////////

@@ -6,7 +6,7 @@ async function addColumnIfMissing(table: string, column: string, definition: str
     await db.run(sql.raw(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`));
     console.log(`[migrate] Added column ${table}.${column}`);
   } catch (e: any) {
-    if (!e?.message?.includes("duplicate column")) {
+    if (!e?.message?.includes("duplicate column") && !e?.cause?.message?.includes("duplicate column")) {
       throw e;
     }
   }
