@@ -1,0 +1,28 @@
+2026-06-02T07:21:26.282492436Z ==> Cloning from https://github.com/Sanjuku90/Newshoo
+2026-06-02T07:21:26.866492766Z ==> Checking out commit d16162b31b32f3eae17c9e3eba1d93cb17d6d49c in branch main
+2026-06-02T07:21:28.343857305Z ==> Using Node.js version 24.14.1 (default)
+2026-06-02T07:21:28.343874006Z ==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+2026-06-02T07:21:28.394491181Z ==> Running build command 'pnpm install --frozen-lockfile; pnpm run build'...
+2026-06-02T07:21:38.438596442Z 
+2026-06-02T07:21:38.438630044Z > workspace@0.0.0 build /opt/render/project/src
+2026-06-02T07:21:38.438636044Z > pnpm run typecheck && pnpm -r --if-present run build
+2026-06-02T07:21:38.438639995Z 
+2026-06-02T07:21:38.748682508Z 
+2026-06-02T07:21:38.7487124Z > workspace@0.0.0 typecheck /opt/render/project/src
+2026-06-02T07:21:38.748719691Z > pnpm run typecheck:libs && pnpm -r --filter "./artifacts/**" --filter "./scripts" --if-present run typecheck
+2026-06-02T07:21:38.748726751Z 
+2026-06-02T07:21:39.079759398Z 
+2026-06-02T07:21:39.079781599Z > workspace@0.0.0 typecheck:libs /opt/render/project/src
+2026-06-02T07:21:39.079787129Z > tsc --build
+2026-06-02T07:21:39.07979188Z 
+2026-06-02T07:22:00.530755383Z ==> Uploading build...
+2026-06-02T07:22:09.702762413Z ==> Uploaded in 4.8s. Compression took 4.4s
+2026-06-02T07:22:09.726924813Z ==> Build successful 🎉
+2026-06-02T07:22:13.44871243Z ==> Deploying...
+2026-06-02T07:22:13.503865652Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-06-02T07:22:40.599821675Z ==> Running 'yarn start'
+2026-06-02T07:22:42.789337618Z yarn run v1.22.22
+2026-06-02T07:22:42.994186229Z error Command "start" not found.
+2026-06-02T07:22:42.995062649Z info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+2026-06-02T07:22:45.234113821Z ==> Exited with status 1
+2026-06-02T07:22:45.236721344Z ==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
