@@ -5,8 +5,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Send, Users, Megaphone, AlertTriangle, RefreshCw } from "lucide-react";
-import { useUpdateAdminSettings } from "@workspace/api-client-react";
-
 const API_BASE = "/api";
 
 export default function AdminBroadcast() {
