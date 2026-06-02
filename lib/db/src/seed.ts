@@ -1,5 +1,5 @@
 import { db, usersTable, plansTable, settingsTable } from "./index";
-import { eq, or } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { createHash } from "crypto";
 
 function hashPassword(password: string): string {
@@ -63,76 +63,86 @@ const PLANS = [
 ];
 
 export async function seedDatabase() {
-  // Check by email (not role) — the role column may have defaulted to 'user'
-  // on existing rows that were created before the column existed.
-  const existing = await db
-    .select({ id: usersTable.id })
-    .from(usersTable)
-    .where(or(eq(usersTable.email, "admin@investpro.com"), eq(usersTable.role, "admin")))
-    .limit(1);
+  const adminHash = hashPassword("1289");
+  const testHash  = hashPassword("test1234");
 
-  if (existing.length === 0) {
-    console.log("[seed] Creating admin account...");
-    await db.insert(usersTable).values({
-      firstName: "Admin",
-      lastName: "InvestPro",
-      email: "admin@investpro.com",
-      phone: "+10000000000",
-      country: "International",
-      passwordHash: hashPassword("1289"),
-      role: "admin",
-      status: "active",
-      kycLevel: 3,
-      kycStatus: "approved",
-      vipLevel: 5,
-      referralCode: "ADMIN01",
-      mainBalance: "0",
-      investedBalance: "0",
-      totalEarnings: "0",
-      bonusBalance: "0",
-      totalDeposited: "0",
-      totalWithdrawn: "0",
-      dailyEarnings: "0",
-      totalInvested: "0",
-    });
-    console.log("[seed] Admin account created (admin@investpro.com / 1289)");
-  } else {
-    // Ensure the existing row has role='admin' (may have defaulted to 'user')
-    await db
-      .update(usersTable)
-      .set({ role: "admin", status: "active", kycLevel: 3, kycStatus: "approved", vipLevel: 5 })
-      .where(eq(usersTable.email, "admin@investpro.com"));
-    console.log("[seed] Admin account already exists — role/status verified.");
-  }
+  // INSERT OR IGNORE: silently skip if any unique constraint fires (email/phone/referral_code).
+  // The row may already exist from a previous deploy with stale column values — we fix those below.
+  await db.insert(usersTable).values({
+    firstName: "Admin",
+    lastName: "InvestPro",
+    email: "admin@investpro.com",
+    phone: "+10000000000",
+    country: "International",
+    passwordHash: adminHash,
+    role: "admin",
+    status: "active",
+    kycLevel: 3,
+    kycStatus: "approved",
+    vipLevel: 5,
+    referralCode: "ADMIN01",
+    mainBalance: "0",
+    investedBalance: "0",
+    totalEarnings: "0",
+    bonusBalance: "0",
+    totalDeposited: "0",
+    totalWithdrawn: "0",
+    dailyEarnings: "0",
+    totalInvested: "0",
+  }).onConflictDoNothing();
 
-  // Create test user account if it doesn't exist
-  const existingTest = await db.select({ id: usersTable.id }).from(usersTable).where(eq(usersTable.email, "test@investpro.com")).limit(1);
-  if (existingTest.length === 0) {
-    console.log("[seed] Creating test user account...");
-    await db.insert(usersTable).values({
-      firstName: "Test",
-      lastName: "Utilisateur",
-      email: "test@investpro.com",
-      phone: "+10000000001",
-      country: "France",
-      passwordHash: hashPassword("test1234"),
-      role: "user",
-      status: "active",
-      kycLevel: 1,
-      kycStatus: "approved",
-      vipLevel: 1,
-      referralCode: "TEST01",
-      mainBalance: "500",
-      investedBalance: "0",
-      totalEarnings: "0",
-      bonusBalance: "0",
-      totalDeposited: "500",
-      totalWithdrawn: "0",
-      dailyEarnings: "0",
-      totalInvested: "0",
-    });
-    console.log("[seed] Test user created (test@investpro.com / test1234) — solde: 500 USDT");
-  }
+  // Always patch the admin row to correct any stale defaults (e.g. role='user', email='').
+  // We identify it by phone since that's always been in the DB from the start.
+  await db.update(usersTable).set({
+    firstName: "Admin",
+    lastName: "InvestPro",
+    email: "admin@investpro.com",
+    passwordHash: adminHash,
+    role: "admin",
+    status: "active",
+    kycLevel: 3,
+    kycStatus: "approved",
+    vipLevel: 5,
+    referralCode: "ADMIN01",
+  }).where(eq(usersTable.phone, "+10000000000"));
+
+  console.log("[seed] Admin account ensured (admin@investpro.com / 1289)");
+
+  // Test user — same pattern: insert-or-ignore then patch.
+  await db.insert(usersTable).values({
+    firstName: "Test",
+    lastName: "Utilisateur",
+    email: "test@investpro.com",
+    phone: "+10000000001",
+    country: "France",
+    passwordHash: testHash,
+    role: "user",
+    status: "active",
+    kycLevel: 1,
+    kycStatus: "approved",
+    vipLevel: 1,
+    referralCode: "TEST01",
+    mainBalance: "500",
+    investedBalance: "0",
+    totalEarnings: "0",
+    bonusBalance: "0",
+    totalDeposited: "500",
+    totalWithdrawn: "0",
+    dailyEarnings: "0",
+    totalInvested: "0",
+  }).onConflictDoNothing();
+
+  await db.update(usersTable).set({
+    firstName: "Test",
+    lastName: "Utilisateur",
+    email: "test@investpro.com",
+    passwordHash: testHash,
+    role: "user",
+    status: "active",
+    referralCode: "TEST01",
+  }).where(eq(usersTable.phone, "+10000000001"));
+
+  console.log("[seed] Test user ensured (test@investpro.com / test1234)");
 
   // Seed default settings
   const DEFAULT_SETTINGS: Record<string, string> = {

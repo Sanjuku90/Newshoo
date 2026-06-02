@@ -1,0 +1,45 @@
+2026-06-02T10:20:44.898515496Z ==> Downloading cache...
+2026-06-02T10:20:44.941444265Z ==> Cloning from https://github.com/Sanjuku90/Newshoo
+2026-06-02T10:20:45.64433927Z ==> Checking out commit 3d288487258d21044f40047e1b4a3647f302ff28 in branch main
+2026-06-02T10:20:51.110953219Z ==> Downloaded 107MB in 3s. Extraction took 4s.
+2026-06-02T10:20:59.052047591Z ==> Using Node.js version 24.14.1 (default)
+2026-06-02T10:20:59.052063731Z ==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+2026-06-02T10:20:59.097359773Z ==> Running build command 'pnpm install --frozen-lockfile; pnpm run build'...
+2026-06-02T10:21:04.784023295Z 
+2026-06-02T10:21:04.784054715Z > workspace@0.0.0 build /opt/render/project/src
+2026-06-02T10:21:04.784059725Z > pnpm run typecheck && pnpm -r --if-present run build
+2026-06-02T10:21:04.784062956Z 
+2026-06-02T10:21:05.110073017Z 
+2026-06-02T10:21:05.110102688Z > workspace@0.0.0 typecheck /opt/render/project/src
+2026-06-02T10:21:05.110110068Z > pnpm run typecheck:libs && pnpm -r --filter "./artifacts/**" --filter "./scripts" --if-present run typecheck
+2026-06-02T10:21:05.110117568Z 
+2026-06-02T10:21:05.433866899Z 
+2026-06-02T10:21:05.43389904Z > workspace@0.0.0 typecheck:libs /opt/render/project/src
+2026-06-02T10:21:05.43390394Z > tsc --build
+2026-06-02T10:21:05.43390809Z 
+2026-06-02T10:21:28.097192628Z ==> Uploading build...
+2026-06-02T10:21:38.064524908Z ==> Uploaded in 5.2s. Compression took 4.8s
+2026-06-02T10:21:38.089368978Z ==> Build successful 🎉
+2026-06-02T10:21:41.428325867Z ==> Deploying...
+2026-06-02T10:21:41.535938996Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-06-02T10:22:01.070442387Z ==> Running 'yarn start'
+2026-06-02T10:22:02.772595235Z yarn run v1.22.22
+2026-06-02T10:22:02.971150531Z $ node --enable-source-maps ./artifacts/api-server/dist/index.mjs
+2026-06-02T10:22:05.574433672Z {"level":30,"time":1780395725573,"pid":83,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-cbb74f489-4m8c6","port":10000,"msg":"Server listening"}
+2026-06-02T10:22:05.871298774Z {"level":30,"time":1780395725870,"pid":83,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-cbb74f489-4m8c6","req":{"id":1,"method":"HEAD","url":"/"},"res":{"statusCode":200},"responseTime":92,"msg":"request completed"}
+2026-06-02T10:22:06.037231448Z {"level":30,"time":1780395726037,"pid":83,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-cbb74f489-4m8c6","msg":"✅ Database connection OK"}
+2026-06-02T10:22:06.038008101Z [migrate] Running schema migrations...
+2026-06-02T10:22:06.785334057Z [migrate] Ensured table: notifications
+2026-06-02T10:22:06.788008379Z [migrate] Ensured table: leader_bonuses
+2026-06-02T10:22:06.871031375Z [migrate] Ensured table: promo_code_usages
+2026-06-02T10:22:06.871053066Z [migrate] Migrations complete.
+2026-06-02T10:22:06.879084413Z [seed] Creating admin account...
+2026-06-02T10:22:08.076780139Z {"level":40,"time":1780395726885,"pid":83,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-cbb74f489-4m8c6","err":{"type":"_DrizzleQueryError","message":"Failed query: insert into \"users\" (\"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\") values (null, ?, ?, ?, ?, ?, null, ?, ?, ?, ?, ?, ?, ?, null, null, ?, ?, ?, ?, ?, ?, ?, ?, null, (cast((julianday('now') - 2440587.5)*86400000 as integer)), (cast((julianday('now') - 2440587.5)*86400000 as integer)))\nparams: Admin,InvestPro,admin@investpro.com,+10000000000,International,02a231f4b23e26d8f9d21cc4180134c764fe2c4966e5bbbb47ab1b2b18ac957e,admin,active,3,approved,5,ADMIN01,0,0,0,0,0,0,0,0: SQLITE_CONSTRAINT: SQLite error: NOT NULL constraint failed: users.clerk_id: SQLite error: NOT NULL constraint failed: users.clerk_id","stack":"Error: Failed query: insert into \"users\" (\"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\") values (null, ?, ?, ?, ?, ?, null, ?, ?, ?, ?, ?, ?, ?, null, null, ?, ?, ?, ?, ?, ?, ?, ?, null, (cast((julianday('now') - 2440587.5)*86400000 as integer)), (cast((julianday('now') - 2440587.5)*86400000 as integer)))\nparams: Admin,InvestPro,admin@investpro.com,+10000000000,International,02a231f4b23e26d8f9d21cc4180134c764fe2c4966e5bbbb47ab1b2b18ac957e,admin,active,3,approved,5,ADMIN01,0,0,0,0,0,0,0,0\n    at LibSQLPreparedQuery.queryWithCache (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/sqlite-core/session.ts:80:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async LibSQLPreparedQuery.run (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:197:10)\n    at async seedDatabase (/opt/render/project/src/lib/db/src/seed.ts:76:5)\n    at async Server.<anonymous> (/opt/render/project/src/artifacts/api-server/src/index.ts:58:7)\ncaused by: LibsqlError: SQLITE_CONSTRAINT: SQLite error: NOT NULL constraint failed: users.clerk_id\n    at mapHranaError (file:///opt/render/project/src/node_modules/.pnpm/@libsql+client@0.14.0/node_modules/@libsql/client/lib-esm/hrana.js:268:16)\n    at file:///opt/render/project/src/node_modules/.pnpm/@libsql+client@0.14.0/node_modules/@libsql/client/lib-esm/http.js:76:23\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async LibSQLPreparedQuery.queryWithCache (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/sqlite-core/session.ts:78:12)\n    at async LibSQLPreparedQuery.run (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:197:10)\n    at async seedDatabase (/opt/render/project/src/lib/db/src/seed.ts:76:5)\n    at async Server.<anonymous> (/opt/render/project/src/artifacts/api-server/src/index.ts:58:7)\ncaused by: ","query":"insert into \"users\" (\"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\") values (null, ?, ?, ?, ?, ?, null, ?, ?, ?, ?, ?, ?, ?, null, null, ?, ?, ?, ?, ?, ?, ?, ?, null, (cast((julianday('now') - 2440587.5)*86400000 as integer)), (cast((julianday('now') - 2440587.5)*86400000 as integer)))","params":["Admin","InvestPro","admin@investpro.com","+10000000000","International","02a231f4b23e26d8f9d21cc4180134c764fe2c4966e5bbbb47ab1b2b18ac957e","admin","active",3,"approved",5,"ADMIN01","0","0","0","0","0","0","0","0"]},"msg":"Seed database failed (non-fatal)"}
+2026-06-02T10:22:08.272004637Z {"level":30,"time":1780395728271,"pid":83,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-cbb74f489-4m8c6","msg":"Cron jobs scheduled (daily profits at 00:01)"}
+2026-06-02T10:22:12.599726042Z ==> Your service is live 🎉
+2026-06-02T10:22:12.836654952Z ==> 
+2026-06-02T10:22:12.839767062Z ==> ///////////////////////////////////////////////////////////
+2026-06-02T10:22:12.842821453Z ==> 
+2026-06-02T10:22:12.846258397Z ==> Available at your primary URL https://letswin.onrender.com
+2026-06-02T10:22:12.849128675Z ==> 
+2026-06-02T10:22:12.852133874Z ==> ///////////////////////////////////////////////////////////
