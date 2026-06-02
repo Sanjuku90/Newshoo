@@ -4,7 +4,6 @@ services:
     runtime: node
     plan: free
     buildCommand: |
-      npm install -g pnpm &&
       pnpm install --frozen-lockfile &&
       BASE_PATH=/ pnpm --filter @workspace/invest-platform run build &&
       pnpm --filter @workspace/api-server run build
