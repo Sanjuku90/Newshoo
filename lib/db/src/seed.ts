@@ -1,5 +1,5 @@
 import { db, usersTable, plansTable, settingsTable } from "./index";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 import { createHash } from "crypto";
 
 function hashPassword(password: string): string {
@@ -63,8 +63,13 @@ const PLANS = [
 ];
 
 export async function seedDatabase() {
-  // Check if admin exists (select only id to avoid schema/column mismatch issues)
-  const existing = await db.select({ id: usersTable.id }).from(usersTable).where(eq(usersTable.role, "admin")).limit(1);
+  // Check by email (not role) — the role column may have defaulted to 'user'
+  // on existing rows that were created before the column existed.
+  const existing = await db
+    .select({ id: usersTable.id })
+    .from(usersTable)
+    .where(or(eq(usersTable.email, "admin@investpro.com"), eq(usersTable.role, "admin")))
+    .limit(1);
 
   if (existing.length === 0) {
     console.log("[seed] Creating admin account...");
@@ -91,6 +96,13 @@ export async function seedDatabase() {
       totalInvested: "0",
     });
     console.log("[seed] Admin account created (admin@investpro.com / 1289)");
+  } else {
+    // Ensure the existing row has role='admin' (may have defaulted to 'user')
+    await db
+      .update(usersTable)
+      .set({ role: "admin", status: "active", kycLevel: 3, kycStatus: "approved", vipLevel: 5 })
+      .where(eq(usersTable.email, "admin@investpro.com"));
+    console.log("[seed] Admin account already exists — role/status verified.");
   }
 
   // Create test user account if it doesn't exist

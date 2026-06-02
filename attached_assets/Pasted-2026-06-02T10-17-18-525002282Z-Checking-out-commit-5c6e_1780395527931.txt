@@ -1,0 +1,50 @@
+2026-06-02T10:17:18.525002282Z ==> Checking out commit 5c6e7ac87ed82d3dcfb7fa885f7040c0b84239a9 in branch main
+2026-06-02T10:17:24.533929012Z ==> Downloaded 107MB in 4s. Extraction took 3s.
+2026-06-02T10:17:28.972927875Z ==> Using Node.js version 24.14.1 (default)
+2026-06-02T10:17:28.972936625Z ==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+2026-06-02T10:17:29.016329762Z ==> Running build command 'pnpm install --frozen-lockfile; pnpm run build'...
+2026-06-02T10:17:34.00032965Z 
+2026-06-02T10:17:34.000361131Z > workspace@0.0.0 build /opt/render/project/src
+2026-06-02T10:17:34.000365811Z > pnpm run typecheck && pnpm -r --if-present run build
+2026-06-02T10:17:34.000367921Z 
+2026-06-02T10:17:34.304256959Z 
+2026-06-02T10:17:34.30428893Z > workspace@0.0.0 typecheck /opt/render/project/src
+2026-06-02T10:17:34.30429393Z > pnpm run typecheck:libs && pnpm -r --filter "./artifacts/**" --filter "./scripts" --if-present run typecheck
+2026-06-02T10:17:34.30429848Z 
+2026-06-02T10:17:34.612709269Z 
+2026-06-02T10:17:34.6127319Z > workspace@0.0.0 typecheck:libs /opt/render/project/src
+2026-06-02T10:17:34.61273479Z > tsc --build
+2026-06-02T10:17:34.6127369Z 
+2026-06-02T10:17:57.018292614Z ==> Uploading build...
+2026-06-02T10:18:06.00657836Z ==> Uploaded in 4.6s. Compression took 4.4s
+2026-06-02T10:18:06.031183825Z ==> Build successful 🎉
+2026-06-02T10:18:09.672483164Z ==> Deploying...
+2026-06-02T10:18:09.835104635Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-06-02T10:18:30.249305494Z ==> Running 'yarn start'
+2026-06-02T10:18:32.348026608Z yarn run v1.22.22
+2026-06-02T10:18:32.550375624Z $ node --enable-source-maps ./artifacts/api-server/dist/index.mjs
+2026-06-02T10:18:35.151051751Z {"level":30,"time":1780395515150,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-5b56cdc948-rcdmn","port":10000,"msg":"Server listening"}
+2026-06-02T10:18:35.583148222Z {"level":30,"time":1780395515582,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-5b56cdc948-rcdmn","msg":"✅ Database connection OK"}
+2026-06-02T10:18:35.583336352Z [migrate] Running schema migrations...
+2026-06-02T10:18:35.646644564Z [migrate] Added column users.first_name
+2026-06-02T10:18:35.670629526Z [migrate] Added column users.last_name
+2026-06-02T10:18:35.853662594Z [migrate] Added column users.phone
+2026-06-02T10:18:35.952861438Z [migrate] Added column users.country
+2026-06-02T10:18:36.050873471Z {"level":30,"time":1780395516050,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-5b56cdc948-rcdmn","req":{"id":1,"method":"HEAD","url":"/"},"res":{"statusCode":200},"responseTime":101,"msg":"request completed"}
+2026-06-02T10:18:36.952446063Z [migrate] Added column users.password_hash
+2026-06-02T10:18:36.996544143Z [migrate] Added column users.role
+2026-06-02T10:18:37.030150996Z [migrate] Added column users.status
+2026-06-02T10:18:37.052346114Z [migrate] Added column users.kyc_level
+2026-06-02T10:18:37.074111529Z [migrate] Added column users.kyc_status
+2026-06-02T10:18:37.101419794Z [migrate] Added column users.vip_level
+2026-06-02T10:18:37.124858837Z [migrate] Added column users.referral_code
+2026-06-02T10:18:37.148349042Z [migrate] Added column users.referred_by_id
+2026-06-02T10:18:37.220340297Z [migrate] Added column users.main_balance
+2026-06-02T10:18:37.360403534Z [migrate] Ensured table: notifications
+2026-06-02T10:18:37.368173629Z [migrate] Ensured table: leader_bonuses
+2026-06-02T10:18:37.375187435Z [migrate] Ensured table: promo_code_usages
+2026-06-02T10:18:37.375213407Z [migrate] Migrations complete.
+2026-06-02T10:18:37.387050644Z [seed] Creating admin account...
+2026-06-02T10:18:38.650942496Z {"level":40,"time":1780395517454,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-5b56cdc948-rcdmn","err":{"type":"_DrizzleQueryError","message":"Failed query: insert into \"users\" (\"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\") values (null, ?, ?, ?, ?, ?, null, ?, ?, ?, ?, ?, ?, ?, null, null, ?, ?, ?, ?, ?, ?, ?, ?, null, (cast((julianday('now') - 2440587.5)*86400000 as integer)), (cast((julianday('now') - 2440587.5)*86400000 as integer)))\nparams: Admin,InvestPro,admin@investpro.com,+10000000000,International,02a231f4b23e26d8f9d21cc4180134c764fe2c4966e5bbbb47ab1b2b18ac957e,admin,active,3,approved,5,ADMIN01,0,0,0,0,0,0,0,0: SQLITE_CONSTRAINT: SQLite error: NOT NULL constraint failed: users.clerk_id: SQLite error: NOT NULL constraint failed: users.clerk_id","stack":"Error: Failed query: insert into \"users\" (\"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\") values (null, ?, ?, ?, ?, ?, null, ?, ?, ?, ?, ?, ?, ?, null, null, ?, ?, ?, ?, ?, ?, ?, ?, null, (cast((julianday('now') - 2440587.5)*86400000 as integer)), (cast((julianday('now') - 2440587.5)*86400000 as integer)))\nparams: Admin,InvestPro,admin@investpro.com,+10000000000,International,02a231f4b23e26d8f9d21cc4180134c764fe2c4966e5bbbb47ab1b2b18ac957e,admin,active,3,approved,5,ADMIN01,0,0,0,0,0,0,0,0\n    at LibSQLPreparedQuery.queryWithCache (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/sqlite-core/session.ts:80:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async LibSQLPreparedQuery.run (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:197:10)\n    at async seedDatabase (/opt/render/project/src/lib/db/src/seed.ts:71:5)\n    at async Server.<anonymous> (/opt/render/project/src/artifacts/api-server/src/index.ts:58:7)\ncaused by: LibsqlError: SQLITE_CONSTRAINT: SQLite error: NOT NULL constraint failed: users.clerk_id\n    at mapHranaError (file:///opt/render/project/src/node_modules/.pnpm/@libsql+client@0.14.0/node_modules/@libsql/client/lib-esm/hrana.js:268:16)\n    at file:///opt/render/project/src/node_modules/.pnpm/@libsql+client@0.14.0/node_modules/@libsql/client/lib-esm/http.js:76:23\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async LibSQLPreparedQuery.queryWithCache (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/sqlite-core/session.ts:78:12)\n    at async LibSQLPreparedQuery.run (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:197:10)\n    at async seedDatabase (/opt/render/project/src/lib/db/src/seed.ts:71:5)\n    at async Server.<anonymous> (/opt/render/project/src/artifacts/api-server/src/index.ts:58:7)\ncaused by: ","query":"insert into \"users\" (\"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\") values (null, ?, ?, ?, ?, ?, null, ?, ?, ?, ?, ?, ?, ?, null, null, ?, ?, ?, ?, ?, ?, ?, ?, null, (cast((julianday('now') - 2440587.5)*86400000 as integer)), (cast((julianday('now') - 2440587.5)*86400000 as integer)))","params":["Admin","InvestPro","admin@investpro.com","+10000000000","International","02a231f4b23e26d8f9d21cc4180134c764fe2c4966e5bbbb47ab1b2b18ac957e","admin","active",3,"approved",5,"ADMIN01","0","0","0","0","0","0","0","0"]},"msg":"Seed database failed (non-fatal)"}
+2026-06-02T10:18:38.950488411Z {"level":30,"time":1780395518949,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-5b56cdc948-rcdmn","msg":"Cron jobs scheduled (daily profits at 00:01)"}
+2026-06-02T10:18:41.228748412Z ==> Your service is live 🎉
