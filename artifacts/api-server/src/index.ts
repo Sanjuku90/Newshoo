@@ -2,6 +2,7 @@ import app from "./app";
 import { logger } from "./lib/logger";
 import { startCronJobs } from "./lib/cron";
 import { seedDatabase } from "@workspace/db/seed";
+import { runMigrations } from "@workspace/db/migrate";
 import { db } from "@workspace/db";
 import { sql } from "drizzle-orm";
 
@@ -47,6 +48,12 @@ app.listen(port, async (err) => {
   const dbOk = await testDatabaseConnection();
 
   if (dbOk) {
+    try {
+      await runMigrations();
+    } catch (e) {
+      logger.error({ err: e }, "Database migration failed");
+    }
+
     try {
       await seedDatabase();
     } catch (e) {
