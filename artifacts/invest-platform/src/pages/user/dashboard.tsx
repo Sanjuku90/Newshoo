@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useGetDashboardSummary, useListTransactions } from "@workspace/api-client-react";
+import { useGetDashboardSummary, useListTransactions, useGetMe } from "@workspace/api-client-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import {
   TrendingUp, Wallet, ArrowDownToLine, ArrowUpFromLine, Users,
-  Clock, AlertTriangle, Info, CheckCircle2, ChevronRight, Zap,
+  Clock, AlertTriangle, Info, CheckCircle2, ChevronRight, Zap, Gift, Shield,
 } from "lucide-react";
 
 function Progress({ value }: { value: number }) {
@@ -88,10 +88,19 @@ const TX_LABEL: Record<string, string> = {
   commission: "Commission", investment: "Investissement", bonus: "Bonus",
 };
 
+const KYC_STATUS: Record<string, { label: string; color: string }> = {
+  none:     { label: "Non vérifié",  color: "text-gray-400 bg-gray-500/10 border-gray-500/20" },
+  pending:  { label: "En attente",   color: "text-yellow-400 bg-yellow-500/10 border-yellow-500/20" },
+  approved: { label: "Vérifié ✓",   color: "text-green-400 bg-green-500/10 border-green-500/20" },
+  rejected: { label: "Refusé",       color: "text-red-400 bg-red-500/10 border-red-500/20" },
+};
+
 export default function Dashboard() {
   const { data: dashboard, isLoading } = useGetDashboardSummary();
+  const { data: userMe } = useGetMe();
   const { data: transactions } = useListTransactions({ limit: 5 });
   const [announcement, setAnnouncement] = useState<{ text: string; type: string } | null>(null);
+  const me = userMe as any;
 
   useEffect(() => {
     fetch("/api/settings/public")
@@ -119,6 +128,11 @@ export default function Dashboard() {
   const investedBalance = parseFloat(d?.investedBalance || "0").toFixed(2);
   const totalEarnings = parseFloat(d?.totalEarnings || "0").toFixed(2);
   const dailyEarnings = parseFloat(d?.dailyEarnings || "0").toFixed(2);
+  const bonusBalance = parseFloat(me?.bonusBalance || "0").toFixed(2);
+  const totalDeposited = parseFloat(me?.totalDeposited || "0").toFixed(2);
+  const totalWithdrawn = parseFloat(me?.totalWithdrawn || "0").toFixed(2);
+  const kycStatus = me?.kycStatus || "none";
+  const kycConfig = KYC_STATUS[kycStatus] ?? KYC_STATUS.none;
 
   return (
     <div className="space-y-6">
@@ -135,7 +149,7 @@ export default function Dashboard() {
 
       {announcement && <AnnouncementBanner text={announcement.text} type={announcement.type} />}
 
-      {/* Stat cards */}
+      {/* Stat cards — row 1 */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <StatCard label="Solde principal" value={`${mainBalance}`} icon={Wallet}
           gradient="from-yellow-900/40 to-amber-900/20 border-yellow-700/30"
@@ -149,6 +163,31 @@ export default function Dashboard() {
         <StatCard label="Gains / jour" value={`${dailyEarnings}`} icon={Clock}
           gradient="from-purple-900/40 to-purple-800/20 border-purple-700/30"
           sub="USDT / jour" />
+      </div>
+
+      {/* Stat cards — row 2 */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <StatCard label="Solde bonus" value={`${bonusBalance}`} icon={Gift}
+          gradient="from-orange-900/40 to-orange-800/20 border-orange-700/30"
+          sub="USDT bonus" />
+        <StatCard label="Total déposé" value={`${totalDeposited}`} icon={ArrowDownToLine}
+          gradient="from-teal-900/40 to-teal-800/20 border-teal-700/30"
+          sub="USDT déposés" />
+        <StatCard label="Total retiré" value={`${totalWithdrawn}`} icon={ArrowUpFromLine}
+          gradient="from-rose-900/40 to-rose-800/20 border-rose-700/30"
+          sub="USDT retirés" />
+        <Link href="/profile" className={`relative rounded-2xl p-5 border overflow-hidden flex flex-col justify-between hover:opacity-90 transition-opacity ${kycConfig.color}`}>
+          <div className="flex items-start justify-between mb-4">
+            <div className="text-xs font-medium uppercase tracking-wider opacity-70">Statut KYC</div>
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+              <Shield className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="text-lg font-bold">{kycConfig.label}</div>
+          <div className="text-xs opacity-50 mt-1">
+            {kycStatus === "none" ? "Cliquer pour vérifier" : kycStatus === "approved" ? "Compte vérifié" : "Voir le profil"}
+          </div>
+        </Link>
       </div>
 
       {/* Quick actions */}

@@ -27,6 +27,7 @@ export const RegisterBody = zod.object({
   "password": zod.string(),
   "country": zod.string(),
   "city": zod.string().optional(),
+  "birthDate": zod.string().optional(),
   "referralCode": zod.string().nullish()
 })
 

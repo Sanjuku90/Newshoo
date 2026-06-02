@@ -15,7 +15,7 @@ router.post("/auth/register", async (req, res) => {
     return;
   }
 
-  const { firstName, lastName, email, phone, password, country, city, referralCode } = parsed.data;
+  const { firstName, lastName, email, phone, password, country, city, birthDate, referralCode } = parsed.data;
 
   const existing = await db.select().from(usersTable).where(eq(usersTable.email, email)).limit(1);
   if (existing[0]) { res.status(400).json({ error: "Email already in use" }); return; }
@@ -34,6 +34,7 @@ router.post("/auth/register", async (req, res) => {
 
   const [user] = await db.insert(usersTable).values({
     firstName, lastName, email, phone, country, city: city ?? null,
+    birthDate: birthDate ?? null,
     passwordHash, referralCode: newReferralCode, referredById,
     role: "user", status: "active", kycLevel: 0, kycStatus: "none", vipLevel: 0,
   }).returning();

@@ -1,0 +1,418 @@
+AHIER DES CHARGES COMPLET
+
+Présentation
+
+Plateforme web permettant aux utilisateurs de créer un compte, déposer des fonds en USDT TRC20, effectuer des retraits, parrainer d’autres utilisateurs, obtenir des bonus et gérer leur portefeuille personnel.
+
+⸻
+
+CONDITIONS GÉNÉRALES
+
+Dépôt minimum
+
+69 USDT
+
+Dépôt maximum
+
+Illimité
+
+Réseau accepté
+
+USDT TRC20
+
+Retrait minimum
+
+9 USDT
+
+Retrait maximum
+
+Configurable par l’administration
+
+Frais de retrait
+
+Configurables depuis l’espace admin
+
+Devise principale
+
+USDT
+
+⸻
+
+INSCRIPTION
+
+Formulaire complet
+
+* Nom
+* Prénom
+* Date de naissance
+* Pays
+* Ville
+* Téléphone
+* Adresse email
+* Mot de passe
+* Confirmation du mot de passe
+* Code de parrainage (facultatif)
+
+Vérifications
+
+* Email unique
+* Téléphone unique
+* Vérification email
+* Captcha anti-bot
+* Acceptation des conditions d’utilisation
+
+⸻
+
+CONNEXION
+
+* Email
+* Mot de passe
+* Captcha
+* Authentification à deux facteurs (2FA)
+* Récupération de mot de passe par email
+
+⸻
+
+ESPACE UTILISATEUR
+
+Tableau de bord
+
+Affichage de :
+
+* Solde principal
+* Total des dépôts
+* Total des retraits
+* Bonus reçus
+* Nombre de filleuls
+* Statut KYC
+* Dernières transactions
+* Notifications importantes
+
+⸻
+
+PORTEFEUILLE
+
+Chaque utilisateur dispose de :
+
+Solde disponible
+
+Montant utilisable immédiatement.
+
+Solde bonus
+
+Montant provenant des récompenses et du parrainage.
+
+Historique
+
+* Dépôts
+* Retraits
+* Bonus
+* Récompenses
+* Activités du compte
+
+⸻
+
+DÉPÔTS
+
+USDT TRC20
+
+Fonctionnalités :
+
+* Génération automatique d’adresse ou d’instructions de paiement
+* Historique complet
+* Statut de transaction
+
+Statuts :
+
+* En attente
+* Confirmé
+* Refusé
+
+⸻
+
+RETRAITS
+
+L’utilisateur peut :
+
+* Ajouter une adresse TRC20
+* Modifier son adresse après vérification
+* Effectuer une demande de retrait
+
+Statuts :
+
+* En attente
+* Validé
+* Refusé
+* Payé
+
+⸻
+
+PROGRAMME DE PARRAINAGE
+
+Niveau 1
+
+10 %
+
+Niveau 2
+
+5 %
+
+Niveau 3
+
+2 %
+
+Fonctionnalités :
+
+* Lien de parrainage unique
+* QR Code de parrainage
+* Statistiques détaillées
+* Historique des commissions
+
+⸻
+
+BONUS ET RÉCOMPENSES
+
+Bonus d’inscription
+
+Configurables par l’administration.
+
+Bonus premier dépôt
+
+Configurable.
+
+Bonus anniversaire
+
+Optionnel.
+
+Récompenses de fidélité
+
+Attribuées automatiquement selon l’activité.
+
+Bonus événements spéciaux
+
+Configurables.
+
+⸻
+
+KYC
+
+Niveau 1
+
+* Pièce d’identité
+
+Niveau 2
+
+* Selfie avec document
+
+Niveau 3
+
+* Justificatif de domicile
+
+Statuts :
+
+* En attente
+* Vérifié
+* Refusé
+
+⸻
+
+SUPPORT CLIENT
+
+Tickets
+
+Catégories :
+
+* Dépôt
+* Retrait
+* Vérification KYC
+* Compte
+* Technique
+* Autre
+
+Statuts :
+
+* Ouvert
+* Répondu
+* Fermé
+
+Chat en direct
+
+Intégré au site.
+
+⸻
+
+NOTIFICATIONS
+
+Email
+
+* Inscription
+* Vérification email
+* Dépôt confirmé
+* Retrait traité
+* Changement de mot de passe
+* Validation KYC
+
+Notifications internes
+
+* Nouveaux bonus
+* Réponses du support
+* Annonces administratives
+
+⸻
+
+SÉCURITÉ
+
+Limitation des comptes
+
+* Maximum 2 comptes par IP
+* Maximum 2 comptes par appareil
+* Détection VPN
+* Détection Proxy
+* Détection TOR
+
+Protection
+
+* HTTPS
+* Protection anti-DDoS
+* Captcha
+* Blocage temporaire après plusieurs échecs de connexion
+* Journalisation complète des activités
+
+⸻
+
+SYSTÈME ANTI-FRAUDE
+
+Détection automatique :
+
+* Multi-comptes
+* Auto-parrainage
+* Activités suspectes
+* Changements fréquents d’IP
+* Tentatives de fraude KYC
+
+Alertes envoyées à l’administration.
+
+⸻
+
+ESPACE ADMINISTRATEUR
+
+Tableau de bord
+
+Statistiques en temps réel :
+
+* Nombre d’utilisateurs
+* Nombre de comptes vérifiés
+* Dépôts totaux
+* Retraits totaux
+* Tickets ouverts
+* Utilisateurs actifs
+
+⸻
+
+GESTION DES UTILISATEURS
+
+Actions :
+
+* Consulter le profil
+* Modifier les informations
+* Suspendre
+* Bannir
+* Vérifier le KYC
+* Modifier les soldes
+* Réinitialiser un mot de passe
+
+⸻
+
+GESTION DES DÉPÔTS
+
+* Voir les demandes
+* Valider
+* Refuser
+* Ajouter un commentaire
+
+⸻
+
+GESTION DES RETRAITS
+
+* Voir les demandes
+* Valider
+* Refuser
+* Mettre en attente
+
+⸻
+
+GESTION DES BONUS
+
+* Créer des bonus
+* Modifier les montants
+* Définir les conditions
+* Programmer des campagnes promotionnelles
+
+⸻
+
+GESTION DU PARRAINAGE
+
+* Modifier les pourcentages
+* Suspendre un affilié
+* Voir les statistiques détaillées
+
+⸻
+
+GESTION DU SUPPORT
+
+* Répondre aux tickets
+* Fermer les tickets
+* Historique des conversations
+
+⸻
+
+GESTION DU SITE
+
+* Logo
+* Favicon
+* Bannières
+* Pages légales
+* FAQ
+* Conditions d’utilisation
+* Politique de confidentialité
+
+⸻
+
+MODULE MARKETING
+
+* Codes promotionnels
+* Campagnes email
+* Notifications de masse
+* Classement des meilleurs parrains
+* Badges utilisateurs
+* Récompenses spéciales
+
+⸻
+
+JOURNAL D’ACTIVITÉ
+
+Enregistrement de :
+
+* Connexions
+* Déconnexions
+* Dépôts
+* Retraits
+* Modifications administratives
+* Actions sensibles
+
+⸻
+
+FONCTIONNALITÉS AVANCÉES
+
+* Mode sombre
+* Multi-langues (Français, Anglais, Arabe)
+* Notifications push
+* Application Android
+* Application iOS
+* Export PDF/Excel des transactions
+* API pour intégrations futures
+* Centre d’aide
+* FAQ dynamique
+* Système de badges et niveaux utilisateurs
+* Page d’annonces officielles
+* Maintenance programmée avec notification aux utilisateurs

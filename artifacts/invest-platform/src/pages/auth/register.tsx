@@ -2,14 +2,15 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useRegister } from "@workspace/api-client-react";
 import { useAuth } from "@/lib/auth";
-import { Loader2, AlertCircle, TrendingUp, Eye, EyeOff } from "lucide-react";
+import { Loader2, AlertCircle, TrendingUp, Eye, EyeOff, CheckSquare, Square } from "lucide-react";
 
 export default function Register() {
   const [form, setForm] = useState({
     firstName: "", lastName: "", email: "", phone: "",
-    country: "", city: "", password: "", confirmPassword: "",
+    country: "", city: "", birthDate: "", password: "", confirmPassword: "",
   });
   const [showPwd, setShowPwd] = useState(false);
+  const [acceptedCGU, setAcceptedCGU] = useState(false);
   const [error, setError] = useState("");
   const { login } = useAuth();
   const [, setLocation] = useLocation();
@@ -23,8 +24,9 @@ export default function Register() {
     e.preventDefault();
     setError("");
     if (form.password !== form.confirmPassword) { setError("Les mots de passe ne correspondent pas."); return; }
+    if (!acceptedCGU) { setError("Vous devez accepter les conditions d'utilisation."); return; }
     registerMutation.mutate(
-      { data: { firstName: form.firstName, lastName: form.lastName, email: form.email, phone: form.phone, country: form.country, city: form.city, password: form.password, referralCode } },
+      { data: { firstName: form.firstName, lastName: form.lastName, email: form.email, phone: form.phone, country: form.country, city: form.city, birthDate: form.birthDate || undefined, password: form.password, referralCode } },
       {
         onSuccess: (data) => { login(data.token); setLocation("/dashboard"); },
         onError: (err: any) => { setError(err?.data?.error || "Erreur lors de l'inscription. Réessayez."); },
@@ -32,12 +34,12 @@ export default function Register() {
     );
   };
 
-  const field = (id: keyof typeof form, label: string, type = "text", placeholder = "") => (
+  const field = (id: keyof typeof form, label: string, type = "text", placeholder = "", required = true) => (
     <div>
       <label className="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">{label}</label>
       <input
         id={id} name={id} type={type} value={form[id]}
-        onChange={handle} placeholder={placeholder} required
+        onChange={handle} placeholder={placeholder} required={required}
         className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-yellow-500/50 focus:ring-1 focus:ring-yellow-500/20 transition-all"
       />
     </div>
@@ -81,6 +83,18 @@ export default function Register() {
           </div>
 
           <div>
+            <label className="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">
+              Date de naissance
+            </label>
+            <input
+              name="birthDate" type="date" value={form.birthDate}
+              onChange={handle}
+              max={new Date(Date.now() - 18 * 365.25 * 24 * 3600 * 1000).toISOString().split("T")[0]}
+              className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-yellow-500/50 focus:ring-1 focus:ring-yellow-500/20 transition-all [color-scheme:dark]"
+            />
+          </div>
+
+          <div>
             <label className="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">Mot de passe</label>
             <div className="relative">
               <input
@@ -106,9 +120,30 @@ export default function Register() {
             />
           </div>
 
+          {/* CGU checkbox */}
+          <button
+            type="button"
+            onClick={() => setAcceptedCGU(v => !v)}
+            className="flex items-start gap-3 text-left w-full group"
+          >
+            <span className={`shrink-0 mt-0.5 w-5 h-5 rounded transition-colors ${acceptedCGU ? "text-yellow-400" : "text-gray-600 group-hover:text-gray-400"}`}>
+              {acceptedCGU ? <CheckSquare className="w-5 h-5" /> : <Square className="w-5 h-5" />}
+            </span>
+            <span className="text-sm text-gray-400 leading-relaxed">
+              J'accepte les{" "}
+              <Link href="/terms" onClick={e => e.stopPropagation()} className="text-yellow-400 hover:text-yellow-300 underline transition-colors">
+                conditions d'utilisation
+              </Link>{" "}
+              et la{" "}
+              <Link href="/privacy" onClick={e => e.stopPropagation()} className="text-yellow-400 hover:text-yellow-300 underline transition-colors">
+                politique de confidentialité
+              </Link>
+            </span>
+          </button>
+
           <button
             type="submit"
-            disabled={registerMutation.isPending}
+            disabled={registerMutation.isPending || !acceptedCGU}
             className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-bold py-3.5 rounded-xl hover:from-yellow-300 hover:to-amber-400 transition-all shadow-lg shadow-yellow-500/20 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm mt-2">
             {registerMutation.isPending && <Loader2 className="w-4 h-4 animate-spin" />}
             {registerMutation.isPending ? "Création du compte..." : "Créer mon compte gratuitement"}
@@ -122,13 +157,6 @@ export default function Register() {
           </Link>
         </div>
       </div>
-
-      <p className="text-center text-xs text-gray-700 mt-6">
-        En créant un compte, vous acceptez nos{" "}
-        <Link href="/terms" className="text-gray-500 hover:text-gray-400 underline">conditions d'utilisation</Link>
-        {" "}et notre{" "}
-        <Link href="/privacy" className="text-gray-500 hover:text-gray-400 underline">politique de confidentialité</Link>
-      </p>
     </div>
   );
 }

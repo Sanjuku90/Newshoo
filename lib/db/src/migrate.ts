@@ -280,6 +280,7 @@ export async function runMigrations() {
   await addColumnIfMissing("users", "phone",            "TEXT NOT NULL DEFAULT ''");
   await addColumnIfMissing("users", "country",          "TEXT NOT NULL DEFAULT ''");
   await addColumnIfMissing("users", "city",             "TEXT");
+  await addColumnIfMissing("users", "birth_date",       "TEXT");
   await addColumnIfMissing("users", "password_hash",    "TEXT NOT NULL DEFAULT ''");
   await addColumnIfMissing("users", "role",             "TEXT NOT NULL DEFAULT 'user'");
   await addColumnIfMissing("users", "status",           "TEXT NOT NULL DEFAULT 'active'");
