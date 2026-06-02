@@ -91,6 +91,16 @@ export async function runDailyProfits() {
   logger.info({ credited, expired }, "Daily profit crediting complete");
 }
 
+async function keepAlive() {
+  const host = process.env.RENDER_EXTERNAL_URL || `http://localhost:${process.env.PORT || 5000}`;
+  try {
+    const res = await fetch(`${host}/api/healthz`);
+    logger.info({ status: res.status }, "Keep-alive ping sent");
+  } catch (err) {
+    logger.warn({ err }, "Keep-alive ping failed");
+  }
+}
+
 export function startCronJobs() {
   // Run every day at 00:01 server time
   cron.schedule("1 0 * * *", async () => {
@@ -100,6 +110,18 @@ export function startCronJobs() {
       logger.error({ err }, "Cron job runDailyProfits failed");
     }
   });
+
+  // Keep-alive ping every 14 minutes to prevent Render free tier from sleeping
+  if (process.env.NODE_ENV === "production") {
+    cron.schedule("*/14 * * * *", async () => {
+      try {
+        await keepAlive();
+      } catch (err) {
+        logger.warn({ err }, "Keep-alive cron failed");
+      }
+    });
+    logger.info("Keep-alive ping scheduled (every 14 min)");
+  }
 
   logger.info("Cron jobs scheduled (daily profits at 00:01)");
 }
