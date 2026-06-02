@@ -1,0 +1,28 @@
+2026-06-02T08:26:21.956663166Z ==> Cloning from https://github.com/Sanjuku90/Newshoo
+2026-06-02T08:26:22.53503396Z ==> Checking out commit d16162b31b32f3eae17c9e3eba1d93cb17d6d49c in branch main
+2026-06-02T08:26:24.096258633Z ==> Using Node.js version 24.14.1 (default)
+2026-06-02T08:26:24.096275393Z ==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+2026-06-02T08:26:24.144825334Z ==> Running build command 'pnpm install --frozen-lockfile; pnpm run build'...
+2026-06-02T08:26:36.494074352Z 
+2026-06-02T08:26:36.494115243Z > workspace@0.0.0 build /opt/render/project/src
+2026-06-02T08:26:36.494138084Z > pnpm run typecheck && pnpm -r --if-present run build
+2026-06-02T08:26:36.494146804Z 
+2026-06-02T08:26:36.801149057Z 
+2026-06-02T08:26:36.801207549Z > workspace@0.0.0 typecheck /opt/render/project/src
+2026-06-02T08:26:36.801213829Z > pnpm run typecheck:libs && pnpm -r --filter "./artifacts/**" --filter "./scripts" --if-present run typecheck
+2026-06-02T08:26:36.801220209Z 
+2026-06-02T08:26:37.115186534Z 
+2026-06-02T08:26:37.115211645Z > workspace@0.0.0 typecheck:libs /opt/render/project/src
+2026-06-02T08:26:37.115216755Z > tsc --build
+2026-06-02T08:26:37.115220565Z 
+2026-06-02T08:27:00.145368208Z ==> Uploading build...
+2026-06-02T08:27:10.335021418Z ==> Uploaded in 5.8s. Compression took 4.4s
+2026-06-02T08:27:10.35734158Z ==> Build successful 🎉
+2026-06-02T08:27:15.164502884Z ==> Deploying...
+2026-06-02T08:27:15.229975512Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-06-02T08:27:37.188542289Z ==> Running 'yarn start'
+2026-06-02T08:27:39.294802229Z yarn run v1.22.22
+2026-06-02T08:27:39.588574273Z error Command "start" not found.
+2026-06-02T08:27:39.588605004Z info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+2026-06-02T08:27:44.686419155Z ==> Exited with status 1
+2026-06-02T08:27:44.691269304Z ==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
