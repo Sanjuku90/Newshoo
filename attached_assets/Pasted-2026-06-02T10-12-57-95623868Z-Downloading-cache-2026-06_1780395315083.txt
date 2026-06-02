@@ -1,0 +1,45 @@
+2026-06-02T10:12:57.95623868Z ==> Downloading cache...
+2026-06-02T10:12:57.992237586Z ==> Cloning from https://github.com/Sanjuku90/Newshoo
+2026-06-02T10:13:03.596015205Z ==> Checking out commit bb2f57435bc3d64ae20d85d0cf01a3b3ba8f7cd8 in branch main
+2026-06-02T10:13:09.179976216Z ==> Downloaded 107MB in 9s. Extraction took 3s.
+2026-06-02T10:13:13.11769682Z ==> Using Node.js version 24.14.1 (default)
+2026-06-02T10:13:13.11771041Z ==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+2026-06-02T10:13:13.160548584Z ==> Running build command 'pnpm install --frozen-lockfile; pnpm run build'...
+2026-06-02T10:13:18.190204351Z 
+2026-06-02T10:13:18.190233732Z > workspace@0.0.0 build /opt/render/project/src
+2026-06-02T10:13:18.190238223Z > pnpm run typecheck && pnpm -r --if-present run build
+2026-06-02T10:13:18.190241033Z 
+2026-06-02T10:13:18.491326617Z 
+2026-06-02T10:13:18.491348759Z > workspace@0.0.0 typecheck /opt/render/project/src
+2026-06-02T10:13:18.491352789Z > pnpm run typecheck:libs && pnpm -r --filter "./artifacts/**" --filter "./scripts" --if-present run typecheck
+2026-06-02T10:13:18.491357139Z 
+2026-06-02T10:13:18.806446258Z 
+2026-06-02T10:13:18.80647724Z > workspace@0.0.0 typecheck:libs /opt/render/project/src
+2026-06-02T10:13:18.806482761Z > tsc --build
+2026-06-02T10:13:18.806485481Z 
+2026-06-02T10:13:40.252525884Z ==> Uploading build...
+2026-06-02T10:13:49.151273131Z ==> Uploaded in 4.4s. Compression took 4.5s
+2026-06-02T10:13:49.18665115Z ==> Build successful 🎉
+2026-06-02T10:13:52.14808246Z ==> Deploying...
+2026-06-02T10:13:52.228578736Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-06-02T10:14:12.69304876Z ==> Running 'yarn start'
+2026-06-02T10:14:14.495380881Z yarn run v1.22.22
+2026-06-02T10:14:14.693262887Z $ node --enable-source-maps ./artifacts/api-server/dist/index.mjs
+2026-06-02T10:14:17.187101131Z {"level":30,"time":1780395257186,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-5cb5cbf6f9-rxtpb","port":10000,"msg":"Server listening"}
+2026-06-02T10:14:17.635501435Z {"level":30,"time":1780395257635,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-5cb5cbf6f9-rxtpb","req":{"id":1,"method":"HEAD","url":"/"},"res":{"statusCode":200},"responseTime":5,"msg":"request completed"}
+2026-06-02T10:14:17.706709535Z {"level":30,"time":1780395257706,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-5cb5cbf6f9-rxtpb","msg":"✅ Database connection OK"}
+2026-06-02T10:14:17.706799287Z [migrate] Running schema migrations...
+2026-06-02T10:14:18.310763683Z [migrate] Ensured table: notifications
+2026-06-02T10:14:18.332725922Z [migrate] Ensured table: leader_bonuses
+2026-06-02T10:14:18.39007238Z [migrate] Ensured table: promo_code_usages
+2026-06-02T10:14:18.39009361Z [migrate] Migrations complete.
+2026-06-02T10:14:19.590567932Z {"level":40,"time":1780395258398,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-5cb5cbf6f9-rxtpb","err":{"type":"_DrizzleQueryError","message":"Failed query: select \"id\" from \"users\" where \"users\".\"role\" = ? limit ?\nparams: admin,1: SQL_INPUT_ERROR: SQLite input error: no such column: users.role (at offset 31): SQLite input error: no such column: users.role (at offset 31)","stack":"Error: Failed query: select \"id\" from \"users\" where \"users\".\"role\" = ? limit ?\nparams: admin,1\n    at LibSQLPreparedQuery.queryWithCache (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/sqlite-core/session.ts:80:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async LibSQLPreparedQuery.values (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:286:10)\n    at async LibSQLPreparedQuery.all (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:214:16)\n    at async seedDatabase (/opt/render/project/src/lib/db/src/seed.ts:67:20)\n    at async Server.<anonymous> (/opt/render/project/src/artifacts/api-server/src/index.ts:58:7)\ncaused by: LibsqlError: SQL_INPUT_ERROR: SQLite input error: no such column: users.role (at offset 31)\n    at mapHranaError (file:///opt/render/project/src/node_modules/.pnpm/@libsql+client@0.14.0/node_modules/@libsql/client/lib-esm/hrana.js:268:16)\n    at file:///opt/render/project/src/node_modules/.pnpm/@libsql+client@0.14.0/node_modules/@libsql/client/lib-esm/http.js:76:23\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async LibSQLPreparedQuery.queryWithCache (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/sqlite-core/session.ts:78:12)\n    at async LibSQLPreparedQuery.values (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:286:10)\n    at async LibSQLPreparedQuery.all (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:214:16)\n    at async seedDatabase (/opt/render/project/src/lib/db/src/seed.ts:67:20)\n    at async Server.<anonymous> (/opt/render/project/src/artifacts/api-server/src/index.ts:58:7)\ncaused by: ","query":"select \"id\" from \"users\" where \"users\".\"role\" = ? limit ?","params":["admin",1]},"msg":"Seed database failed (non-fatal)"}
+2026-06-02T10:14:19.789304551Z {"level":30,"time":1780395259788,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-5cb5cbf6f9-rxtpb","msg":"Cron jobs scheduled (daily profits at 00:01)"}
+2026-06-02T10:14:23.638601653Z ==> Your service is live 🎉
+2026-06-02T10:14:23.684167265Z {"level":30,"time":1780395263683,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-5cb5cbf6f9-rxtpb","req":{"id":2,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":3,"msg":"request completed"}
+2026-06-02T10:14:24.015208284Z ==> 
+2026-06-02T10:14:24.018173342Z ==> ///////////////////////////////////////////////////////////
+2026-06-02T10:14:24.021324174Z ==> 
+2026-06-02T10:14:24.023767966Z ==> Available at your primary URL https://letswin.onrender.com
+2026-06-02T10:14:24.026223607Z ==> 
+2026-06-02T10:14:24.029001624Z ==> ///////////////////////////////////////////////////////////
