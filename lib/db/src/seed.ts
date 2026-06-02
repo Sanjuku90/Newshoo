@@ -63,8 +63,8 @@ const PLANS = [
 ];
 
 export async function seedDatabase() {
-  // Check if admin exists
-  const existing = await db.select().from(usersTable).where(eq(usersTable.role, "admin")).limit(1);
+  // Check if admin exists (select only id to avoid schema/column mismatch issues)
+  const existing = await db.select({ id: usersTable.id }).from(usersTable).where(eq(usersTable.role, "admin")).limit(1);
 
   if (existing.length === 0) {
     console.log("[seed] Creating admin account...");
@@ -94,7 +94,7 @@ export async function seedDatabase() {
   }
 
   // Create test user account if it doesn't exist
-  const existingTest = await db.select().from(usersTable).where(eq(usersTable.email, "test@investpro.com")).limit(1);
+  const existingTest = await db.select({ id: usersTable.id }).from(usersTable).where(eq(usersTable.email, "test@investpro.com")).limit(1);
   if (existingTest.length === 0) {
     console.log("[seed] Creating test user account...");
     await db.insert(usersTable).values({
@@ -140,14 +140,14 @@ export async function seedDatabase() {
     announcement_type: "info",
   };
   for (const [key, value] of Object.entries(DEFAULT_SETTINGS)) {
-    const existing = await db.select().from(settingsTable).where(eq(settingsTable.key, key)).limit(1);
+    const existing = await db.select({ id: settingsTable.id }).from(settingsTable).where(eq(settingsTable.key, key)).limit(1);
     if (existing.length === 0) {
       await db.insert(settingsTable).values({ key, value, updatedAt: new Date() });
     }
   }
 
   // Check if plans exist
-  const existingPlans = await db.select().from(plansTable).limit(1);
+  const existingPlans = await db.select({ id: plansTable.id }).from(plansTable).limit(1);
   if (existingPlans.length === 0) {
     console.log("[seed] Creating investment plans...");
     for (const plan of PLANS) {

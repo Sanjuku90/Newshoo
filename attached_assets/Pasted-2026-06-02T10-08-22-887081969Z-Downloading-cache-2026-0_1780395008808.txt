@@ -1,0 +1,49 @@
+2026-06-02T10:08:22.887081969Z ==> Downloading cache...
+2026-06-02T10:08:22.927824621Z ==> Cloning from https://github.com/Sanjuku90/Newshoo
+2026-06-02T10:08:23.545005319Z ==> Checking out commit 29a8d5ae52231ef5334ee44ab3e1f02c10f4e1ac in branch main
+2026-06-02T10:08:28.672607104Z ==> Downloaded 107MB in 3s. Extraction took 3s.
+2026-06-02T10:08:33.048885422Z ==> Using Node.js version 24.14.1 (default)
+2026-06-02T10:08:33.048897092Z ==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+2026-06-02T10:08:33.098815628Z ==> Running build command 'pnpm install --frozen-lockfile; pnpm run build'...
+2026-06-02T10:08:38.557161926Z 
+2026-06-02T10:08:38.557197558Z > workspace@0.0.0 build /opt/render/project/src
+2026-06-02T10:08:38.557203738Z > pnpm run typecheck && pnpm -r --if-present run build
+2026-06-02T10:08:38.557207848Z 
+2026-06-02T10:08:38.893172035Z 
+2026-06-02T10:08:38.893212158Z > workspace@0.0.0 typecheck /opt/render/project/src
+2026-06-02T10:08:38.893218508Z > pnpm run typecheck:libs && pnpm -r --filter "./artifacts/**" --filter "./scripts" --if-present run typecheck
+2026-06-02T10:08:38.893225828Z 
+2026-06-02T10:08:39.235650072Z 
+2026-06-02T10:08:39.235686354Z > workspace@0.0.0 typecheck:libs /opt/render/project/src
+2026-06-02T10:08:39.235693015Z > tsc --build
+2026-06-02T10:08:39.235698375Z 
+2026-06-02T10:09:03.214564018Z ==> Uploading build...
+2026-06-02T10:09:13.753606438Z ==> Uploaded in 6.0s. Compression took 4.5s
+2026-06-02T10:09:13.775228437Z ==> Build successful 🎉
+2026-06-02T10:09:23.15399996Z ==> Deploying...
+2026-06-02T10:09:23.284003628Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-06-02T10:09:44.562968687Z ==> Running 'yarn start'
+2026-06-02T10:09:46.467726811Z yarn run v1.22.22
+2026-06-02T10:09:46.673901348Z $ node --enable-source-maps ./artifacts/api-server/dist/index.mjs
+2026-06-02T10:09:49.457433253Z {"level":30,"time":1780394989367,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-95cc5746d-4frhk","port":10000,"msg":"Server listening"}
+2026-06-02T10:09:49.978259319Z {"level":30,"time":1780394989977,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-95cc5746d-4frhk","req":{"id":1,"method":"HEAD","url":"/"},"res":{"statusCode":200},"responseTime":4,"msg":"request completed"}
+2026-06-02T10:09:50.155455294Z {"level":30,"time":1780394990155,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-95cc5746d-4frhk","msg":"✅ Database connection OK"}
+2026-06-02T10:09:50.155493754Z [migrate] Running schema migrations...
+2026-06-02T10:09:50.466000068Z [migrate] Added column users.invested_balance
+2026-06-02T10:09:50.65721814Z [migrate] Added column users.total_earnings
+2026-06-02T10:09:50.704365676Z [migrate] Added column users.bonus_balance
+2026-06-02T10:09:50.801434739Z [migrate] Added column users.total_deposited
+2026-06-02T10:09:50.840288182Z [migrate] Added column users.total_withdrawn
+2026-06-02T10:09:50.867359929Z [migrate] Ensured table: notifications
+2026-06-02T10:09:50.871990965Z [migrate] Ensured table: leader_bonuses
+2026-06-02T10:09:50.876974926Z [migrate] Ensured table: promo_code_usages
+2026-06-02T10:09:50.876992917Z [migrate] Migrations complete.
+2026-06-02T10:09:52.161577231Z {"level":40,"time":1780394990884,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-95cc5746d-4frhk","err":{"type":"_DrizzleQueryError","message":"Failed query: select \"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\" from \"users\" where \"users\".\"role\" = ? limit ?\nparams: admin,1: SQL_INPUT_ERROR: SQLite input error: no such column: first_name (at offset 13): SQLite input error: no such column: first_name (at offset 13)","stack":"Error: Failed query: select \"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\" from \"users\" where \"users\".\"role\" = ? limit ?\nparams: admin,1\n    at LibSQLPreparedQuery.queryWithCache (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/sqlite-core/session.ts:80:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async LibSQLPreparedQuery.values (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:286:10)\n    at async LibSQLPreparedQuery.all (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:214:16)\n    at async seedDatabase (/opt/render/project/src/lib/db/src/seed.ts:67:20)\n    at async Server.<anonymous> (/opt/render/project/src/artifacts/api-server/src/index.ts:58:7)\ncaused by: LibsqlError: SQL_INPUT_ERROR: SQLite input error: no such column: first_name (at offset 13)\n    at mapHranaError (file:///opt/render/project/src/node_modules/.pnpm/@libsql+client@0.14.0/node_modules/@libsql/client/lib-esm/hrana.js:268:16)\n    at file:///opt/render/project/src/node_modules/.pnpm/@libsql+client@0.14.0/node_modules/@libsql/client/lib-esm/http.js:76:23\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async LibSQLPreparedQuery.queryWithCache (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/sqlite-core/session.ts:78:12)\n    at async LibSQLPreparedQuery.values (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:286:10)\n    at async LibSQLPreparedQuery.all (/opt/render/project/src/node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.14.0/node_modules/src/libsql/session.ts:214:16)\n    at async seedDatabase (/opt/render/project/src/lib/db/src/seed.ts:67:20)\n    at async Server.<anonymous> (/opt/render/project/src/artifacts/api-server/src/index.ts:58:7)\ncaused by: ","query":"select \"id\", \"first_name\", \"last_name\", \"email\", \"phone\", \"country\", \"city\", \"password_hash\", \"role\", \"status\", \"kyc_level\", \"kyc_status\", \"vip_level\", \"referral_code\", \"referred_by_id\", \"wallet_address\", \"main_balance\", \"invested_balance\", \"total_earnings\", \"bonus_balance\", \"total_deposited\", \"total_withdrawn\", \"daily_earnings\", \"total_invested\", \"last_login_at\", \"created_at\", \"updated_at\" from \"users\" where \"users\".\"role\" = ? limit ?","params":["admin",1]},"msg":"Seed database failed (non-fatal)"}
+2026-06-02T10:09:52.459825899Z {"level":30,"time":1780394992459,"pid":82,"hostname":"srv-d8f0btjeo5us73bb2j50-hibernate-95cc5746d-4frhk","msg":"Cron jobs scheduled (daily profits at 00:01)"}
+2026-06-02T10:09:54.251350843Z ==> Your service is live 🎉
+2026-06-02T10:09:54.363436464Z ==> 
+2026-06-02T10:09:54.369424498Z ==> ///////////////////////////////////////////////////////////
+2026-06-02T10:09:54.375171197Z ==> 
+2026-06-02T10:09:54.379403369Z ==> Available at your primary URL https://letswin.onrender.com
+2026-06-02T10:09:54.386035458Z ==> 
+2026-06-02T10:09:54.389832449Z ==> ///////////////////////////////////////////////////////////
