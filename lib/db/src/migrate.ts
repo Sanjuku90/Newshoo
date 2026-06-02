@@ -26,12 +26,17 @@ async function createTableIfMissing(ddl: string, name: string) {
 export async function runMigrations() {
   console.log("[migrate] Running schema migrations...");
 
-  // ── users table additions ──────────────────────────────────────────────────
-  await addColumnIfMissing("users", "daily_earnings", "TEXT NOT NULL DEFAULT '0'");
-  await addColumnIfMissing("users", "total_invested",  "TEXT NOT NULL DEFAULT '0'");
-  await addColumnIfMissing("users", "city",            "TEXT");
-  await addColumnIfMissing("users", "wallet_address",  "TEXT");
-  await addColumnIfMissing("users", "last_login_at",   "INTEGER");
+  // ── users table: ensure ALL schema columns exist (safe to run repeatedly) ──
+  await addColumnIfMissing("users", "city",             "TEXT");
+  await addColumnIfMissing("users", "wallet_address",   "TEXT");
+  await addColumnIfMissing("users", "last_login_at",    "INTEGER");
+  await addColumnIfMissing("users", "invested_balance", "TEXT NOT NULL DEFAULT '0'");
+  await addColumnIfMissing("users", "total_earnings",   "TEXT NOT NULL DEFAULT '0'");
+  await addColumnIfMissing("users", "bonus_balance",    "TEXT NOT NULL DEFAULT '0'");
+  await addColumnIfMissing("users", "total_deposited",  "TEXT NOT NULL DEFAULT '0'");
+  await addColumnIfMissing("users", "total_withdrawn",  "TEXT NOT NULL DEFAULT '0'");
+  await addColumnIfMissing("users", "daily_earnings",   "TEXT NOT NULL DEFAULT '0'");
+  await addColumnIfMissing("users", "total_invested",   "TEXT NOT NULL DEFAULT '0'");
 
   // ── notifications table ───────────────────────────────────────────────────
   await createTableIfMissing(
