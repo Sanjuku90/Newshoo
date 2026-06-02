@@ -93,6 +93,35 @@ export async function seedDatabase() {
     console.log("[seed] Admin account created (admin@investpro.com / 1289)");
   }
 
+  // Create test user account if it doesn't exist
+  const existingTest = await db.select().from(usersTable).where(eq(usersTable.email, "test@investpro.com")).limit(1);
+  if (existingTest.length === 0) {
+    console.log("[seed] Creating test user account...");
+    await db.insert(usersTable).values({
+      firstName: "Test",
+      lastName: "Utilisateur",
+      email: "test@investpro.com",
+      phone: "+10000000001",
+      country: "France",
+      passwordHash: hashPassword("test1234"),
+      role: "user",
+      status: "active",
+      kycLevel: 1,
+      kycStatus: "approved",
+      vipLevel: 1,
+      referralCode: "TEST01",
+      mainBalance: "500",
+      investedBalance: "0",
+      totalEarnings: "0",
+      bonusBalance: "0",
+      totalDeposited: "500",
+      totalWithdrawn: "0",
+      dailyEarnings: "0",
+      totalInvested: "0",
+    });
+    console.log("[seed] Test user created (test@investpro.com / test1234) — solde: 500 USDT");
+  }
+
   // Check if plans exist
   const existingPlans = await db.select().from(plansTable).limit(1);
   if (existingPlans.length === 0) {
