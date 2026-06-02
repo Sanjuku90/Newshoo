@@ -32,4 +32,24 @@ app.listen(port, async (err) => {
   }
 
   startCronJobs();
+  startKeepAlive(port);
 });
+
+function startKeepAlive(port: number): void {
+  const externalUrl = process.env["RENDER_EXTERNAL_URL"];
+  if (!externalUrl) return;
+
+  const pingUrl = `${externalUrl}/api/healthz`;
+  const INTERVAL_MS = 14 * 60 * 1000;
+
+  setInterval(async () => {
+    try {
+      const res = await fetch(pingUrl);
+      logger.info({ status: res.status }, "Keep-alive ping sent");
+    } catch (err) {
+      logger.warn({ err }, "Keep-alive ping failed");
+    }
+  }, INTERVAL_MS);
+
+  logger.info({ pingUrl, intervalMinutes: 14 }, "Keep-alive started");
+}
