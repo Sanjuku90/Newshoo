@@ -11,3 +11,4 @@ export * from "./admin-logs";
 export * from "./promo-codes";
 export * from "./leader-bonuses";
 export * from "./settings";
+export * from "./notifications";

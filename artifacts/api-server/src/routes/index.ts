@@ -13,6 +13,8 @@ import adminRouter from "./admin";
 import promoCodesRouter from "./promo-codes";
 import cronAdminRouter from "./cron-admin";
 import settingsRouter from "./settings";
+import notificationsRouter from "./notifications";
+import broadcastRouter from "./broadcast";
 
 const router: IRouter = Router();
 
@@ -30,5 +32,7 @@ router.use(adminRouter);
 router.use(promoCodesRouter);
 router.use(cronAdminRouter);
 router.use(settingsRouter);
+router.use(notificationsRouter);
+router.use(broadcastRouter);
 
 export default router;

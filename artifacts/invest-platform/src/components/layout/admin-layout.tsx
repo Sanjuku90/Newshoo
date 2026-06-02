@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/lib/auth";
 import { useEffect } from "react";
-import { Loader2, LayoutDashboard, Users, Wallet, ArrowDownToLine, ArrowUpFromLine, FileText, ShieldCheck, Settings, LogOut, TrendingUp, ClipboardList, Tag, Clock } from "lucide-react";
+import { Loader2, LayoutDashboard, Users, Wallet, ArrowDownToLine, ArrowUpFromLine, FileText, ShieldCheck, Settings, LogOut, TrendingUp, ClipboardList, Tag, Clock, Megaphone } from "lucide-react";
 import { useLogout } from "@workspace/api-client-react";
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -53,6 +53,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         { href: "/admin/plans", label: "Plans", icon: Settings },
         { href: "/admin/promo-codes", label: "Codes Promo", icon: Tag },
         { href: "/admin/settings", label: "Paramètres", icon: Settings },
+      ],
+    },
+    {
+      label: "Communication",
+      items: [
+        { href: "/admin/broadcast", label: "Messagerie", icon: Megaphone },
       ],
     },
     {

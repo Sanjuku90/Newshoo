@@ -6,7 +6,7 @@ import { logAdminAction } from "../lib/admin-log";
 const router = Router();
 
 // Public — returns only non-sensitive settings needed by the frontend
-const PUBLIC_KEYS = ["deposit_wallet", "min_deposit", "min_withdrawal", "withdrawal_fee_rate", "platform_name", "support_email", "support_telegram", "maintenance_mode"];
+const PUBLIC_KEYS = ["deposit_wallet", "min_deposit", "min_withdrawal", "withdrawal_fee_rate", "platform_name", "support_email", "support_telegram", "maintenance_mode", "announcement_active", "announcement_text", "announcement_type"];
 
 router.get("/settings/public", async (_req, res) => {
   const all = await getSettings();

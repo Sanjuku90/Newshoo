@@ -44,6 +44,7 @@ import AdminLogs from "@/pages/admin/logs";
 import AdminPromoCodes from "@/pages/admin/promo-codes";
 import AdminCron from "@/pages/admin/cron";
 import AdminSettings from "@/pages/admin/settings";
+import AdminBroadcast from "@/pages/admin/broadcast";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -94,6 +95,7 @@ function Router() {
       <Route path="/admin/promo-codes"><AdminLayout><AdminPromoCodes /></AdminLayout></Route>
       <Route path="/admin/cron"><AdminLayout><AdminCron /></AdminLayout></Route>
       <Route path="/admin/settings"><AdminLayout><AdminSettings /></AdminLayout></Route>
+      <Route path="/admin/broadcast"><AdminLayout><AdminBroadcast /></AdminLayout></Route>
 
       <Route component={NotFound} />
     </Switch>

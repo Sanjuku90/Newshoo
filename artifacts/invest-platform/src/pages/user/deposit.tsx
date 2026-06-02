@@ -6,8 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AlertCircle, Copy, CheckCircle2, Clock, XCircle } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AlertCircle, Copy, CheckCircle2, Clock, XCircle, QrCode } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { QRCodeSVG } from "qrcode.react";
 
 const statusConfig: Record<string, { label: string; icon: any; class: string }> = {
   pending: { label: "En attente", icon: Clock, class: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" },
@@ -54,9 +56,7 @@ export default function Deposit() {
           setForm({ amount: "", txHash: "" });
           refetch();
         },
-        onError: (err: any) => {
-          setError(err?.data?.error || "Échec de la soumission");
-        },
+        onError: (err: any) => setError(err?.data?.error || "Échec de la soumission"),
       }
     );
   };
@@ -75,17 +75,45 @@ export default function Deposit() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="bg-secondary/50 rounded-lg p-4">
-              <div className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Adresse du portefeuille de dépôt</div>
+              <div className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Adresse du portefeuille</div>
               {walletAddress ? (
                 <div className="font-mono text-sm break-all text-foreground mb-3">{walletAddress}</div>
               ) : (
                 <Skeleton className="h-5 w-full mb-3" />
               )}
-              <Button variant="outline" size="sm" onClick={handleCopy} className="gap-2" disabled={!walletAddress}>
-                {copied ? <CheckCircle2 className="h-4 w-4 text-accent" /> : <Copy className="h-4 w-4" />}
-                {copied ? "Copié !" : "Copier l'adresse"}
-              </Button>
+              <div className="flex items-center gap-2 flex-wrap">
+                <Button variant="outline" size="sm" onClick={handleCopy} className="gap-2" disabled={!walletAddress}>
+                  {copied ? <CheckCircle2 className="h-4 w-4 text-accent" /> : <Copy className="h-4 w-4" />}
+                  {copied ? "Copié !" : "Copier"}
+                </Button>
+
+                {walletAddress && (
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <QrCode className="h-4 w-4" /> QR Code
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="dark bg-card border-border flex flex-col items-center gap-6 py-8 max-w-xs">
+                      <DialogHeader>
+                        <DialogTitle className="text-center">Scanner pour déposer</DialogTitle>
+                      </DialogHeader>
+                      <div className="bg-white p-4 rounded-xl shadow-lg">
+                        <QRCodeSVG value={walletAddress} size={220} level="H" />
+                      </div>
+                      <div className="text-center px-4 w-full">
+                        <p className="text-xs text-muted-foreground mb-2">Réseau : <strong className="text-yellow-400">TRC20 uniquement</strong></p>
+                        <p className="font-mono text-xs text-muted-foreground break-all">{walletAddress}</p>
+                      </div>
+                      <Button onClick={handleCopy} className="gap-2 w-full max-w-xs">
+                        <Copy className="h-4 w-4" /> Copier l'adresse
+                      </Button>
+                    </DialogContent>
+                  </Dialog>
+                )}
+              </div>
             </div>
+
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-2 text-muted-foreground">
                 <AlertCircle className="h-4 w-4 mt-0.5 shrink-0 text-yellow-400" />
@@ -112,24 +140,13 @@ export default function Deposit() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label>Montant (USDT)</Label>
-                <Input
-                  type="number"
-                  min={minDeposit}
-                  step="0.01"
-                  placeholder={`Minimum ${minDeposit} USDT`}
-                  value={form.amount}
-                  onChange={e => setForm(prev => ({ ...prev, amount: e.target.value }))}
-                  required
-                />
+                <Input type="number" min={minDeposit} step="0.01" placeholder={`Minimum ${minDeposit} USDT`}
+                  value={form.amount} onChange={e => setForm(prev => ({ ...prev, amount: e.target.value }))} required />
               </div>
               <div className="space-y-2">
                 <Label>Hash de transaction (TxID)</Label>
-                <Input
-                  placeholder="Entrez l'identifiant de transaction TRC20"
-                  value={form.txHash}
-                  onChange={e => setForm(prev => ({ ...prev, txHash: e.target.value }))}
-                  required
-                />
+                <Input placeholder="Entrez l'identifiant de transaction TRC20"
+                  value={form.txHash} onChange={e => setForm(prev => ({ ...prev, txHash: e.target.value }))} required />
                 <p className="text-xs text-muted-foreground">Trouvez le TxID dans votre portefeuille après l'envoi</p>
               </div>
               <Button type="submit" className="w-full" disabled={createDeposit.isPending}>

@@ -135,6 +135,9 @@ export async function seedDatabase() {
     referral_l1_rate: "5",
     referral_l2_rate: "3",
     referral_l3_rate: "1",
+    announcement_active: "0",
+    announcement_text: "",
+    announcement_type: "info",
   };
   for (const [key, value] of Object.entries(DEFAULT_SETTINGS)) {
     const existing = await db.select().from(settingsTable).where(eq(settingsTable.key, key)).limit(1);

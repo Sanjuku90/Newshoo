@@ -5,6 +5,7 @@ import { requireAdmin } from "../middlewares/authenticate";
 import { CreatePlanBody, UpdatePlanBody, RejectDepositBody, RejectWithdrawalBody, RejectKycBody, UpdateAdminUserBody, AdminReplyTicketBody } from "@workspace/api-zod";
 import { logAdminAction } from "../lib/admin-log";
 import { updateVipLevel, checkAndAwardLeaderBonuses } from "../lib/vip";
+import { createNotification } from "../lib/notify";
 
 const router = Router();
 
@@ -117,6 +118,7 @@ router.post("/admin/deposits/:id/approve", requireAdmin, async (req, res) => {
     await updateVipLevel(user.id, parseFloat(user.totalInvested ?? "0"));
     if (user.referredById) await checkAndAwardLeaderBonuses(user.referredById);
   }
+  if (deposit.userId) await createNotification(deposit.userId, "deposit_approved", "✅ Dépôt approuvé", `Votre dépôt de ${deposit.amount} USDT a été approuvé et crédité sur votre solde.`);
   await logAdminAction(req, "approve_deposit", "deposit", id, `Amount: ${deposit.amount}`);
   const [updated] = await db.select().from(depositsTable).where(eq(depositsTable.id, id)).limit(1);
   res.json({ id: updated.id, amount: parseFloat(updated.amount), status: updated.status, walletAddress: updated.walletAddress, txHash: updated.txHash, rejectionReason: updated.rejectionReason, createdAt: updated.createdAt?.toISOString() });
@@ -126,7 +128,9 @@ router.post("/admin/deposits/:id/reject", requireAdmin, async (req, res) => {
   const id = parseInt(String(req.params.id));
   const parsed = RejectDepositBody.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: "Reason required" }); return; }
+  const [depToReject] = await db.select().from(depositsTable).where(eq(depositsTable.id, id)).limit(1);
   await db.update(depositsTable).set({ status: "rejected", rejectionReason: parsed.data.reason, updatedAt: new Date() }).where(eq(depositsTable.id, id));
+  if (depToReject?.userId) await createNotification(depToReject.userId, "deposit_rejected", "❌ Dépôt rejeté", `Votre dépôt de ${depToReject.amount} USDT a été rejeté. Raison : ${parsed.data.reason}`);
   await logAdminAction(req, "reject_deposit", "deposit", id, parsed.data.reason);
   const [updated] = await db.select().from(depositsTable).where(eq(depositsTable.id, id)).limit(1);
   res.json({ id: updated.id, amount: parseFloat(updated.amount), status: updated.status, walletAddress: updated.walletAddress, txHash: updated.txHash, rejectionReason: updated.rejectionReason, createdAt: updated.createdAt?.toISOString() });
@@ -158,6 +162,7 @@ router.post("/admin/withdrawals/:id/approve", requireAdmin, async (req, res) => 
   if (user) {
     await db.update(usersTable).set({ totalWithdrawn: (parseFloat(user.totalWithdrawn ?? "0") + parseFloat(updated.amount)).toString() }).where(eq(usersTable.id, user.id));
   }
+  if (updated.userId) await createNotification(updated.userId, "withdrawal_approved", "✅ Retrait approuvé", `Votre retrait de ${updated.amount} USDT a été approuvé et envoyé à votre portefeuille.`);
   await logAdminAction(req, "approve_withdrawal", "withdrawal", id, `Amount: ${updated.amount}`);
   res.json({ id: updated.id, amount: parseFloat(updated.amount), fee: parseFloat(updated.fee ?? "0"), netAmount: parseFloat(updated.netAmount), status: updated.status, walletAddress: updated.walletAddress, rejectionReason: updated.rejectionReason, createdAt: updated.createdAt?.toISOString() });
 });
@@ -172,6 +177,7 @@ router.post("/admin/withdrawals/:id/reject", requireAdmin, async (req, res) => {
     if (user) await db.update(usersTable).set({ mainBalance: (parseFloat(user.mainBalance ?? "0") + parseFloat(withdrawal.amount)).toString() }).where(eq(usersTable.id, user.id));
   }
   await db.update(withdrawalsTable).set({ status: "rejected", rejectionReason: parsed.data.reason, updatedAt: new Date() }).where(eq(withdrawalsTable.id, id));
+  if (withdrawal?.userId) await createNotification(withdrawal.userId, "withdrawal_rejected", "❌ Retrait rejeté", `Votre retrait de ${withdrawal.amount} USDT a été rejeté. Votre solde a été remboursé. Raison : ${parsed.data.reason}`);
   await logAdminAction(req, "reject_withdrawal", "withdrawal", id, parsed.data.reason);
   const [updated] = await db.select().from(withdrawalsTable).where(eq(withdrawalsTable.id, id)).limit(1);
   res.json({ id: updated.id, amount: parseFloat(updated.amount), fee: parseFloat(updated.fee ?? "0"), netAmount: parseFloat(updated.netAmount), status: updated.status, walletAddress: updated.walletAddress, rejectionReason: updated.rejectionReason, createdAt: updated.createdAt?.toISOString() });

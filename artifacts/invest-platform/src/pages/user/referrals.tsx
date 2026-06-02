@@ -216,30 +216,69 @@ export default function Referrals() {
         </div>
       )}
 
+      {/* Referral Visual Tree */}
       {r?.referrals && r.referrals.length > 0 && (
         <Card className="border-border">
           <CardHeader>
-            <CardTitle className="text-base">Mes filleuls</CardTitle>
+            <CardTitle className="text-base flex items-center gap-2"><Users className="h-4 w-4 text-primary" /> Arbre de parrainage</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
-              {r.referrals.map((ref: any) => (
-                <div key={ref.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
-                  <div>
-                    <div className="text-sm font-medium">{ref.name}</div>
-                    <div className="text-xs text-muted-foreground">{new Date(ref.joinedAt).toLocaleDateString("fr-FR")}</div>
-                  </div>
-                  <div className="text-right">
-                    <Badge variant="secondary" className="text-xs">Niveau {ref.level}</Badge>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {ref.totalInvested > 0 ? (
-                        <span className="text-accent">Actif · {ref.totalInvested} USDT</span>
-                      ) : "Inactif"}
-                    </div>
-                  </div>
+            {/* Root node */}
+            <div className="flex flex-col items-center mb-6">
+              <div className="flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-5 py-2.5">
+                <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-xs font-bold">
+                  {u?.firstName?.[0]}{u?.lastName?.[0]}
                 </div>
-              ))}
+                <span className="text-sm font-semibold text-primary">Vous</span>
+              </div>
+              <div className="w-px h-6 bg-border" />
             </div>
+
+            {/* Levels */}
+            {[1, 2, 3].map(level => {
+              const levelRefs = r.referrals.filter((ref: any) => ref.level === level);
+              if (levelRefs.length === 0) return null;
+              const levelColors: Record<number, { border: string; text: string; badge: string }> = {
+                1: { border: "border-primary/40 bg-primary/5", text: "text-primary", badge: "bg-primary/20 text-primary" },
+                2: { border: "border-accent/40 bg-accent/5", text: "text-accent", badge: "bg-accent/20 text-accent" },
+                3: { border: "border-yellow-500/40 bg-yellow-500/5", text: "text-yellow-400", badge: "bg-yellow-500/20 text-yellow-400" },
+              };
+              const col = levelColors[level];
+              return (
+                <div key={level} className="mb-4">
+                  <div className="flex items-center gap-2 mb-3 pl-2">
+                    <div className={`text-xs font-bold px-2.5 py-1 rounded-full ${col.badge}`}>Niveau {level}</div>
+                    <div className="flex-1 h-px bg-border" />
+                    <span className="text-xs text-muted-foreground">{levelRefs.length} filleul{levelRefs.length > 1 ? "s" : ""}</span>
+                  </div>
+                  <div className={`ml-${level === 1 ? "0" : level === 2 ? "4" : "8"} space-y-2`}>
+                    {levelRefs.map((ref: any) => (
+                      <div key={ref.id} className={`flex items-center justify-between rounded-lg border px-4 py-2.5 ${col.border}`}>
+                        <div className="flex items-center gap-3">
+                          <div className={`w-7 h-7 rounded-full border-2 ${col.border} flex items-center justify-center text-[11px] font-bold ${col.text}`}>
+                            {ref.name?.[0] || "?"}
+                          </div>
+                          <div>
+                            <div className="text-sm font-medium">{ref.name}</div>
+                            <div className="text-xs text-muted-foreground">{new Date(ref.joinedAt).toLocaleDateString("fr-FR")}</div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          {ref.totalInvested > 0 ? (
+                            <span className="text-xs font-semibold text-accent">✓ {ref.totalInvested} USDT</span>
+                          ) : (
+                            <span className="text-xs text-muted-foreground">Inactif</span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {level < 3 && r.referrals.some((ref: any) => ref.level === level + 1) && (
+                    <div className="flex justify-center mt-3"><div className="w-px h-6 bg-border" /></div>
+                  )}
+                </div>
+              );
+            })}
           </CardContent>
         </Card>
       )}

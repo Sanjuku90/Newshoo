@@ -3,6 +3,7 @@ import { useAuth } from "@/lib/auth";
 import { useEffect } from "react";
 import { Loader2, LayoutDashboard, Wallet, ArrowDownToLine, ArrowUpFromLine, Users, Settings, LogOut, History, TrendingUp, FileText } from "lucide-react";
 import { useLogout } from "@workspace/api-client-react";
+import { NotificationsBell } from "@/components/notifications-bell";
 
 export function UserLayout({ children }: { children: React.ReactNode }) {
   const { user, isLoading, logout: clearAuth } = useAuth();
@@ -72,9 +73,10 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
           <div className="md:hidden">
             <Link href="/" className="text-xl font-bold tracking-tight text-primary">InvestPro</Link>
           </div>
-          <div className="ml-auto flex items-center gap-4">
+          <div className="ml-auto flex items-center gap-3">
+            <NotificationsBell />
             <div className="text-sm font-medium">
-              <span className="text-muted-foreground mr-2">Bonjour,</span>
+              <span className="text-muted-foreground mr-2 hidden sm:inline">Bonjour,</span>
               {(user as any).firstName} {(user as any).lastName}
             </div>
           </div>
