@@ -1,3 +1,4 @@
+import http from "http";
 import app from "./app";
 import { logger } from "./lib/logger";
 import { startCronJobs } from "./lib/cron";
@@ -5,6 +6,7 @@ import { seedDatabase } from "@workspace/db/seed";
 import { runMigrations } from "@workspace/db/migrate";
 import { db } from "@workspace/db";
 import { sql } from "drizzle-orm";
+import { initSocket } from "./lib/socket";
 
 const rawPort = process.env["PORT"];
 
@@ -37,7 +39,10 @@ async function testDatabaseConnection(): Promise<boolean> {
   }
 }
 
-app.listen(port, async (err) => {
+const httpServer = http.createServer(app);
+initSocket(httpServer);
+
+httpServer.listen(port, async (err?: Error) => {
   if (err) {
     logger.error({ err }, "Error listening on port");
     process.exit(1);

@@ -62,8 +62,9 @@ router.post("/tickets", authenticate, async (req, res) => {
 router.get("/tickets/:id", authenticate, async (req, res) => {
   const user = (req as any).user;
   const id = parseInt(String(req.params.id));
+  const isAdmin = user.role === "admin";
   const [ticket] = await db.select().from(ticketsTable)
-    .where(and(eq(ticketsTable.id, id), eq(ticketsTable.userId, user.id))).limit(1);
+    .where(isAdmin ? eq(ticketsTable.id, id) : and(eq(ticketsTable.id, id), eq(ticketsTable.userId, user.id))).limit(1);
   if (!ticket) {
     res.status(404).json({ error: "Ticket not found" });
     return;

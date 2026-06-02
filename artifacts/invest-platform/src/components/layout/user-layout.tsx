@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useLogout } from "@workspace/api-client-react";
 import { NotificationsBell } from "@/components/notifications-bell";
+import { LiveChatWidget } from "@/components/live-chat-widget";
 
 const navItems = [
   { href: "/dashboard",    label: "Dashboard",       icon: LayoutDashboard },
@@ -161,6 +162,8 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
           <div className="max-w-6xl mx-auto">{children}</div>
         </main>
       </div>
+
+      <LiveChatWidget />
 
       {/* ── Mobile bottom navigation bar ─────────────────────────── */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-card border-t border-border flex items-center justify-around px-1 h-16 safe-area-bottom">
