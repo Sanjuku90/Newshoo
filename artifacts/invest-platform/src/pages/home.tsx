@@ -1,251 +1,340 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import { useListPlans } from "@workspace/api-client-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Shield, Users, Zap, CheckCircle2, ArrowRight } from "lucide-react";
+import { TrendingUp, Shield, Users, Zap, CheckCircle2, ArrowRight, Menu, X, Star, ChevronRight } from "lucide-react";
 
 const FALLBACK_PLANS = [
   {
-    id: "1",
-    name: "Pack BRONZE",
-    description: "Idéal pour tester la plateforme",
-    minDeposit: "69",
-    maxDeposit: "98",
-    dailyRate: "14.4928",
-    durationDays: 15,
-    features: ["10 $ de gain par jour", "Retour total : 150 $ en 15 jours", "Capital récupéré dès le 7e jour", "Retrait dès 9 $ de solde"],
+    id: "1", name: "Pack BRONZE", description: "Idéal pour débuter",
+    minDeposit: "69", maxDeposit: "98", dailyRate: "14.4928", durationDays: 15,
+    features: ["10 $ de gain par jour", "Retour total : 150 $", "Capital récupéré en 7 jours", "Retrait dès 9 $ de solde"],
   },
   {
-    id: "2",
-    name: "Pack SILVER",
-    description: "Le meilleur ratio de rentabilité",
-    minDeposit: "99",
-    maxDeposit: "198",
-    dailyRate: "17.1717",
-    durationDays: 15,
-    features: ["17 $ de gain par jour", "Retour total : 255 $ en 15 jours", "Capital récupéré en 6 jours", "Retrait dès 9 $ de solde"],
+    id: "2", name: "Pack SILVER", description: "Le meilleur rendement",
+    minDeposit: "99", maxDeposit: "198", dailyRate: "17.1717", durationDays: 15,
+    features: ["17 $ de gain par jour", "Retour total : 255 $", "Capital récupéré en 6 jours", "Retrait dès 9 $ de solde"],
   },
   {
-    id: "3",
-    name: "Pack GOLD",
-    description: "Revenus maximaux garantis",
-    minDeposit: "199",
-    maxDeposit: null,
-    dailyRate: "18.0905",
-    durationDays: 15,
-    features: ["36 $ de gain par jour", "Retour total : 540 $ en 15 jours", "Capital récupéré dès le 6e jour", "Retrait dès 9 $ de solde"],
+    id: "3", name: "Pack GOLD", description: "Revenus maximaux",
+    minDeposit: "199", maxDeposit: null, dailyRate: "18.0905", durationDays: 15,
+    features: ["36 $ de gain par jour", "Retour total : 540 $", "Capital récupéré en 6 jours", "Retrait dès 9 $ de solde"],
   },
 ];
 
-const BADGES = ["🥉 Essai", "🔥 POPULAIRE", "👑 Elite"];
+const TIER = [
+  { label: "Starter", color: "text-amber-600", bg: "from-amber-900/30 to-amber-800/10", border: "border-amber-800/40" },
+  { label: "Populaire", color: "text-yellow-400", bg: "from-yellow-900/40 to-yellow-700/10", border: "border-yellow-500/60" },
+  { label: "Premium", color: "text-orange-300", bg: "from-orange-900/30 to-orange-700/10", border: "border-orange-600/50" },
+];
 
 export default function Home() {
   const { data: plansData } = useListPlans();
   const plans = (plansData && plansData.length > 0 ? plansData : FALLBACK_PLANS) as typeof FALLBACK_PLANS;
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="dark min-h-screen bg-background text-foreground">
-      <nav className="border-b border-border bg-card/80 backdrop-blur sticky top-0 z-50">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <span className="text-xl font-bold text-primary">InvestPro</span>
-          <div className="flex items-center gap-4">
-            <Link href="/plans" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Plans</Link>
-            <Link href="/faq" className="text-sm text-muted-foreground hover:text-foreground transition-colors">FAQ</Link>
-            <Link href="/login">
-              <Button variant="ghost" size="sm">Connexion</Button>
+    <div className="dark min-h-screen bg-[#080c14] text-white overflow-x-hidden">
+
+      {/* ── Navbar ─────────────────────────────────────────────────── */}
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#080c14]/80 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center">
+              <TrendingUp className="w-4 h-4 text-black" />
+            </div>
+            <span className="text-lg font-bold text-white">InvestPro</span>
+          </div>
+
+          <div className="hidden md:flex items-center gap-8">
+            <Link href="/plans" className="text-sm text-gray-400 hover:text-white transition-colors">Plans</Link>
+            <Link href="/faq" className="text-sm text-gray-400 hover:text-white transition-colors">FAQ</Link>
+          </div>
+
+          <div className="hidden md:flex items-center gap-3">
+            <Link href="/login" className="text-sm text-gray-300 hover:text-white px-4 py-2 rounded-lg hover:bg-white/5 transition-colors">
+              Connexion
             </Link>
-            <Link href="/register">
-              <Button size="sm">Commencer</Button>
+            <Link href="/register" className="text-sm font-semibold bg-gradient-to-r from-yellow-400 to-amber-500 text-black px-5 py-2 rounded-lg hover:from-yellow-300 hover:to-amber-400 transition-all shadow-lg shadow-yellow-500/20">
+              Commencer →
             </Link>
           </div>
+
+          <button className="md:hidden text-gray-400 hover:text-white p-1" onClick={() => setMenuOpen(true)}>
+            <Menu className="w-6 h-6" />
+          </button>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="container mx-auto px-4 py-24 text-center">
-        <Badge className="mb-6 bg-primary/20 text-primary border-primary/30 hover:bg-primary/20">
-          Plateforme d'investissement USDT TRC20
-        </Badge>
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
-          Faites Fructifier<br />
-          <span className="text-primary">Votre Capital</span>
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur" onClick={() => setMenuOpen(false)} />
+          <div className="absolute right-0 top-0 bottom-0 w-72 bg-[#0d1420] border-l border-white/10 flex flex-col">
+            <div className="h-16 flex items-center justify-between px-5 border-b border-white/10">
+              <span className="font-bold text-white">InvestPro</span>
+              <button onClick={() => setMenuOpen(false)} className="text-gray-400 hover:text-white">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex flex-col gap-1 p-4 flex-1">
+              <Link href="/plans" onClick={() => setMenuOpen(false)} className="px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 text-sm font-medium transition-colors">Plans</Link>
+              <Link href="/faq" onClick={() => setMenuOpen(false)} className="px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 text-sm font-medium transition-colors">FAQ</Link>
+            </div>
+            <div className="p-4 border-t border-white/10 flex flex-col gap-3">
+              <Link href="/login" onClick={() => setMenuOpen(false)} className="block text-center px-4 py-3 rounded-xl text-sm font-medium border border-white/10 text-white hover:bg-white/5 transition-colors">Connexion</Link>
+              <Link href="/register" onClick={() => setMenuOpen(false)} className="block text-center px-4 py-3 rounded-xl text-sm font-bold bg-gradient-to-r from-yellow-400 to-amber-500 text-black hover:from-yellow-300 hover:to-amber-400 transition-all">Commencer gratuitement</Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Hero ────────────────────────────────────────────────────── */}
+      <section className="pt-32 pb-24 px-4 text-center relative">
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-yellow-500/5 rounded-full blur-3xl" />
+          <div className="absolute top-40 left-1/4 w-64 h-64 bg-amber-600/5 rounded-full blur-3xl" />
+        </div>
+
+        <div className="inline-flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/20 rounded-full px-4 py-1.5 mb-8">
+          <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
+          <span className="text-xs text-yellow-300 font-medium">Plateforme d'investissement USDT TRC20</span>
+        </div>
+
+        <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6 max-w-4xl mx-auto">
+          Faites fructifier<br />
+          <span className="bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400 bg-clip-text text-transparent">
+            votre capital USDT
+          </span>
         </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-          Jusqu'à <strong className="text-primary">36 $ de gains par jour</strong> sur vos investissements USDT.
-          Sécurisé, transparent et professionnel.
+
+        <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+          Jusqu'à <span className="text-yellow-400 font-semibold">36 $ de gains par jour</span> sur vos investissements.
+          Transparent, sécurisé, et disponible 7j/7.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/register">
-            <Button size="lg" className="px-8">
-              Commencer à investir <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+          <Link href="/register" className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-bold px-8 py-4 rounded-xl hover:from-yellow-300 hover:to-amber-400 transition-all shadow-xl shadow-yellow-500/20 text-sm">
+            Commencer à investir <ArrowRight className="w-4 h-4" />
           </Link>
-          <Link href="/plans">
-            <Button size="lg" variant="outline" className="px-8">Voir les plans</Button>
+          <Link href="/plans" className="inline-flex items-center justify-center gap-2 border border-white/10 text-white font-medium px-8 py-4 rounded-xl hover:bg-white/5 transition-all text-sm">
+            Voir les plans <ChevronRight className="w-4 h-4" />
           </Link>
+        </div>
+
+        {/* Trust badges */}
+        <div className="flex flex-wrap justify-center gap-6 text-xs text-gray-500">
+          {["🔒 Dépôts sécurisés", "⚡ Retraits en 24h", "🌍 Disponible partout", "🤝 Support 24/7"].map(t => (
+            <span key={t}>{t}</span>
+          ))}
         </div>
       </section>
 
-      {/* Stats Bar */}
-      <section className="border-y border-border bg-card/30">
-        <div className="container mx-auto px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      {/* ── Stats ───────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-4 pb-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: "Gains max.", value: "36 $/jour" },
-            { label: "Dépôt minimum", value: "69 USDT" },
-            { label: "Niveaux parrainage", value: "3 niveaux" },
-            { label: "Frais de retrait", value: "2% seulement" },
-          ].map((stat) => (
-            <div key={stat.label}>
-              <div className="text-3xl font-bold text-primary mb-1">{stat.value}</div>
-              <div className="text-sm text-muted-foreground">{stat.label}</div>
+            { value: "36 $", label: "Gains max./jour", sub: "Pack GOLD" },
+            { value: "69 $", label: "Dépôt minimum", sub: "Pack BRONZE" },
+            { value: "3", label: "Niveaux parrainage", sub: "Commissions" },
+            { value: "2%", label: "Frais de retrait", sub: "Parmi les plus bas" },
+          ].map(s => (
+            <div key={s.label} className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 text-center hover:bg-white/[0.05] transition-colors">
+              <div className="text-3xl font-bold text-yellow-400 mb-1">{s.value}</div>
+              <div className="text-sm font-medium text-white mb-0.5">{s.label}</div>
+              <div className="text-xs text-gray-500">{s.sub}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Plans Section */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Nos Plans d'Investissement</h2>
-          <p className="text-muted-foreground">Choisissez votre pack — des gains quotidiens dès le 1er jour</p>
+      {/* ── Plans ───────────────────────────────────────────────────── */}
+      <section className="max-w-6xl mx-auto px-4 py-20">
+        <div className="text-center mb-14">
+          <div className="inline-block bg-white/5 border border-white/10 rounded-full px-4 py-1 text-xs text-gray-400 mb-4">Nos offres</div>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Plans d'investissement</h2>
+          <p className="text-gray-400 max-w-xl mx-auto">Des gains quotidiens crédités automatiquement dès le premier jour.</p>
         </div>
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+
+        <div className="grid md:grid-cols-3 gap-6">
           {plans.map((plan, i) => {
-            const features: string[] = Array.isArray(plan.features)
-              ? plan.features as string[]
-              : JSON.parse((plan.features as string) || "[]");
-            const dailyUSD = Math.round(parseFloat(plan.minDeposit) * parseFloat(String(plan.dailyRate)) / 100);
-            const totalUSD = dailyUSD * plan.durationDays;
+            const features: string[] = Array.isArray(plan.features) ? plan.features as string[] : JSON.parse((plan.features as string) || "[]");
+            const daily = Math.round(parseFloat(plan.minDeposit) * parseFloat(String(plan.dailyRate)) / 100);
+            const total = daily * plan.durationDays;
+            const tier = TIER[i];
             const isPopular = i === 1;
             return (
-              <Card key={plan.id} className={`border-border relative ${isPopular ? "border-primary/60 shadow-lg shadow-primary/10" : ""}`}>
+              <div key={plan.id} className={`relative rounded-2xl border bg-gradient-to-b ${tier.bg} ${tier.border} p-6 flex flex-col gap-5 hover:scale-[1.02] transition-transform duration-200 ${isPopular ? "ring-1 ring-yellow-500/40 shadow-2xl shadow-yellow-500/10" : ""}`}>
                 {isPopular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                    <Badge className="bg-primary text-primary-foreground px-3 py-1">🔥 Le plus populaire</Badge>
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="bg-gradient-to-r from-yellow-400 to-amber-500 text-black text-xs font-bold px-4 py-1 rounded-full shadow-lg">
+                      ⭐ LE PLUS POPULAIRE
+                    </span>
                   </div>
                 )}
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between mb-1">
-                    <Badge variant="outline" className="text-xs text-muted-foreground">{BADGES[i]}</Badge>
+
+                <div>
+                  <div className={`text-xs font-semibold uppercase tracking-widest mb-2 ${tier.color}`}>{tier.label}</div>
+                  <h3 className="text-xl font-bold text-white">{plan.name}</h3>
+                  <p className="text-sm text-gray-400 mt-1">{plan.description}</p>
+                </div>
+
+                <div>
+                  <div className="flex items-baseline gap-1">
+                    <span className={`text-4xl font-black ${tier.color}`}>{daily} $</span>
+                    <span className="text-gray-400 text-sm">/ jour</span>
                   </div>
-                  <CardTitle className="text-xl">{plan.name}</CardTitle>
-                  <CardDescription className="text-sm">{plan.description}</CardDescription>
-                  <div className="pt-3">
-                    <span className="text-4xl font-bold text-primary">{dailyUSD} $</span>
-                    <span className="text-muted-foreground text-sm"> / jour</span>
+                  <div className="text-xs text-gray-500 mt-1">Retour total estimé : <span className="text-gray-300 font-medium">{total} $</span></div>
+                </div>
+
+                <div className="bg-black/20 rounded-xl p-4 space-y-2 text-sm">
+                  <div className="flex justify-between text-gray-400">
+                    <span>Dépôt minimum</span>
+                    <span className="text-white font-semibold">{plan.minDeposit} USDT</span>
                   </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="bg-secondary/50 rounded-lg p-3 space-y-1 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Dépôt</span>
-                      <span className="font-semibold">{plan.minDeposit} $</span>
+                  {plan.maxDeposit && (
+                    <div className="flex justify-between text-gray-400">
+                      <span>Dépôt maximum</span>
+                      <span className="text-white font-semibold">{plan.maxDeposit} USDT</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Durée</span>
-                      <span className="font-semibold">{plan.durationDays} jours</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Retour total</span>
-                      <span className="font-semibold text-primary">{totalUSD} $</span>
-                    </div>
+                  )}
+                  <div className="flex justify-between text-gray-400">
+                    <span>Durée</span>
+                    <span className="text-white font-semibold">{plan.durationDays} jours</span>
                   </div>
-                  <ul className="space-y-2">
-                    {features.map((f) => (
-                      <li key={f} className="flex items-center gap-2 text-sm">
-                        <CheckCircle2 className="h-4 w-4 text-accent shrink-0" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link href="/register">
-                    <Button className="w-full" variant={isPopular ? "default" : "outline"}>
-                      Commencer avec {plan.name}
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
+                  <div className="flex justify-between text-gray-400">
+                    <span>Taux journalier</span>
+                    <span className={`font-semibold ${tier.color}`}>{parseFloat(String(plan.dailyRate)).toFixed(2)}%</span>
+                  </div>
+                </div>
+
+                <ul className="space-y-2.5 flex-1">
+                  {features.map(f => (
+                    <li key={f} className="flex items-start gap-2.5 text-sm text-gray-300">
+                      <CheckCircle2 className={`h-4 w-4 shrink-0 mt-0.5 ${tier.color}`} />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                <Link href="/register" className={`block text-center py-3 rounded-xl font-bold text-sm transition-all ${isPopular ? "bg-gradient-to-r from-yellow-400 to-amber-500 text-black hover:from-yellow-300 hover:to-amber-400 shadow-lg shadow-yellow-500/20" : "border border-white/10 text-white hover:bg-white/5"}`}>
+                  Investir dans {plan.name}
+                </Link>
+              </div>
             );
           })}
         </div>
       </section>
 
-      {/* Security Section */}
-      <section className="container mx-auto px-4 py-16 bg-card/20 rounded-2xl max-w-5xl mb-16">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl font-bold mb-2">🔒 Sécurité & Gestion des Fonds</h2>
-          <p className="text-muted-foreground text-sm">Une architecture financière pensée pour votre sérénité</p>
+      {/* ── How it works ────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-4 py-20 border-t border-white/5">
+        <div className="text-center mb-14">
+          <div className="inline-block bg-white/5 border border-white/10 rounded-full px-4 py-1 text-xs text-gray-400 mb-4">Simple & rapide</div>
+          <h2 className="text-3xl font-bold text-white">Comment ça fonctionne ?</h2>
         </div>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-8">
           {[
-            { icon: "🏦", title: "Zéro Risque sur le Capital", desc: "Vos fonds de dépôt et vos gains sont strictement séparés. Votre capital ne peut jamais être bloqué par vos retraits." },
-            { icon: "⚡", title: "Retraits Instantanés", desc: "Dès que votre solde de gains atteint 9 $, vous pouvez retirer votre argent immédiatement, 7j/7." },
-            { icon: "🤖", title: "Activation Automatique", desc: "Le système détecte le montant de votre dépôt et active instantanément le plan correspondant." },
-          ].map(({ icon, title, desc }) => (
-            <div key={title} className="bg-card border border-border rounded-xl p-5 text-center">
-              <div className="text-3xl mb-3">{icon}</div>
-              <h3 className="font-semibold mb-2 text-sm">{title}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="container mx-auto px-4 py-16 border-t border-border">
-        <div className="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto">
-          {[
-            { icon: Shield, title: "Sécurisé", desc: "Dépôts et retraits via blockchain USDT TRC20" },
-            { icon: TrendingUp, title: "Profits quotidiens", desc: "Bénéfices crédités sur votre compte chaque jour" },
-            { icon: Users, title: "Parrainage 3 niveaux", desc: "Gagnez des commissions sur 3 niveaux de filleuls" },
-            { icon: Zap, title: "Retraits rapides", desc: "Retirez vos gains avec seulement 2% de frais" },
-          ].map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="text-center">
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Icon className="h-6 w-6 text-primary" />
+            { step: "01", title: "Créez votre compte", desc: "Inscription gratuite en moins de 2 minutes. Aucune vérification requise pour démarrer." },
+            { step: "02", title: "Faites un dépôt USDT", desc: "Envoyez vos USDT TRC20 sur notre adresse de dépôt. Le plan est activé automatiquement." },
+            { step: "03", title: "Recevez vos gains", desc: "Vos profits sont crédités chaque jour sur votre compte. Retirez quand vous le souhaitez." },
+          ].map(s => (
+            <div key={s.step} className="relative">
+              <div className="text-6xl font-black text-white/[0.04] absolute -top-4 -left-2 select-none">{s.step}</div>
+              <div className="relative">
+                <div className="w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center mb-4">
+                  <span className="text-yellow-400 text-sm font-bold">{s.step}</span>
+                </div>
+                <h3 className="font-bold text-white mb-2">{s.title}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed">{s.desc}</p>
               </div>
-              <h3 className="font-semibold mb-2">{title}</h3>
-              <p className="text-sm text-muted-foreground">{desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <footer className="border-t border-border bg-card/30 py-10">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+      {/* ── Features ────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-4 py-20 border-t border-white/5">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {[
+            { icon: Shield, title: "Sécurisé", desc: "Dépôts et retraits via blockchain USDT TRC20 — traçable et transparent.", color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
+            { icon: TrendingUp, title: "Profits quotidiens", desc: "Gains crédités automatiquement chaque jour sans aucune action de votre part.", color: "text-yellow-400", bg: "bg-yellow-500/10 border-yellow-500/20" },
+            { icon: Users, title: "Parrainage 3 niveaux", desc: "Gagnez des commissions sur 3 niveaux de filleuls. Invitez et multipliez vos revenus.", color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20" },
+            { icon: Zap, title: "Retraits rapides", desc: "Retirez vos gains en 24h avec seulement 2% de frais. Minimum 9 USDT.", color: "text-green-400", bg: "bg-green-500/10 border-green-500/20" },
+          ].map(({ icon: Icon, title, desc, color, bg }) => (
+            <div key={title} className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.04] transition-colors">
+              <div className={`w-10 h-10 rounded-xl border flex items-center justify-center mb-4 ${bg}`}>
+                <Icon className={`h-5 w-5 ${color}`} />
+              </div>
+              <h3 className="font-semibold text-white mb-2 text-sm">{title}</h3>
+              <p className="text-xs text-gray-400 leading-relaxed">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CTA ─────────────────────────────────────────────────────── */}
+      <section className="max-w-4xl mx-auto px-4 py-20">
+        <div className="relative rounded-3xl bg-gradient-to-br from-yellow-900/30 via-amber-900/20 to-orange-900/20 border border-yellow-500/20 p-10 md:p-14 text-center overflow-hidden">
+          <div className="absolute inset-0 -z-10">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 bg-yellow-500/10 rounded-full blur-3xl" />
+          </div>
+          <div className="flex justify-center mb-4">
+            {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" />)}
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Prêt à faire fructifier<br />votre argent ?
+          </h2>
+          <p className="text-gray-400 mb-8 max-w-xl mx-auto">
+            Rejoignez des milliers d'investisseurs qui font confiance à InvestPro pour générer des revenus passifs en USDT.
+          </p>
+          <Link href="/register" className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-bold px-10 py-4 rounded-xl hover:from-yellow-300 hover:to-amber-400 transition-all shadow-2xl shadow-yellow-500/30">
+            Ouvrir mon compte gratuitement <ArrowRight className="w-4 h-4" />
+          </Link>
+          <div className="mt-6 text-xs text-gray-500">Inscription gratuite · Aucune carte requise · Commencez avec 69 USDT</div>
+        </div>
+      </section>
+
+      {/* ── Footer ──────────────────────────────────────────────────── */}
+      <footer className="border-t border-white/5 bg-[#060a10]">
+        <div className="max-w-6xl mx-auto px-4 py-12">
+          <div className="grid md:grid-cols-4 gap-8 mb-10">
             <div>
-              <div className="text-xl font-bold text-primary mb-3">InvestPro</div>
-              <p className="text-sm text-muted-foreground">Plateforme d'investissement USDT TRC20 haute performance.</p>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center">
+                  <TrendingUp className="w-3.5 h-3.5 text-black" />
+                </div>
+                <span className="font-bold text-white">InvestPro</span>
+              </div>
+              <p className="text-xs text-gray-500 leading-relaxed">Plateforme d'investissement USDT TRC20 haute performance.</p>
             </div>
             <div>
-              <h4 className="font-semibold mb-3 text-sm">Plateforme</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <Link href="/plans" className="block hover:text-foreground transition-colors">Plans d'investissement</Link>
-                <Link href="/faq" className="block hover:text-foreground transition-colors">FAQ</Link>
-                <Link href="/register" className="block hover:text-foreground transition-colors">Inscription</Link>
+              <h4 className="font-semibold text-white mb-4 text-sm">Plateforme</h4>
+              <ul className="space-y-2.5">
+                <li><Link href="/plans" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">Plans d'investissement</Link></li>
+                <li><Link href="/faq" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">FAQ</Link></li>
+                <li><Link href="/register" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">S'inscrire</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-3 text-sm">Légal</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <Link href="/terms" className="block hover:text-foreground transition-colors">Conditions d'utilisation</Link>
-                <Link href="/privacy" className="block hover:text-foreground transition-colors">Politique de confidentialité</Link>
-                <Link href="/aml" className="block hover:text-foreground transition-colors">Politique AML</Link>
-                <Link href="/kyc-policy" className="block hover:text-foreground transition-colors">Politique KYC</Link>
+              <h4 className="font-semibold text-white mb-4 text-sm">Légal</h4>
+              <ul className="space-y-2.5">
+                <li><Link href="/terms" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">Conditions d'utilisation</Link></li>
+                <li><Link href="/privacy" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">Confidentialité</Link></li>
+                <li><Link href="/aml" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">Politique AML</Link></li>
+                <li><Link href="/kyc-policy" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">Politique KYC</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-3 text-sm">Support</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>support@investpro.com</li>
-                <li>Disponible 24/7</li>
+              <h4 className="font-semibold text-white mb-4 text-sm">Support</h4>
+              <ul className="space-y-2.5">
+                <li className="text-xs text-gray-500">support@investpro.com</li>
+                <li className="text-xs text-gray-500">Disponible 24/7</li>
+                <li><Link href="/login" className="text-xs text-yellow-500 hover:text-yellow-400 transition-colors">→ Se connecter</Link></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-border pt-6 text-center text-xs text-muted-foreground">
-            © 2024 InvestPro. Tous droits réservés. Les investissements comportent des risques.
+          <div className="border-t border-white/5 pt-6 flex flex-col md:flex-row items-center justify-between gap-2">
+            <p className="text-xs text-gray-600">© {new Date().getFullYear()} InvestPro. Tous droits réservés.</p>
+            <p className="text-xs text-gray-600">Les investissements comportent des risques.</p>
           </div>
         </div>
       </footer>
