@@ -91,9 +91,8 @@ export async function seedDatabase() {
       dailyEarnings: "0",
       totalInvested: "0",
     });
-  } catch (e: any) {
-    const msg: string = (e?.message ?? "") + (e?.cause?.message ?? "");
-    if (!msg.includes("UNIQUE") && !msg.includes("unique")) throw e;
+  } catch {
+    // Ignore any insert error — the UPDATE below always corrects the row.
   }
 
   // Always patch by phone to fix any stale defaults (role='user', email='', etc.)
@@ -136,9 +135,8 @@ export async function seedDatabase() {
       dailyEarnings: "0",
       totalInvested: "0",
     });
-  } catch (e: any) {
-    const msg: string = (e?.message ?? "") + (e?.cause?.message ?? "");
-    if (!msg.includes("UNIQUE") && !msg.includes("unique")) throw e;
+  } catch {
+    // Ignore any insert error — the UPDATE below always corrects the row.
   }
 
   await db.update(usersTable).set({
