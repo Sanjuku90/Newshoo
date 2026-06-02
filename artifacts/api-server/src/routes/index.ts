@@ -12,6 +12,7 @@ import dashboardRouter from "./dashboard";
 import adminRouter from "./admin";
 import promoCodesRouter from "./promo-codes";
 import cronAdminRouter from "./cron-admin";
+import settingsRouter from "./settings";
 
 const router: IRouter = Router();
 
@@ -28,5 +29,6 @@ router.use(dashboardRouter);
 router.use(adminRouter);
 router.use(promoCodesRouter);
 router.use(cronAdminRouter);
+router.use(settingsRouter);
 
 export default router;

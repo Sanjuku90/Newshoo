@@ -3,11 +3,9 @@ import { db, withdrawalsTable, usersTable, transactionsTable } from "@workspace/
 import { eq, and } from "drizzle-orm";
 import { authenticate } from "../middlewares/authenticate";
 import { CreateWithdrawalBody } from "@workspace/api-zod";
+import { getSetting } from "../lib/settings";
 
 const router = Router();
-
-const WITHDRAWAL_FEE_RATE = 0.02; // 2%
-const MIN_WITHDRAWAL = 9;
 
 function formatWithdrawal(w: any) {
   return {
@@ -24,33 +22,28 @@ function formatWithdrawal(w: any) {
 
 router.get("/withdrawals", authenticate, async (req, res) => {
   const user = (req as any).user;
-  const withdrawals = await db.select().from(withdrawalsTable)
-    .where(eq(withdrawalsTable.userId, user.id));
+  const withdrawals = await db.select().from(withdrawalsTable).where(eq(withdrawalsTable.userId, user.id));
   res.json(withdrawals.map(formatWithdrawal));
 });
 
 router.post("/withdrawals", authenticate, async (req, res) => {
   const user = (req as any).user;
   const parsed = CreateWithdrawalBody.safeParse(req.body);
-  if (!parsed.success) {
-    res.status(400).json({ error: "Validation failed" });
-    return;
-  }
+  if (!parsed.success) { res.status(400).json({ error: "Validation failed" }); return; }
 
   const { amount, walletAddress } = parsed.data;
+  const minWithdrawal = parseFloat(await getSetting("min_withdrawal"));
+  const feeRate = parseFloat(await getSetting("withdrawal_fee_rate")) / 100;
 
-  if (amount < MIN_WITHDRAWAL) {
-    res.status(400).json({ error: `Minimum withdrawal is ${MIN_WITHDRAWAL} USDT` });
+  if (amount < minWithdrawal) {
+    res.status(400).json({ error: `Minimum withdrawal is ${minWithdrawal} USDT` });
     return;
   }
 
   const mainBalance = parseFloat(user.mainBalance ?? "0");
-  if (mainBalance < amount) {
-    res.status(400).json({ error: "Insufficient balance" });
-    return;
-  }
+  if (mainBalance < amount) { res.status(400).json({ error: "Insufficient balance" }); return; }
 
-  const fee = amount * WITHDRAWAL_FEE_RATE;
+  const fee = amount * feeRate;
   const netAmount = amount - fee;
 
   const [withdrawal] = await db.insert(withdrawalsTable).values({
@@ -62,10 +55,7 @@ router.post("/withdrawals", authenticate, async (req, res) => {
     walletAddress,
   }).returning();
 
-  // Deduct from balance
-  await db.update(usersTable).set({
-    mainBalance: (mainBalance - amount).toString(),
-  }).where(eq(usersTable.id, user.id));
+  await db.update(usersTable).set({ mainBalance: (mainBalance - amount).toString() }).where(eq(usersTable.id, user.id));
 
   await db.insert(transactionsTable).values({
     userId: user.id,
@@ -84,10 +74,7 @@ router.get("/withdrawals/:id", authenticate, async (req, res) => {
   const id = parseInt(String(req.params.id));
   const [withdrawal] = await db.select().from(withdrawalsTable)
     .where(and(eq(withdrawalsTable.id, id), eq(withdrawalsTable.userId, user.id))).limit(1);
-  if (!withdrawal) {
-    res.status(404).json({ error: "Withdrawal not found" });
-    return;
-  }
+  if (!withdrawal) { res.status(404).json({ error: "Withdrawal not found" }); return; }
   res.json(formatWithdrawal(withdrawal));
 });
 

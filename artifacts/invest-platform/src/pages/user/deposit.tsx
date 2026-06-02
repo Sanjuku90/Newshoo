@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useListDeposits, useCreateDeposit } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,12 +9,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle, Copy, CheckCircle2, Clock, XCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const WALLET_ADDRESS = "TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE";
-
 const statusConfig: Record<string, { label: string; icon: any; class: string }> = {
-  pending: { label: "Pending", icon: Clock, class: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" },
-  approved: { label: "Approved", icon: CheckCircle2, class: "bg-accent/20 text-accent border-accent/30" },
-  rejected: { label: "Rejected", icon: XCircle, class: "bg-destructive/20 text-destructive border-destructive/30" },
+  pending: { label: "En attente", icon: Clock, class: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" },
+  approved: { label: "Approuvé", icon: CheckCircle2, class: "bg-accent/20 text-accent border-accent/30" },
+  rejected: { label: "Rejeté", icon: XCircle, class: "bg-destructive/20 text-destructive border-destructive/30" },
 };
 
 export default function Deposit() {
@@ -25,12 +23,24 @@ export default function Deposit() {
   const [form, setForm] = useState({ amount: "", txHash: "" });
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [walletAddress, setWalletAddress] = useState("");
+  const [minDeposit, setMinDeposit] = useState(69);
+
+  useEffect(() => {
+    fetch("/api/settings/public")
+      .then(r => r.json())
+      .then(s => {
+        if (s.deposit_wallet) setWalletAddress(s.deposit_wallet);
+        if (s.min_deposit) setMinDeposit(parseFloat(s.min_deposit));
+      })
+      .catch(() => {});
+  }, []);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(WALLET_ADDRESS);
+    navigator.clipboard.writeText(walletAddress);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-    toast({ title: "Copied!", description: "Wallet address copied to clipboard" });
+    toast({ title: "Copié !", description: "Adresse copiée dans le presse-papiers" });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -40,12 +50,12 @@ export default function Deposit() {
       { data: { amount: form.amount as any, txHash: form.txHash } },
       {
         onSuccess: () => {
-          toast({ title: "Deposit submitted!", description: "Your deposit is pending verification." });
+          toast({ title: "Dépôt soumis !", description: "Votre dépôt est en attente de vérification." });
           setForm({ amount: "", txHash: "" });
           refetch();
         },
         onError: (err: any) => {
-          setError(err?.data?.error || "Failed to submit deposit");
+          setError(err?.data?.error || "Échec de la soumission");
         },
       }
     );
@@ -54,32 +64,36 @@ export default function Deposit() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold mb-1">Deposit</h1>
-        <p className="text-muted-foreground text-sm">Send USDT TRC20 to the address below and submit your transaction</p>
+        <h1 className="text-2xl font-bold mb-1">Dépôt</h1>
+        <p className="text-muted-foreground text-sm">Envoyez des USDT TRC20 à l'adresse ci-dessous et soumettez votre transaction</p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
         <Card className="border-border">
           <CardHeader>
-            <CardTitle className="text-base">Step 1: Send USDT TRC20</CardTitle>
+            <CardTitle className="text-base">Étape 1 : Envoyer USDT TRC20</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="bg-secondary/50 rounded-lg p-4">
-              <div className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Deposit Wallet Address</div>
-              <div className="font-mono text-sm break-all text-foreground mb-3">{WALLET_ADDRESS}</div>
-              <Button variant="outline" size="sm" onClick={handleCopy} className="gap-2">
+              <div className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Adresse du portefeuille de dépôt</div>
+              {walletAddress ? (
+                <div className="font-mono text-sm break-all text-foreground mb-3">{walletAddress}</div>
+              ) : (
+                <Skeleton className="h-5 w-full mb-3" />
+              )}
+              <Button variant="outline" size="sm" onClick={handleCopy} className="gap-2" disabled={!walletAddress}>
                 {copied ? <CheckCircle2 className="h-4 w-4 text-accent" /> : <Copy className="h-4 w-4" />}
-                {copied ? "Copied!" : "Copy Address"}
+                {copied ? "Copié !" : "Copier l'adresse"}
               </Button>
             </div>
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-2 text-muted-foreground">
                 <AlertCircle className="h-4 w-4 mt-0.5 shrink-0 text-yellow-400" />
-                <span>Send <strong className="text-foreground">USDT on TRC20 network only</strong>. Other networks will result in lost funds.</span>
+                <span>Envoyez <strong className="text-foreground">uniquement des USDT sur le réseau TRC20</strong>. Tout autre réseau entraîne une perte définitive des fonds.</span>
               </div>
               <div className="flex items-start gap-2 text-muted-foreground">
                 <AlertCircle className="h-4 w-4 mt-0.5 shrink-0 text-primary" />
-                <span>Minimum deposit: <strong className="text-foreground">69 USDT</strong></span>
+                <span>Dépôt minimum : <strong className="text-foreground">{minDeposit} USDT</strong></span>
               </div>
             </div>
           </CardContent>
@@ -87,7 +101,7 @@ export default function Deposit() {
 
         <Card className="border-border">
           <CardHeader>
-            <CardTitle className="text-base">Step 2: Submit Transaction</CardTitle>
+            <CardTitle className="text-base">Étape 2 : Soumettre la transaction</CardTitle>
           </CardHeader>
           <CardContent>
             {error && (
@@ -97,29 +111,29 @@ export default function Deposit() {
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label>Amount (USDT)</Label>
+                <Label>Montant (USDT)</Label>
                 <Input
                   type="number"
-                  min="69"
+                  min={minDeposit}
                   step="0.01"
-                  placeholder="Minimum 69 USDT"
+                  placeholder={`Minimum ${minDeposit} USDT`}
                   value={form.amount}
                   onChange={e => setForm(prev => ({ ...prev, amount: e.target.value }))}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label>Transaction Hash (TxID)</Label>
+                <Label>Hash de transaction (TxID)</Label>
                 <Input
-                  placeholder="Enter the TRC20 transaction ID"
+                  placeholder="Entrez l'identifiant de transaction TRC20"
                   value={form.txHash}
                   onChange={e => setForm(prev => ({ ...prev, txHash: e.target.value }))}
                   required
                 />
-                <p className="text-xs text-muted-foreground">Find the TxID in your wallet after sending</p>
+                <p className="text-xs text-muted-foreground">Trouvez le TxID dans votre portefeuille après l'envoi</p>
               </div>
               <Button type="submit" className="w-full" disabled={createDeposit.isPending}>
-                {createDeposit.isPending ? "Submitting..." : "Submit Deposit"}
+                {createDeposit.isPending ? "Envoi en cours..." : "Soumettre le dépôt"}
               </Button>
             </form>
           </CardContent>
@@ -127,7 +141,7 @@ export default function Deposit() {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold mb-4">Deposit History</h2>
+        <h2 className="text-lg font-semibold mb-4">Historique des dépôts</h2>
         {isLoading ? (
           <div className="space-y-3">{[1,2,3].map(i => <Skeleton key={i} className="h-16" />)}</div>
         ) : deposits && (deposits as any[]).length > 0 ? (
@@ -145,7 +159,7 @@ export default function Deposit() {
                       </div>
                       <div className="text-xs text-muted-foreground font-mono truncate max-w-xs">{dep.txHash}</div>
                     </div>
-                    <div className="text-xs text-muted-foreground">{new Date(dep.createdAt).toLocaleDateString()}</div>
+                    <div className="text-xs text-muted-foreground">{new Date(dep.createdAt).toLocaleDateString("fr-FR")}</div>
                   </CardContent>
                 </Card>
               );
@@ -153,7 +167,7 @@ export default function Deposit() {
           </div>
         ) : (
           <Card className="border-border">
-            <CardContent className="py-12 text-center text-muted-foreground">No deposits yet</CardContent>
+            <CardContent className="py-12 text-center text-muted-foreground">Aucun dépôt pour l'instant</CardContent>
           </Card>
         )}
       </div>

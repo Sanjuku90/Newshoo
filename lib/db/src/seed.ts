@@ -1,4 +1,4 @@
-import { db, usersTable, plansTable } from "./index";
+import { db, usersTable, plansTable, settingsTable } from "./index";
 import { eq } from "drizzle-orm";
 import { createHash } from "crypto";
 
@@ -120,6 +120,27 @@ export async function seedDatabase() {
       totalInvested: "0",
     });
     console.log("[seed] Test user created (test@investpro.com / test1234) — solde: 500 USDT");
+  }
+
+  // Seed default settings
+  const DEFAULT_SETTINGS: Record<string, string> = {
+    deposit_wallet: "TAB1oeEKDS5NATwFAaUrTioDU9djX7anyS",
+    min_deposit: "69",
+    min_withdrawal: "9",
+    withdrawal_fee_rate: "2",
+    platform_name: "InvestPro",
+    support_email: "support@investpro.com",
+    support_telegram: "",
+    maintenance_mode: "0",
+    referral_l1_rate: "5",
+    referral_l2_rate: "3",
+    referral_l3_rate: "1",
+  };
+  for (const [key, value] of Object.entries(DEFAULT_SETTINGS)) {
+    const existing = await db.select().from(settingsTable).where(eq(settingsTable.key, key)).limit(1);
+    if (existing.length === 0) {
+      await db.insert(settingsTable).values({ key, value, updatedAt: new Date() });
+    }
   }
 
   // Check if plans exist

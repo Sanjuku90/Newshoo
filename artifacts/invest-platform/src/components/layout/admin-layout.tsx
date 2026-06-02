@@ -52,6 +52,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         { href: "/admin/tickets", label: "Tickets", icon: FileText },
         { href: "/admin/plans", label: "Plans", icon: Settings },
         { href: "/admin/promo-codes", label: "Codes Promo", icon: Tag },
+        { href: "/admin/settings", label: "Paramètres", icon: Settings },
       ],
     },
     {
