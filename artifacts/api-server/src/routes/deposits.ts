@@ -28,8 +28,9 @@ router.get("/deposits", authenticate, async (req, res) => {
 
 router.post("/deposits", authenticate, async (req, res) => {
   const user = (req as any).user;
-  const parsed = CreateDepositBody.safeParse(req.body);
-  if (!parsed.success) { res.status(400).json({ error: "Validation failed" }); return; }
+  const coerced = { ...req.body, amount: parseFloat(req.body.amount) };
+  const parsed = CreateDepositBody.safeParse(coerced);
+  if (!parsed.success) { res.status(400).json({ error: parsed.error.issues.map((i: any) => i.message).join(", ") }); return; }
 
   const { amount, txHash, walletAddress } = parsed.data;
   const minDeposit = parseFloat(await getSetting("min_deposit"));

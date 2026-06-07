@@ -42,9 +42,10 @@ router.get("/investments", authenticate, async (req, res) => {
 
 router.post("/investments", authenticate, async (req, res) => {
   const user = (req as any).user;
-  const parsed = CreateInvestmentBody.safeParse(req.body);
+  const coerced = { ...req.body, amount: parseFloat(req.body.amount) };
+  const parsed = CreateInvestmentBody.safeParse(coerced);
   if (!parsed.success) {
-    res.status(400).json({ error: "Validation failed" });
+    res.status(400).json({ error: parsed.error.issues.map((i: any) => i.message).join(", ") });
     return;
   }
 

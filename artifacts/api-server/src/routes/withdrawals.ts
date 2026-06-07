@@ -28,8 +28,9 @@ router.get("/withdrawals", authenticate, async (req, res) => {
 
 router.post("/withdrawals", authenticate, async (req, res) => {
   const user = (req as any).user;
-  const parsed = CreateWithdrawalBody.safeParse(req.body);
-  if (!parsed.success) { res.status(400).json({ error: "Validation failed" }); return; }
+  const coerced = { ...req.body, amount: parseFloat(req.body.amount) };
+  const parsed = CreateWithdrawalBody.safeParse(coerced);
+  if (!parsed.success) { res.status(400).json({ error: parsed.error.issues.map((i: any) => i.message).join(", ") }); return; }
 
   const { amount, walletAddress } = parsed.data;
   const minWithdrawal = parseFloat(await getSetting("min_withdrawal"));
