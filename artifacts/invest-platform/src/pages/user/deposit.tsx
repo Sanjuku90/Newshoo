@@ -49,7 +49,7 @@ export default function Deposit() {
     e.preventDefault();
     setError("");
     createDeposit.mutate(
-      { data: { amount: form.amount as any, txHash: form.txHash } },
+      { data: { amount: parseFloat(form.amount), txHash: form.txHash } },
       {
         onSuccess: () => {
           toast({ title: "Dépôt soumis !", description: "Votre dépôt est en attente de vérification." });
