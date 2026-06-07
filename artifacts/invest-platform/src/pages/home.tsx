@@ -22,9 +22,9 @@ const FALLBACK_PLANS = [
 ];
 
 const TIER = [
-  { label: "Starter", color: "text-amber-600", bg: "from-amber-900/30 to-amber-800/10", border: "border-amber-800/40" },
-  { label: "Populaire", color: "text-yellow-400", bg: "from-yellow-900/40 to-yellow-700/10", border: "border-yellow-500/60" },
-  { label: "Premium", color: "text-orange-300", bg: "from-orange-900/30 to-orange-700/10", border: "border-orange-600/50" },
+  { label: "Starter",  color: "text-emerald-600", bg: "from-emerald-900/30 to-emerald-800/10", border: "border-emerald-800/40" },
+  { label: "Populaire", color: "text-emerald-400", bg: "from-emerald-900/40 to-emerald-700/10", border: "border-emerald-500/60" },
+  { label: "Premium",  color: "text-teal-300",    bg: "from-teal-900/30 to-teal-700/10",       border: "border-teal-600/50" },
 ];
 
 export default function Home() {
@@ -33,14 +33,14 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="dark min-h-screen bg-[#080c14] text-white overflow-x-hidden">
+    <div className="dark min-h-screen bg-[#0c0e11] text-white overflow-x-hidden">
 
       {/* ── Navbar ─────────────────────────────────────────────────── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#080c14]/80 backdrop-blur-xl">
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#0c0e11]/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center">
-              <TrendingUp className="w-4 h-4 text-black" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
+              <TrendingUp className="w-4 h-4 text-white" />
             </div>
             <span className="text-lg font-bold text-white">InvestPro</span>
           </div>
@@ -54,7 +54,7 @@ export default function Home() {
             <Link href="/login" className="text-sm text-gray-300 hover:text-white px-4 py-2 rounded-lg hover:bg-white/5 transition-colors">
               Connexion
             </Link>
-            <Link href="/register" className="text-sm font-semibold bg-gradient-to-r from-yellow-400 to-amber-500 text-black px-5 py-2 rounded-lg hover:from-yellow-300 hover:to-amber-400 transition-all shadow-lg shadow-yellow-500/20">
+            <Link href="/register" className="text-sm font-semibold bg-gradient-to-r from-emerald-400 to-emerald-500 text-white px-5 py-2 rounded-lg hover:from-emerald-300 hover:to-emerald-400 transition-all shadow-lg shadow-emerald-500/20">
               Commencer →
             </Link>
           </div>
@@ -69,7 +69,7 @@ export default function Home() {
       {menuOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="absolute inset-0 bg-black/70 backdrop-blur" onClick={() => setMenuOpen(false)} />
-          <div className="absolute right-0 top-0 bottom-0 w-72 bg-[#0d1420] border-l border-white/10 flex flex-col">
+          <div className="absolute right-0 top-0 bottom-0 w-72 bg-[#0f1219] border-l border-white/10 flex flex-col">
             <div className="h-16 flex items-center justify-between px-5 border-b border-white/10">
               <span className="font-bold text-white">InvestPro</span>
               <button onClick={() => setMenuOpen(false)} className="text-gray-400 hover:text-white">
@@ -82,7 +82,7 @@ export default function Home() {
             </div>
             <div className="p-4 border-t border-white/10 flex flex-col gap-3">
               <Link href="/login" onClick={() => setMenuOpen(false)} className="block text-center px-4 py-3 rounded-xl text-sm font-medium border border-white/10 text-white hover:bg-white/5 transition-colors">Connexion</Link>
-              <Link href="/register" onClick={() => setMenuOpen(false)} className="block text-center px-4 py-3 rounded-xl text-sm font-bold bg-gradient-to-r from-yellow-400 to-amber-500 text-black hover:from-yellow-300 hover:to-amber-400 transition-all">Commencer gratuitement</Link>
+              <Link href="/register" onClick={() => setMenuOpen(false)} className="block text-center px-4 py-3 rounded-xl text-sm font-bold bg-gradient-to-r from-emerald-400 to-emerald-500 text-white hover:from-emerald-300 hover:to-emerald-400 transition-all">Commencer gratuitement</Link>
             </div>
           </div>
         </div>
@@ -91,29 +91,29 @@ export default function Home() {
       {/* ── Hero ────────────────────────────────────────────────────── */}
       <section className="pt-32 pb-24 px-4 text-center relative">
         <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-yellow-500/5 rounded-full blur-3xl" />
-          <div className="absolute top-40 left-1/4 w-64 h-64 bg-amber-600/5 rounded-full blur-3xl" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-emerald-500/5 rounded-full blur-3xl" />
+          <div className="absolute top-40 left-1/4 w-64 h-64 bg-emerald-600/5 rounded-full blur-3xl" />
         </div>
 
-        <div className="inline-flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/20 rounded-full px-4 py-1.5 mb-8">
-          <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
-          <span className="text-xs text-yellow-300 font-medium">Plateforme d'investissement USDT TRC20</span>
+        <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-1.5 mb-8">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="text-xs text-emerald-300 font-medium">Plateforme d'investissement USDT TRC20</span>
         </div>
 
         <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6 max-w-4xl mx-auto">
           Faites fructifier<br />
-          <span className="bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-emerald-300 via-emerald-400 to-teal-400 bg-clip-text text-transparent">
             votre capital USDT
           </span>
         </h1>
 
         <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Jusqu'à <span className="text-yellow-400 font-semibold">36 $ de gains par jour</span> sur vos investissements.
+          Jusqu'à <span className="text-emerald-400 font-semibold">36 $ de gains par jour</span> sur vos investissements.
           Transparent, sécurisé, et disponible 7j/7.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-          <Link href="/register" className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-bold px-8 py-4 rounded-xl hover:from-yellow-300 hover:to-amber-400 transition-all shadow-xl shadow-yellow-500/20 text-sm">
+          <Link href="/register" className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white font-bold px-8 py-4 rounded-xl hover:from-emerald-300 hover:to-emerald-400 transition-all shadow-xl shadow-emerald-500/20 text-sm">
             Commencer à investir <ArrowRight className="w-4 h-4" />
           </Link>
           <Link href="/plans" className="inline-flex items-center justify-center gap-2 border border-white/10 text-white font-medium px-8 py-4 rounded-xl hover:bg-white/5 transition-all text-sm">
@@ -139,7 +139,7 @@ export default function Home() {
             { value: "2%", label: "Frais de retrait", sub: "Parmi les plus bas" },
           ].map(s => (
             <div key={s.label} className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 text-center hover:bg-white/[0.05] transition-colors">
-              <div className="text-3xl font-bold text-yellow-400 mb-1">{s.value}</div>
+              <div className="text-3xl font-bold text-emerald-400 mb-1">{s.value}</div>
               <div className="text-sm font-medium text-white mb-0.5">{s.label}</div>
               <div className="text-xs text-gray-500">{s.sub}</div>
             </div>
@@ -163,10 +163,10 @@ export default function Home() {
             const tier = TIER[i];
             const isPopular = i === 1;
             return (
-              <div key={plan.id} className={`relative rounded-2xl border bg-gradient-to-b ${tier.bg} ${tier.border} p-6 flex flex-col gap-5 hover:scale-[1.02] transition-transform duration-200 ${isPopular ? "ring-1 ring-yellow-500/40 shadow-2xl shadow-yellow-500/10" : ""}`}>
+              <div key={plan.id} className={`relative rounded-2xl border bg-gradient-to-b ${tier.bg} ${tier.border} p-6 flex flex-col gap-5 hover:scale-[1.02] transition-transform duration-200 ${isPopular ? "ring-1 ring-emerald-500/40 shadow-2xl shadow-emerald-500/10" : ""}`}>
                 {isPopular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-yellow-400 to-amber-500 text-black text-xs font-bold px-4 py-1 rounded-full shadow-lg">
+                    <span className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg">
                       ⭐ LE PLUS POPULAIRE
                     </span>
                   </div>
@@ -216,7 +216,7 @@ export default function Home() {
                   ))}
                 </ul>
 
-                <Link href="/register" className={`block text-center py-3 rounded-xl font-bold text-sm transition-all ${isPopular ? "bg-gradient-to-r from-yellow-400 to-amber-500 text-black hover:from-yellow-300 hover:to-amber-400 shadow-lg shadow-yellow-500/20" : "border border-white/10 text-white hover:bg-white/5"}`}>
+                <Link href="/register" className={`block text-center py-3 rounded-xl font-bold text-sm transition-all ${isPopular ? "bg-gradient-to-r from-emerald-400 to-emerald-500 text-white hover:from-emerald-300 hover:to-emerald-400 shadow-lg shadow-emerald-500/20" : "border border-white/10 text-white hover:bg-white/5"}`}>
                   Investir dans {plan.name}
                 </Link>
               </div>
@@ -240,8 +240,8 @@ export default function Home() {
             <div key={s.step} className="relative">
               <div className="text-6xl font-black text-white/[0.04] absolute -top-4 -left-2 select-none">{s.step}</div>
               <div className="relative">
-                <div className="w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center mb-4">
-                  <span className="text-yellow-400 text-sm font-bold">{s.step}</span>
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4">
+                  <span className="text-emerald-400 text-sm font-bold">{s.step}</span>
                 </div>
                 <h3 className="font-bold text-white mb-2">{s.title}</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">{s.desc}</p>
@@ -256,9 +256,9 @@ export default function Home() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           {[
             { icon: Shield, title: "Sécurisé", desc: "Dépôts et retraits via blockchain USDT TRC20 — traçable et transparent.", color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
-            { icon: TrendingUp, title: "Profits quotidiens", desc: "Gains crédités automatiquement chaque jour sans aucune action de votre part.", color: "text-yellow-400", bg: "bg-yellow-500/10 border-yellow-500/20" },
+            { icon: TrendingUp, title: "Profits quotidiens", desc: "Gains crédités automatiquement chaque jour sans aucune action de votre part.", color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20" },
             { icon: Users, title: "Parrainage 3 niveaux", desc: "Gagnez des commissions sur 3 niveaux de filleuls. Invitez et multipliez vos revenus.", color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20" },
-            { icon: Zap, title: "Retraits rapides", desc: "Retirez vos gains en 24h avec seulement 2% de frais. Minimum 9 USDT.", color: "text-green-400", bg: "bg-green-500/10 border-green-500/20" },
+            { icon: Zap, title: "Retraits rapides", desc: "Retirez vos gains en 24h avec seulement 2% de frais. Minimum 9 USDT.", color: "text-teal-400", bg: "bg-teal-500/10 border-teal-500/20" },
           ].map(({ icon: Icon, title, desc, color, bg }) => (
             <div key={title} className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-5 hover:bg-white/[0.04] transition-colors">
               <div className={`w-10 h-10 rounded-xl border flex items-center justify-center mb-4 ${bg}`}>
@@ -273,12 +273,12 @@ export default function Home() {
 
       {/* ── CTA ─────────────────────────────────────────────────────── */}
       <section className="max-w-4xl mx-auto px-4 py-20">
-        <div className="relative rounded-3xl bg-gradient-to-br from-yellow-900/30 via-amber-900/20 to-orange-900/20 border border-yellow-500/20 p-10 md:p-14 text-center overflow-hidden">
+        <div className="relative rounded-3xl bg-gradient-to-br from-emerald-900/30 via-emerald-900/20 to-teal-900/20 border border-emerald-500/20 p-10 md:p-14 text-center overflow-hidden">
           <div className="absolute inset-0 -z-10">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 bg-yellow-500/10 rounded-full blur-3xl" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 bg-emerald-500/10 rounded-full blur-3xl" />
           </div>
           <div className="flex justify-center mb-4">
-            {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" />)}
+            {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 text-emerald-400 fill-emerald-400" />)}
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Prêt à faire fructifier<br />votre argent ?
@@ -286,7 +286,7 @@ export default function Home() {
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
             Rejoignez des milliers d'investisseurs qui font confiance à InvestPro pour générer des revenus passifs en USDT.
           </p>
-          <Link href="/register" className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-bold px-10 py-4 rounded-xl hover:from-yellow-300 hover:to-amber-400 transition-all shadow-2xl shadow-yellow-500/30">
+          <Link href="/register" className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white font-bold px-10 py-4 rounded-xl hover:from-emerald-300 hover:to-emerald-400 transition-all shadow-2xl shadow-emerald-500/30">
             Ouvrir mon compte gratuitement <ArrowRight className="w-4 h-4" />
           </Link>
           <div className="mt-6 text-xs text-gray-500">Inscription gratuite · Aucune carte requise · Commencez avec 69 USDT</div>
@@ -294,13 +294,13 @@ export default function Home() {
       </section>
 
       {/* ── Footer ──────────────────────────────────────────────────── */}
-      <footer className="border-t border-white/5 bg-[#060a10]">
+      <footer className="border-t border-white/5 bg-[#0a0d10]">
         <div className="max-w-6xl mx-auto px-4 py-12">
           <div className="grid md:grid-cols-4 gap-8 mb-10">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center">
-                  <TrendingUp className="w-3.5 h-3.5 text-black" />
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
+                  <TrendingUp className="w-3.5 h-3.5 text-white" />
                 </div>
                 <span className="font-bold text-white">InvestPro</span>
               </div>
@@ -328,7 +328,7 @@ export default function Home() {
               <ul className="space-y-2.5">
                 <li className="text-xs text-gray-500">support@investpro.com</li>
                 <li className="text-xs text-gray-500">Disponible 24/7</li>
-                <li><Link href="/login" className="text-xs text-yellow-500 hover:text-yellow-400 transition-colors">→ Se connecter</Link></li>
+                <li><Link href="/login" className="text-xs text-emerald-500 hover:text-emerald-400 transition-colors">→ Se connecter</Link></li>
               </ul>
             </div>
           </div>

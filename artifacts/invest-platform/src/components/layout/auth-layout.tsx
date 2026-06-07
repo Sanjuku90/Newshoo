@@ -20,24 +20,24 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="dark min-h-screen flex items-center justify-center bg-[#080c14]">
-        <Loader2 className="animate-spin text-yellow-400 w-8 h-8" />
+      <div className="dark min-h-screen flex items-center justify-center bg-[#0c0e11]">
+        <Loader2 className="animate-spin text-emerald-400 w-8 h-8" />
       </div>
     );
   }
 
   return (
-    <div className="dark min-h-screen bg-[#080c14] flex">
+    <div className="dark min-h-screen bg-[#0c0e11] flex">
       {/* Left panel — branding (desktop only) */}
-      <div className="hidden lg:flex lg:w-[45%] xl:w-[40%] flex-col justify-between p-12 border-r border-white/5 relative overflow-hidden bg-gradient-to-br from-[#0d1520] to-[#080c14]">
+      <div className="hidden lg:flex lg:w-[45%] xl:w-[40%] flex-col justify-between p-12 border-r border-white/5 relative overflow-hidden bg-gradient-to-br from-[#0f1219] to-[#0c0e11]">
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-yellow-500/8 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-amber-600/5 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-emerald-500/8 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-emerald-600/5 rounded-full blur-3xl" />
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center shadow-xl shadow-yellow-500/30">
-            <TrendingUp className="w-5 h-5 text-black" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-xl shadow-emerald-500/30">
+            <TrendingUp className="w-5 h-5 text-white" />
           </div>
           <Link href="/" className="text-xl font-bold text-white">InvestPro</Link>
         </div>
@@ -46,7 +46,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
           <div>
             <h2 className="text-3xl font-bold text-white leading-snug mb-3">
               Votre capital,<br />
-              <span className="bg-gradient-to-r from-yellow-300 to-amber-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-emerald-300 to-emerald-400 bg-clip-text text-transparent">
                 en pleine croissance.
               </span>
             </h2>
@@ -58,17 +58,17 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
           <div className="grid grid-cols-2 gap-3">
             {perks.map(({ icon: Icon, label, sub }) => (
               <div key={label} className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 hover:bg-white/[0.05] transition-colors">
-                <Icon className="w-5 h-5 text-yellow-400 mb-2" />
+                <Icon className="w-5 h-5 text-emerald-400 mb-2" />
                 <div className="text-sm font-semibold text-white">{label}</div>
                 <div className="text-xs text-gray-500 mt-0.5">{sub}</div>
               </div>
             ))}
           </div>
 
-          <div className="flex items-center gap-3 bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4">
+          <div className="flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4">
             <div className="text-2xl">💡</div>
             <div>
-              <div className="text-xs font-semibold text-yellow-300">Bon à savoir</div>
+              <div className="text-xs font-semibold text-emerald-300">Bon à savoir</div>
               <div className="text-xs text-gray-400 mt-0.5">Vous pouvez commencer avec seulement 69 USDT et retirer dès 9 $ de gains.</div>
             </div>
           </div>

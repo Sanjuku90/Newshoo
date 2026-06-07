@@ -11,7 +11,7 @@ function Progress({ value }: { value: number }) {
   return (
     <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
       <div
-        className="h-full rounded-full bg-gradient-to-r from-yellow-400 to-amber-500 transition-all duration-700"
+        className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500 transition-all duration-700"
         style={{ width: `${Math.min(100, Math.max(0, value))}%` }}
       />
     </div>
@@ -32,7 +32,7 @@ function InvestmentCard({ inv }: { inv: any }) {
           <div className="text-xs text-gray-500 mt-0.5">{inv.amount} USDT · {inv.dailyRate}%/jour</div>
         </div>
         <div className="text-right">
-          <div className="text-sm font-bold text-green-400">+{parseFloat(inv.totalEarned || 0).toFixed(2)} USDT</div>
+          <div className="text-sm font-bold text-emerald-400">+{parseFloat(inv.totalEarned || 0).toFixed(2)} USDT</div>
           <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1 justify-end">
             <Clock className="h-3 w-3" />
             {daysLeft > 0 ? `${daysLeft}j restants` : "Terminé"}
@@ -52,9 +52,9 @@ function AnnouncementBanner({ text, type }: { text: string; type: string }) {
   const [dismissed, setDismissed] = useState(false);
   if (!text || dismissed) return null;
   const config = {
-    info:    { bg: "bg-blue-500/10 border-blue-500/20",    text: "text-blue-400",   icon: Info },
-    warning: { bg: "bg-yellow-500/10 border-yellow-500/20", text: "text-yellow-400", icon: AlertTriangle },
-    success: { bg: "bg-green-500/10 border-green-500/20",  text: "text-green-400",  icon: CheckCircle2 },
+    info:    { bg: "bg-blue-500/10 border-blue-500/20",       text: "text-blue-400",    icon: Info },
+    warning: { bg: "bg-amber-500/10 border-amber-500/20",     text: "text-amber-400",   icon: AlertTriangle },
+    success: { bg: "bg-emerald-500/10 border-emerald-500/20", text: "text-emerald-400", icon: CheckCircle2 },
   }[type] ?? { bg: "bg-blue-500/10 border-blue-500/20", text: "text-blue-400", icon: Info };
   const Icon = config.icon;
   return (
@@ -90,8 +90,8 @@ const TX_LABEL: Record<string, string> = {
 
 const KYC_STATUS: Record<string, { label: string; color: string }> = {
   none:     { label: "Non vérifié",  color: "text-gray-400 bg-gray-500/10 border-gray-500/20" },
-  pending:  { label: "En attente",   color: "text-yellow-400 bg-yellow-500/10 border-yellow-500/20" },
-  approved: { label: "Vérifié ✓",   color: "text-green-400 bg-green-500/10 border-green-500/20" },
+  pending:  { label: "En attente",   color: "text-amber-400 bg-amber-500/10 border-amber-500/20" },
+  approved: { label: "Vérifié ✓",   color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
   rejected: { label: "Refusé",       color: "text-red-400 bg-red-500/10 border-red-500/20" },
 };
 
@@ -142,7 +142,7 @@ export default function Dashboard() {
           <h1 className="text-xl font-bold text-white">Tableau de bord</h1>
           <p className="text-sm text-gray-500 mt-0.5">Vue d'ensemble de vos investissements</p>
         </div>
-        <Link href="/deposit" className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-black text-xs font-bold px-4 py-2 rounded-xl hover:from-yellow-300 hover:to-amber-400 transition-all shadow-lg shadow-yellow-500/20">
+        <Link href="/deposit" className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-xl hover:from-emerald-300 hover:to-emerald-400 transition-all shadow-lg shadow-emerald-500/20">
           <ArrowDownToLine className="w-3.5 h-3.5" /> Déposer
         </Link>
       </div>
@@ -152,13 +152,13 @@ export default function Dashboard() {
       {/* Stat cards — row 1 */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <StatCard label="Solde principal" value={`${mainBalance}`} icon={Wallet}
-          gradient="from-yellow-900/40 to-amber-900/20 border-yellow-700/30"
+          gradient="from-emerald-900/40 to-emerald-800/20 border-emerald-700/30"
           sub="USDT disponible" />
         <StatCard label="En investissement" value={`${investedBalance}`} icon={TrendingUp}
           gradient="from-blue-900/40 to-blue-800/20 border-blue-700/30"
           sub="USDT investis" />
         <StatCard label="Gains totaux" value={`${totalEarnings}`} icon={Zap}
-          gradient="from-green-900/40 to-green-800/20 border-green-700/30"
+          gradient="from-teal-900/40 to-teal-800/20 border-teal-700/30"
           sub="USDT gagnés" />
         <StatCard label="Gains / jour" value={`${dailyEarnings}`} icon={Clock}
           gradient="from-purple-900/40 to-purple-800/20 border-purple-700/30"
@@ -171,7 +171,7 @@ export default function Dashboard() {
           gradient="from-orange-900/40 to-orange-800/20 border-orange-700/30"
           sub="USDT bonus" />
         <StatCard label="Total déposé" value={`${totalDeposited}`} icon={ArrowDownToLine}
-          gradient="from-teal-900/40 to-teal-800/20 border-teal-700/30"
+          gradient="from-cyan-900/40 to-cyan-800/20 border-cyan-700/30"
           sub="USDT déposés" />
         <StatCard label="Total retiré" value={`${totalWithdrawn}`} icon={ArrowUpFromLine}
           gradient="from-rose-900/40 to-rose-800/20 border-rose-700/30"
@@ -193,10 +193,10 @@ export default function Dashboard() {
       {/* Quick actions */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { href: "/deposit", label: "Dépôt", icon: ArrowDownToLine, color: "text-yellow-400", bg: "bg-yellow-500/10 border-yellow-500/20 hover:bg-yellow-500/15" },
-          { href: "/withdraw", label: "Retrait", icon: ArrowUpFromLine, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20 hover:bg-blue-500/15" },
-          { href: "/investments", label: "Investir", icon: TrendingUp, color: "text-green-400", bg: "bg-green-500/10 border-green-500/20 hover:bg-green-500/15" },
-          { href: "/referrals", label: "Parrainage", icon: Users, color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20 hover:bg-purple-500/15" },
+          { href: "/deposit",     label: "Dépôt",     icon: ArrowDownToLine, color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-500/15" },
+          { href: "/withdraw",    label: "Retrait",   icon: ArrowUpFromLine, color: "text-blue-400",    bg: "bg-blue-500/10 border-blue-500/20 hover:bg-blue-500/15" },
+          { href: "/investments", label: "Investir",  icon: TrendingUp,      color: "text-teal-400",    bg: "bg-teal-500/10 border-teal-500/20 hover:bg-teal-500/15" },
+          { href: "/referrals",   label: "Parrainage",icon: Users,           color: "text-purple-400",  bg: "bg-purple-500/10 border-purple-500/20 hover:bg-purple-500/15" },
         ].map(({ href, label, icon: Icon, color, bg }) => (
           <Link key={href} href={href} className={`flex items-center justify-center gap-2.5 border rounded-xl py-3.5 text-sm font-medium transition-colors ${bg} ${color}`}>
             <Icon className="w-4 h-4" />
@@ -211,7 +211,7 @@ export default function Dashboard() {
         <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl">
           <div className="flex items-center justify-between p-5 border-b border-white/[0.06]">
             <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-yellow-400" />
+              <TrendingUp className="h-4 w-4 text-emerald-400" />
               <h2 className="text-sm font-semibold text-white">Investissements actifs</h2>
             </div>
             <Link href="/investments" className="text-xs text-gray-500 hover:text-gray-300 flex items-center gap-1 transition-colors">
@@ -223,11 +223,11 @@ export default function Dashboard() {
               d.activeInvestments.map((inv: any) => <InvestmentCard key={inv.id} inv={inv} />)
             ) : (
               <div className="text-center py-10">
-                <div className="w-12 h-12 rounded-2xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center mx-auto mb-3">
-                  <TrendingUp className="w-5 h-5 text-yellow-400" />
+                <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-3">
+                  <TrendingUp className="w-5 h-5 text-emerald-400" />
                 </div>
                 <p className="text-sm text-gray-400 mb-3">Aucun investissement actif</p>
-                <Link href="/investments" className="inline-flex items-center gap-1.5 text-xs font-semibold text-yellow-400 hover:text-yellow-300 transition-colors">
+                <Link href="/investments" className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors">
                   Commencer à investir <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
@@ -253,9 +253,9 @@ export default function Dashboard() {
                 return (
                   <div key={tx.id} className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
                     <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isPositive ? "bg-green-500/10" : "bg-red-500/10"}`}>
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isPositive ? "bg-emerald-500/10" : "bg-red-500/10"}`}>
                         {isPositive
-                          ? <ArrowDownToLine className="w-3.5 h-3.5 text-green-400" />
+                          ? <ArrowDownToLine className="w-3.5 h-3.5 text-emerald-400" />
                           : <ArrowUpFromLine className="w-3.5 h-3.5 text-red-400" />}
                       </div>
                       <div>
@@ -267,7 +267,7 @@ export default function Dashboard() {
                         </div>
                       </div>
                     </div>
-                    <div className={`text-sm font-bold ${isPositive ? "text-green-400" : "text-red-400"}`}>
+                    <div className={`text-sm font-bold ${isPositive ? "text-emerald-400" : "text-red-400"}`}>
                       {isPositive ? "+" : ""}{tx.amount} USDT
                     </div>
                   </div>

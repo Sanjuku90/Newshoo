@@ -10,7 +10,7 @@ import { NotificationsBell } from "@/components/notifications-bell";
 import { LiveChatWidget } from "@/components/live-chat-widget";
 
 const navItems = [
-  { href: "/dashboard",    label: "Dashboard",       icon: LayoutDashboard },
+  { href: "/dashboard",    label: "Tableau de bord", icon: LayoutDashboard },
   { href: "/investments",  label: "Investissements", icon: TrendingUp },
   { href: "/deposit",      label: "Dépôt",           icon: ArrowDownToLine },
   { href: "/withdraw",     label: "Retrait",         icon: ArrowUpFromLine },
