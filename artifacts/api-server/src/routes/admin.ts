@@ -39,6 +39,56 @@ router.get("/admin/stats", requireAdmin, async (req, res) => {
   });
 });
 
+// ── Admin chart data (last 7 days) ───────────────────────────────────────────
+router.get("/admin/chart-data", requireAdmin, async (req, res) => {
+  const now = new Date();
+  const days: string[] = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    days.push(d.toISOString().split("T")[0]);
+  }
+  const sixDaysAgo = new Date(now);
+  sixDaysAgo.setDate(sixDaysAgo.getDate() - 6);
+  sixDaysAgo.setHours(0, 0, 0, 0);
+
+  const [depositRows, withdrawalRows, userRows] = await Promise.all([
+    db.select({
+      day: sql<string>`DATE(created_at)`,
+      total: sql<number>`COALESCE(SUM(CAST(amount AS REAL)), 0)`,
+    }).from(depositsTable)
+      .where(sql`status = 'approved' AND created_at >= ${sixDaysAgo.toISOString()}`)
+      .groupBy(sql`DATE(created_at)`),
+
+    db.select({
+      day: sql<string>`DATE(created_at)`,
+      total: sql<number>`COALESCE(SUM(CAST(amount AS REAL)), 0)`,
+    }).from(withdrawalsTable)
+      .where(sql`status = 'approved' AND created_at >= ${sixDaysAgo.toISOString()}`)
+      .groupBy(sql`DATE(created_at)`),
+
+    db.select({
+      day: sql<string>`DATE(created_at)`,
+      count: sql<number>`COUNT(*)`,
+    }).from(usersTable)
+      .where(sql`created_at >= ${sixDaysAgo.toISOString()}`)
+      .groupBy(sql`DATE(created_at)`),
+  ]);
+
+  const depMap = Object.fromEntries(depositRows.map(r => [r.day, Number(r.total)]));
+  const wdMap = Object.fromEntries(withdrawalRows.map(r => [r.day, Number(r.total)]));
+  const userMap = Object.fromEntries(userRows.map(r => [r.day, Number(r.count)]));
+
+  const labels = days.map(d => new Date(d + "T12:00:00").toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" }));
+
+  res.json({
+    labels,
+    deposits: days.map(d => depMap[d] ?? 0),
+    withdrawals: days.map(d => wdMap[d] ?? 0),
+    newUsers: days.map(d => userMap[d] ?? 0),
+  });
+});
+
 // ── Users ────────────────────────────────────────────────────────────────────
 router.get("/admin/users", requireAdmin, async (req, res) => {
   const page = parseInt(req.query.page as string) || 1;

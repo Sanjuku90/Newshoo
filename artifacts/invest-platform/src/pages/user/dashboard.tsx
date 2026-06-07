@@ -4,8 +4,28 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import {
   TrendingUp, Wallet, ArrowDownToLine, ArrowUpFromLine, Users,
-  Clock, AlertTriangle, Info, CheckCircle2, ChevronRight, Zap, Gift, Shield,
+  Clock, AlertTriangle, Info, CheckCircle2, ChevronRight, Zap, Gift, Shield, Timer,
 } from "lucide-react";
+
+function useProfitCountdown() {
+  const [timeLeft, setTimeLeft] = useState("");
+  useEffect(() => {
+    const update = () => {
+      const now = new Date();
+      const midnight = new Date();
+      midnight.setUTCHours(24, 0, 0, 0);
+      const diff = midnight.getTime() - now.getTime();
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      setTimeLeft(`${String(h).padStart(2, "0")}h ${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}s`);
+    };
+    update();
+    const id = setInterval(update, 1000);
+    return () => clearInterval(id);
+  }, []);
+  return timeLeft;
+}
 
 function Progress({ value }: { value: number }) {
   return (
@@ -23,7 +43,6 @@ function InvestmentCard({ inv }: { inv: any }) {
   const daysLeft = inv.daysLeft ?? 0;
   const daysElapsed = totalDays - daysLeft;
   const progress = Math.min(100, Math.max(0, (daysElapsed / totalDays) * 100));
-
   return (
     <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 hover:bg-white/[0.05] transition-colors">
       <div className="flex items-start justify-between mb-3">
@@ -100,6 +119,7 @@ export default function Dashboard() {
   const { data: userMe } = useGetMe();
   const { data: transactions } = useListTransactions({ limit: 5 });
   const [announcement, setAnnouncement] = useState<{ text: string; type: string } | null>(null);
+  const countdown = useProfitCountdown();
   const me = userMe as any;
 
   useEffect(() => {
@@ -137,14 +157,33 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-xl font-bold text-white">Tableau de bord</h1>
           <p className="text-sm text-gray-500 mt-0.5">Vue d'ensemble de vos investissements</p>
         </div>
-        <Link href="/deposit" className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-xl hover:from-emerald-300 hover:to-emerald-400 transition-all shadow-lg shadow-emerald-500/20">
-          <ArrowDownToLine className="w-3.5 h-3.5" /> Déposer
-        </Link>
+        <div className="flex items-center gap-3">
+          {/* Countdown */}
+          <div className="hidden sm:flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-3 py-2">
+            <Timer className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <div className="text-right">
+              <div className="text-[10px] text-emerald-400/70 uppercase tracking-wider leading-none mb-0.5">Prochain profit</div>
+              <div className="text-sm font-mono font-bold text-emerald-300 leading-none">{countdown}</div>
+            </div>
+          </div>
+          <Link href="/deposit" className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-xl hover:from-emerald-300 hover:to-emerald-400 transition-all shadow-lg shadow-emerald-500/20">
+            <ArrowDownToLine className="w-3.5 h-3.5" /> Déposer
+          </Link>
+        </div>
+      </div>
+
+      {/* Mobile countdown */}
+      <div className="sm:hidden flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-4 py-3">
+        <Timer className="w-4 h-4 text-emerald-400 shrink-0" />
+        <div>
+          <div className="text-[10px] text-emerald-400/70 uppercase tracking-wider leading-none mb-0.5">Prochain crédit de profits</div>
+          <div className="text-base font-mono font-bold text-emerald-300 leading-none">{countdown}</div>
+        </div>
       </div>
 
       {announcement && <AnnouncementBanner text={announcement.text} type={announcement.type} />}
