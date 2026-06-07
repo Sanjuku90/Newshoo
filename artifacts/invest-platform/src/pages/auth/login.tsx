@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useLogin } from "@workspace/api-client-react";
 import { useAuth } from "@/lib/auth";
-import { Loader2, AlertCircle, TrendingUp, Eye, EyeOff } from "lucide-react";
+import { Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
+import { Logo } from "@/components/logo";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -27,12 +28,8 @@ export default function Login() {
 
   return (
     <div className="w-full max-w-md">
-      {/* Logo */}
-      <div className="flex items-center justify-center gap-2 mb-8">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center shadow-lg shadow-yellow-500/30">
-          <TrendingUp className="w-5 h-5 text-black" />
-        </div>
-        <span className="text-xl font-bold text-white">InvestPro</span>
+      <div className="flex justify-center mb-8">
+        <Logo iconSize={40} textClassName="text-xl" />
       </div>
 
       <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-8 backdrop-blur-sm shadow-2xl">

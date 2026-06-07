@@ -7,6 +7,7 @@ import {
   Clock, Megaphone, Menu, X
 } from "lucide-react";
 import { useLogout } from "@workspace/api-client-react";
+import { Logo } from "@/components/logo";
 
 const navGroups = [
   {
@@ -62,7 +63,7 @@ function SidebarContent({
     <>
       <div className="h-16 flex items-center justify-between px-5 border-b border-border">
         <div className="flex items-center gap-2">
-          <Link href="/" className="text-xl font-bold tracking-tight text-primary">InvestPro</Link>
+          <Link href="/"><Logo iconSize={30} textClassName="text-base" /></Link>
           <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded font-semibold">ADMIN</span>
         </div>
         {onClose && (

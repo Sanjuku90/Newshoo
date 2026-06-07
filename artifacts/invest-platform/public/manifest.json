@@ -1,0 +1,22 @@
+{
+  "name": "InvestPro — Investissement USDT",
+  "short_name": "InvestPro",
+  "description": "Investissez vos USDT et recevez des profits quotidiens directement sur votre compte, 7 jours sur 7.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0c0e11",
+  "theme_color": "#10b981",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "business"],
+  "screenshots": []
+}

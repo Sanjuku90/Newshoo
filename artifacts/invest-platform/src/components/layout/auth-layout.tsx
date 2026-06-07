@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import { useAuth } from "@/lib/auth";
 import { useEffect } from "react";
 import { Loader2, TrendingUp, Shield, Zap, Users } from "lucide-react";
+import { Logo } from "@/components/logo";
 
 const perks = [
   { icon: TrendingUp, label: "Jusqu'à 36 $/jour", sub: "Gains quotidiens automatiques" },
@@ -35,12 +36,9 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
           <div className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-emerald-600/5 rounded-full blur-3xl" />
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-xl shadow-emerald-500/30">
-            <TrendingUp className="w-5 h-5 text-white" />
-          </div>
-          <Link href="/" className="text-xl font-bold text-white">InvestPro</Link>
-        </div>
+        <Link href="/">
+          <Logo iconSize={40} textClassName="text-xl" />
+        </Link>
 
         <div className="space-y-8">
           <div>

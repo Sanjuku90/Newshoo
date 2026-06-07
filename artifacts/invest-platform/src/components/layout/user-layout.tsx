@@ -8,6 +8,7 @@ import {
 import { useLogout } from "@workspace/api-client-react";
 import { NotificationsBell } from "@/components/notifications-bell";
 import { LiveChatWidget } from "@/components/live-chat-widget";
+import { Logo } from "@/components/logo";
 
 const navItems = [
   { href: "/dashboard",    label: "Tableau de bord", icon: LayoutDashboard },
@@ -62,7 +63,7 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
       {/* ── Desktop sidebar ───────────────────────────────────────── */}
       <aside className="w-64 bg-card border-r border-border flex-col hidden md:flex">
         <div className="h-16 flex items-center px-6 border-b border-border">
-          <Link href="/" className="text-xl font-bold tracking-tight text-primary">InvestPro</Link>
+          <Link href="/"><Logo iconSize={32} textClassName="text-lg" /></Link>
         </div>
         <div className="p-4 flex-1">
           <div className="text-xs uppercase text-muted-foreground font-semibold tracking-wider mb-4 px-2">Menu</div>
@@ -100,7 +101,7 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
           <div className="absolute inset-0 bg-black/60" onClick={() => setDrawerOpen(false)} />
           <aside className="relative z-10 w-72 bg-card flex flex-col h-full shadow-2xl">
             <div className="h-16 flex items-center justify-between px-5 border-b border-border">
-              <Link href="/" className="text-xl font-bold tracking-tight text-primary">InvestPro</Link>
+              <Link href="/"><Logo iconSize={30} textClassName="text-base" /></Link>
               <button onClick={() => setDrawerOpen(false)} className="text-muted-foreground hover:text-foreground p-1">
                 <X className="w-5 h-5" />
               </button>
@@ -148,7 +149,7 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
             onClick={() => setDrawerOpen(true)}>
             <Menu className="w-6 h-6" />
           </button>
-          <Link href="/" className="md:hidden text-lg font-bold tracking-tight text-primary">InvestPro</Link>
+          <Link href="/" className="md:hidden"><Logo iconSize={28} textClassName="text-base" /></Link>
           <div className="ml-auto flex items-center gap-3">
             <NotificationsBell />
             <div className="text-sm font-medium">
