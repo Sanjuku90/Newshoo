@@ -24,7 +24,7 @@ export default function Investments() {
     if (!selectedPlan) return;
     setError("");
     createInvestment.mutate(
-      { data: { planId: selectedPlan.id, amount: amount as any } },
+      { data: { planId: selectedPlan.id, amount: parseFloat(amount) } },
       {
         onSuccess: () => {
           toast({ title: "Investment created!", description: `You invested ${amount} USDT in ${selectedPlan.name}` });
