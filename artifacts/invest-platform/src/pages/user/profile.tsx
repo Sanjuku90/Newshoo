@@ -31,10 +31,10 @@ export default function Profile() {
       { data: { phone: profileForm.phone, country: profileForm.country, city: profileForm.city, ...(profileForm.newPassword ? { password: profileForm.newPassword } : {}) } as any },
       {
         onSuccess: () => {
-          toast({ title: "Profile updated!" });
+          toast({ title: "Profil mis à jour !" });
           refetch();
         },
-        onError: (err: any) => setProfileError(err?.data?.error || "Failed to update"),
+        onError: (err: any) => setProfileError(err?.data?.error || "Échec de la mise à jour"),
       }
     );
   };
@@ -46,18 +46,18 @@ export default function Profile() {
       { data: { documentType: kycForm.documentType, documentNumber: kycForm.documentNumber, documentFrontUrl: kycForm.documentFront, documentBackUrl: kycForm.documentBack, selfieUrl: kycForm.selfie } as any },
       {
         onSuccess: () => {
-          toast({ title: "KYC submitted!", description: "Your documents are under review." });
+          toast({ title: "KYC soumis !", description: "Vos documents sont en cours de vérification." });
         },
-        onError: (err: any) => setKycError(err?.data?.error || "Failed to submit KYC"),
+        onError: (err: any) => setKycError(err?.data?.error || "Échec de l'envoi du KYC"),
       }
     );
   };
 
   const kycStatusConfig: Record<string, { label: string; icon: any; class: string }> = {
-    not_submitted: { label: "Not Submitted", icon: AlertCircle, class: "bg-secondary text-muted-foreground border-border" },
-    pending: { label: "Under Review", icon: Clock, class: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" },
-    approved: { label: "Verified", icon: CheckCircle2, class: "bg-accent/20 text-accent border-accent/30" },
-    rejected: { label: "Rejected", icon: AlertCircle, class: "bg-destructive/20 text-destructive border-destructive/30" },
+    not_submitted: { label: "Non soumis",        icon: AlertCircle,  class: "bg-secondary text-muted-foreground border-border" },
+    pending:       { label: "En cours d'examen", icon: Clock,        class: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" },
+    approved:      { label: "Vérifié",           icon: CheckCircle2, class: "bg-accent/20 text-accent border-accent/30" },
+    rejected:      { label: "Rejeté",            icon: AlertCircle,  class: "bg-destructive/20 text-destructive border-destructive/30" },
   };
 
   const kycStatus = k?.status || u?.kycStatus || "not_submitted";
@@ -67,8 +67,8 @@ export default function Profile() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold mb-1">Profile</h1>
-        <p className="text-muted-foreground text-sm">Manage your account settings and KYC verification</p>
+        <h1 className="text-2xl font-bold mb-1">Profil</h1>
+        <p className="text-muted-foreground text-sm">Gérez vos paramètres de compte et la vérification KYC</p>
       </div>
 
       <Card className="border-border">
@@ -80,12 +80,12 @@ export default function Profile() {
             <div className="text-xl font-semibold">{u?.firstName} {u?.lastName}</div>
             <div className="text-sm text-muted-foreground">{u?.email}</div>
             <div className="flex items-center gap-2 mt-2">
-              <Badge className={`text-xs border ${kycConf.class}`}><KycIcon className="h-3 w-3 mr-1" />KYC: {kycConf.label}</Badge>
-              <Badge variant="secondary" className="text-xs">VIP Level {u?.vipLevel || 1}</Badge>
+              <Badge className={`text-xs border ${kycConf.class}`}><KycIcon className="h-3 w-3 mr-1" />KYC : {kycConf.label}</Badge>
+              <Badge variant="secondary" className="text-xs">Niveau VIP {u?.vipLevel || 1}</Badge>
             </div>
           </div>
           <div className="text-right">
-            <div className="text-xs text-muted-foreground">Referral Code</div>
+            <div className="text-xs text-muted-foreground">Code de parrainage</div>
             <div className="font-mono font-semibold text-primary">{u?.referralCode}</div>
           </div>
         </CardContent>
@@ -93,14 +93,14 @@ export default function Profile() {
 
       <Tabs defaultValue="profile">
         <TabsList className="bg-card border border-border">
-          <TabsTrigger value="profile">Personal Info</TabsTrigger>
-          <TabsTrigger value="kyc"><Shield className="h-4 w-4 mr-1" />KYC Verification</TabsTrigger>
+          <TabsTrigger value="profile">Informations personnelles</TabsTrigger>
+          <TabsTrigger value="kyc"><Shield className="h-4 w-4 mr-1" />Vérification KYC</TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile" className="mt-4">
           <Card className="border-border">
             <CardHeader>
-              <CardTitle className="text-base">Update Profile</CardTitle>
+              <CardTitle className="text-base">Modifier le profil</CardTitle>
             </CardHeader>
             <CardContent>
               {profileError && (
@@ -111,38 +111,38 @@ export default function Profile() {
               <form onSubmit={handleProfileSubmit} className="space-y-4 max-w-md">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>First Name</Label>
+                    <Label>Prénom</Label>
                     <Input value={u?.firstName || ""} disabled className="opacity-60" />
                   </div>
                   <div className="space-y-2">
-                    <Label>Last Name</Label>
+                    <Label>Nom</Label>
                     <Input value={u?.lastName || ""} disabled className="opacity-60" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label>Email</Label>
+                  <Label>E-mail</Label>
                   <Input value={u?.email || ""} disabled className="opacity-60" />
                 </div>
                 <div className="space-y-2">
-                  <Label>Phone</Label>
+                  <Label>Téléphone</Label>
                   <Input value={profileForm.phone} onChange={e => setProfileForm(p => ({ ...p, phone: e.target.value }))} placeholder="+1234567890" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Country</Label>
+                    <Label>Pays</Label>
                     <Input value={profileForm.country} onChange={e => setProfileForm(p => ({ ...p, country: e.target.value }))} />
                   </div>
                   <div className="space-y-2">
-                    <Label>City</Label>
+                    <Label>Ville</Label>
                     <Input value={profileForm.city} onChange={e => setProfileForm(p => ({ ...p, city: e.target.value }))} />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label>New Password (optional)</Label>
-                  <Input type="password" value={profileForm.newPassword} onChange={e => setProfileForm(p => ({ ...p, newPassword: e.target.value }))} placeholder="Leave blank to keep current" />
+                  <Label>Nouveau mot de passe (optionnel)</Label>
+                  <Input type="password" value={profileForm.newPassword} onChange={e => setProfileForm(p => ({ ...p, newPassword: e.target.value }))} placeholder="Laisser vide pour ne pas changer" />
                 </div>
                 <Button type="submit" disabled={updateProfile.isPending}>
-                  {updateProfile.isPending ? "Saving..." : "Save Changes"}
+                  {updateProfile.isPending ? "Enregistrement..." : "Enregistrer"}
                 </Button>
               </form>
             </CardContent>
@@ -152,23 +152,23 @@ export default function Profile() {
         <TabsContent value="kyc" className="mt-4">
           <Card className="border-border">
             <CardHeader>
-              <CardTitle className="text-base">KYC Verification</CardTitle>
+              <CardTitle className="text-base">Vérification KYC</CardTitle>
             </CardHeader>
             <CardContent>
               {kycStatus === "approved" ? (
                 <div className="flex items-center gap-3 p-4 bg-accent/10 border border-accent/30 rounded-lg">
                   <CheckCircle2 className="h-6 w-6 text-accent" />
                   <div>
-                    <div className="font-semibold text-accent">Identity Verified</div>
-                    <div className="text-sm text-muted-foreground">Your KYC has been approved. You have full platform access.</div>
+                    <div className="font-semibold text-accent">Identité vérifiée</div>
+                    <div className="text-sm text-muted-foreground">Votre KYC a été approuvé. Vous avez un accès complet à la plateforme.</div>
                   </div>
                 </div>
               ) : kycStatus === "pending" ? (
                 <div className="flex items-center gap-3 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
                   <Clock className="h-6 w-6 text-yellow-400" />
                   <div>
-                    <div className="font-semibold text-yellow-400">Under Review</div>
-                    <div className="text-sm text-muted-foreground">Your documents are being verified. This usually takes 24–48 hours.</div>
+                    <div className="font-semibold text-yellow-400">En cours d'examen</div>
+                    <div className="text-sm text-muted-foreground">Vos documents sont en cours de vérification. Comptez généralement 24 à 48 heures.</div>
                   </div>
                 </div>
               ) : (
@@ -176,8 +176,8 @@ export default function Profile() {
                   {kycStatus === "rejected" && (
                     <div className="mb-4 flex items-center gap-2 text-sm text-destructive bg-destructive/10 border border-destructive/30 rounded-md p-3">
                       <AlertCircle className="h-4 w-4 shrink-0" />
-                      Your previous KYC was rejected. Please resubmit.
-                      {k?.rejectionReason && <span className="ml-1">Reason: {k.rejectionReason}</span>}
+                      Votre KYC précédent a été rejeté. Veuillez le soumettre à nouveau.
+                      {k?.rejectionReason && <span className="ml-1">Raison : {k.rejectionReason}</span>}
                     </div>
                   )}
                   {kycError && (
@@ -187,31 +187,31 @@ export default function Profile() {
                   )}
                   <form onSubmit={handleKycSubmit} className="space-y-4 max-w-md">
                     <div className="space-y-2">
-                      <Label>Document Type</Label>
+                      <Label>Type de document</Label>
                       <select className="w-full bg-input border border-border rounded-md px-3 py-2 text-sm text-foreground" value={kycForm.documentType} onChange={e => setKycForm(p => ({ ...p, documentType: e.target.value }))}>
-                        <option value="passport">Passport</option>
-                        <option value="id_card">National ID Card</option>
-                        <option value="driver_license">Driver's License</option>
+                        <option value="passport">Passeport</option>
+                        <option value="id_card">Carte d'identité nationale</option>
+                        <option value="driver_license">Permis de conduire</option>
                       </select>
                     </div>
                     <div className="space-y-2">
-                      <Label>Document Number</Label>
-                      <Input placeholder="Document number" value={kycForm.documentNumber} onChange={e => setKycForm(p => ({ ...p, documentNumber: e.target.value }))} required />
+                      <Label>Numéro de document</Label>
+                      <Input placeholder="Numéro de document" value={kycForm.documentNumber} onChange={e => setKycForm(p => ({ ...p, documentNumber: e.target.value }))} required />
                     </div>
                     <div className="space-y-2">
-                      <Label>Document Front URL</Label>
+                      <Label>URL recto du document</Label>
                       <Input placeholder="https://..." value={kycForm.documentFront} onChange={e => setKycForm(p => ({ ...p, documentFront: e.target.value }))} required />
                     </div>
                     <div className="space-y-2">
-                      <Label>Document Back URL</Label>
+                      <Label>URL verso du document</Label>
                       <Input placeholder="https://..." value={kycForm.documentBack} onChange={e => setKycForm(p => ({ ...p, documentBack: e.target.value }))} required />
                     </div>
                     <div className="space-y-2">
-                      <Label>Selfie with Document URL</Label>
+                      <Label>URL selfie avec document</Label>
                       <Input placeholder="https://..." value={kycForm.selfie} onChange={e => setKycForm(p => ({ ...p, selfie: e.target.value }))} required />
                     </div>
                     <Button type="submit" disabled={submitKyc.isPending}>
-                      {submitKyc.isPending ? "Submitting..." : "Submit Documents"}
+                      {submitKyc.isPending ? "Envoi..." : "Soumettre les documents"}
                     </Button>
                   </form>
                 </>

@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { CheckCircle2, TrendingUp, AlertCircle } from "lucide-react";
+import { CheckCircle2, TrendingUp, AlertCircle, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Investments() {
@@ -27,13 +27,13 @@ export default function Investments() {
       { data: { planId: selectedPlan.id, amount: parseFloat(amount) } },
       {
         onSuccess: () => {
-          toast({ title: "Investment created!", description: `You invested ${amount} USDT in ${selectedPlan.name}` });
+          toast({ title: "Investissement créé !", description: `Vous avez investi ${amount} USDT dans ${selectedPlan.name}` });
           setSelectedPlan(null);
           setAmount("");
           refetch();
         },
         onError: (err: any) => {
-          setError(err?.data?.error || "Failed to create investment");
+          setError(err?.data?.error || "Échec de la création de l'investissement");
         },
       }
     );
@@ -45,15 +45,21 @@ export default function Investments() {
     cancelled: "bg-destructive/20 text-destructive border-destructive/30",
   };
 
+  const statusLabel: Record<string, string> = {
+    active: "Actif",
+    completed: "Terminé",
+    cancelled: "Annulé",
+  };
+
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold mb-1">Investments</h1>
-        <p className="text-muted-foreground text-sm">Choose a plan and start earning daily returns</p>
+        <h1 className="text-2xl font-bold mb-1">Investissements</h1>
+        <p className="text-muted-foreground text-sm">Choisissez un plan et commencez à générer des revenus quotidiens</p>
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold mb-4">Available Plans</h2>
+        <h2 className="text-lg font-semibold mb-4">Plans disponibles</h2>
         {plansLoading ? (
           <div className="grid md:grid-cols-3 gap-4">
             {[1,2,3].map(i => <Skeleton key={i} className="h-64" />)}
@@ -69,16 +75,16 @@ export default function Investments() {
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle>{plan.name}</CardTitle>
-                      {i === 1 && <Badge className="bg-primary/20 text-primary border-primary/30 text-xs">Popular</Badge>}
+                      {i === 1 && <Badge className="bg-primary/20 text-primary border-primary/30 text-xs">Populaire</Badge>}
                     </div>
                     <CardDescription>
                       <span className="text-2xl font-bold text-primary">{plan.dailyRate}%</span>
-                      <span className="text-muted-foreground text-sm"> / day</span>
+                      <span className="text-muted-foreground text-sm"> / jour</span>
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="text-xs text-muted-foreground">
-                      {plan.minDeposit}–{plan.maxDeposit || "∞"} USDT · {plan.durationDays} days
+                      {plan.minDeposit}–{plan.maxDeposit || "∞"} USDT · {plan.durationDays} jours
                     </div>
                     <ul className="space-y-1.5">
                       {features.slice(0, 3).map(f => (
@@ -88,7 +94,7 @@ export default function Investments() {
                       ))}
                     </ul>
                     <Button className="w-full" size="sm" onClick={() => { setSelectedPlan(plan); setAmount(String(plan.minDeposit)); setError(""); }}>
-                      Invest Now
+                      Investir maintenant
                     </Button>
                   </CardContent>
                 </Card>
@@ -99,7 +105,7 @@ export default function Investments() {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold mb-4">My Investments</h2>
+        <h2 className="text-lg font-semibold mb-4">Mes investissements</h2>
         {invLoading ? (
           <div className="space-y-3">{[1,2,3].map(i => <Skeleton key={i} className="h-20" />)}</div>
         ) : investments && (investments as any[]).length > 0 ? (
@@ -111,15 +117,20 @@ export default function Investments() {
                     <div className="flex items-center gap-2">
                       <TrendingUp className="h-4 w-4 text-primary" />
                       <span className="font-medium">{inv.planName}</span>
-                      <Badge className={`text-xs border ${statusColor[inv.status] || statusColor.completed}`}>{inv.status}</Badge>
+                      <Badge className={`text-xs border ${statusColor[inv.status] || statusColor.completed}`}>
+                        {statusLabel[inv.status] || inv.status}
+                      </Badge>
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      {inv.amount} USDT · {inv.dailyRate}%/day · Started {new Date(inv.startDate).toLocaleDateString()}
+                      {inv.amount} USDT · {inv.dailyRate}%/jour · Démarré le {new Date(inv.startDate).toLocaleDateString("fr-FR")}
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="text-sm font-semibold text-accent">+{parseFloat(inv.totalEarned || "0").toFixed(2)} USDT</div>
-                    <div className="text-xs text-muted-foreground">{inv.daysLeft || 0}d remaining</div>
+                    <div className="text-xs text-muted-foreground flex items-center gap-1 justify-end">
+                      <Clock className="h-3 w-3" />
+                      {(inv.daysLeft || 0) > 0 ? `${inv.daysLeft}j restants` : "Terminé"}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -128,7 +139,7 @@ export default function Investments() {
         ) : (
           <Card className="border-border">
             <CardContent className="py-12 text-center text-muted-foreground">
-              No investments yet. Choose a plan above to get started.
+              Aucun investissement pour l'instant. Choisissez un plan ci-dessus pour commencer.
             </CardContent>
           </Card>
         )}
@@ -137,9 +148,9 @@ export default function Investments() {
       <Dialog open={!!selectedPlan} onOpenChange={open => { if (!open) setSelectedPlan(null); }}>
         <DialogContent className="bg-card border-border">
           <DialogHeader>
-            <DialogTitle>Invest in {selectedPlan?.name}</DialogTitle>
+            <DialogTitle>Investir dans {selectedPlan?.name}</DialogTitle>
             <DialogDescription>
-              {selectedPlan?.dailyRate}% daily for {selectedPlan?.durationDays} days · Min: {selectedPlan?.minDeposit} USDT
+              {selectedPlan?.dailyRate}% / jour pendant {selectedPlan?.durationDays} jours · Min : {selectedPlan?.minDeposit} USDT
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 mt-2">
@@ -149,30 +160,30 @@ export default function Investments() {
               </div>
             )}
             <div className="space-y-2">
-              <Label>Amount (USDT)</Label>
+              <Label>Montant (USDT)</Label>
               <Input
                 type="number"
                 min={selectedPlan?.minDeposit}
                 max={selectedPlan?.maxDeposit || undefined}
                 value={amount}
                 onChange={e => setAmount(e.target.value)}
-                placeholder={`Min: ${selectedPlan?.minDeposit} USDT`}
+                placeholder={`Min : ${selectedPlan?.minDeposit} USDT`}
               />
             </div>
             {amount && (
               <div className="bg-secondary/50 rounded-lg p-3 space-y-1 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Daily return</span>
+                  <span className="text-muted-foreground">Gain quotidien</span>
                   <span className="text-accent font-medium">+{(parseFloat(amount || "0") * parseFloat(selectedPlan?.dailyRate || "0") / 100).toFixed(2)} USDT</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Total return</span>
+                  <span className="text-muted-foreground">Gain total</span>
                   <span className="text-accent font-medium">+{(parseFloat(amount || "0") * parseFloat(selectedPlan?.dailyRate || "0") * (selectedPlan?.durationDays || 30) / 100).toFixed(2)} USDT</span>
                 </div>
               </div>
             )}
             <Button className="w-full" onClick={handleInvest} disabled={createInvestment.isPending || !amount}>
-              {createInvestment.isPending ? "Processing..." : "Confirm Investment"}
+              {createInvestment.isPending ? "Traitement en cours..." : "Confirmer l'investissement"}
             </Button>
           </div>
         </DialogContent>

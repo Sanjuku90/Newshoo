@@ -10,9 +10,9 @@ import { AlertCircle, CheckCircle2, Clock, XCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const statusConfig: Record<string, { label: string; icon: any; class: string }> = {
-  pending: { label: "Pending", icon: Clock, class: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" },
-  approved: { label: "Approved", icon: CheckCircle2, class: "bg-accent/20 text-accent border-accent/30" },
-  rejected: { label: "Rejected", icon: XCircle, class: "bg-destructive/20 text-destructive border-destructive/30" },
+  pending:  { label: "En attente", icon: Clock,        class: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" },
+  approved: { label: "Approuvé",   icon: CheckCircle2, class: "bg-accent/20 text-accent border-accent/30" },
+  rejected: { label: "Rejeté",     icon: XCircle,      class: "bg-destructive/20 text-destructive border-destructive/30" },
 };
 
 export default function Withdraw() {
@@ -36,12 +36,12 @@ export default function Withdraw() {
       { data: { amount: parseFloat(form.amount), walletAddress: form.walletAddress } },
       {
         onSuccess: () => {
-          toast({ title: "Withdrawal requested!", description: "Your request is pending admin approval." });
+          toast({ title: "Retrait demandé !", description: "Votre demande est en attente de validation." });
           setForm({ amount: "", walletAddress: "" });
           refetch();
         },
         onError: (err: any) => {
-          setError(err?.data?.error || "Failed to submit withdrawal");
+          setError(err?.data?.error || "Échec de la soumission du retrait");
         },
       }
     );
@@ -50,45 +50,45 @@ export default function Withdraw() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold mb-1">Withdraw</h1>
-        <p className="text-muted-foreground text-sm">Withdraw your earnings to your USDT TRC20 wallet</p>
+        <h1 className="text-2xl font-bold mb-1">Retrait</h1>
+        <p className="text-muted-foreground text-sm">Retirez vos gains sur votre portefeuille USDT TRC20</p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
         <Card className="border-border">
           <CardHeader>
-            <CardTitle className="text-base">Available Balance</CardTitle>
+            <CardTitle className="text-base">Solde disponible</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-3xl font-bold text-primary">{balance.toFixed(2)} USDT</div>
             <div className="space-y-2 text-sm bg-secondary/50 rounded-lg p-4">
               <div className="flex justify-between text-muted-foreground">
-                <span>Minimum withdrawal</span><span className="text-foreground font-medium">9 USDT</span>
+                <span>Retrait minimum</span><span className="text-foreground font-medium">9 USDT</span>
               </div>
               <div className="flex justify-between text-muted-foreground">
-                <span>Processing fee</span><span className="text-foreground font-medium">2%</span>
+                <span>Frais de traitement</span><span className="text-foreground font-medium">2%</span>
               </div>
               {form.amount && requestedAmount > 0 && (
                 <>
                   <div className="border-t border-border pt-2 flex justify-between text-muted-foreground">
-                    <span>Fee</span><span className="text-destructive font-medium">-{fee.toFixed(2)} USDT</span>
+                    <span>Frais</span><span className="text-destructive font-medium">-{fee.toFixed(2)} USDT</span>
                   </div>
                   <div className="flex justify-between font-medium">
-                    <span>You receive</span><span className="text-accent">{netAmount.toFixed(2)} USDT</span>
+                    <span>Vous recevez</span><span className="text-accent">{netAmount.toFixed(2)} USDT</span>
                   </div>
                 </>
               )}
             </div>
             <div className="flex items-start gap-2 text-xs text-muted-foreground">
               <AlertCircle className="h-4 w-4 mt-0.5 shrink-0 text-yellow-400" />
-              Withdrawals are processed manually. Allow 1–24 hours for approval.
+              Les retraits sont traités manuellement. Comptez 1 à 24 heures pour l'approbation.
             </div>
           </CardContent>
         </Card>
 
         <Card className="border-border">
           <CardHeader>
-            <CardTitle className="text-base">Request Withdrawal</CardTitle>
+            <CardTitle className="text-base">Demander un retrait</CardTitle>
           </CardHeader>
           <CardContent>
             {error && (
@@ -98,7 +98,7 @@ export default function Withdraw() {
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label>Amount (USDT)</Label>
+                <Label>Montant (USDT)</Label>
                 <Input
                   type="number"
                   min="9"
@@ -111,16 +111,16 @@ export default function Withdraw() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Your USDT TRC20 Wallet Address</Label>
+                <Label>Votre adresse portefeuille USDT TRC20</Label>
                 <Input
-                  placeholder="TRC20 address (starts with T)"
+                  placeholder="Adresse TRC20 (commence par T)"
                   value={form.walletAddress}
                   onChange={e => setForm(prev => ({ ...prev, walletAddress: e.target.value }))}
                   required
                 />
               </div>
               <Button type="submit" className="w-full" disabled={createWithdrawal.isPending || balance < 9}>
-                {createWithdrawal.isPending ? "Submitting..." : "Request Withdrawal"}
+                {createWithdrawal.isPending ? "Envoi en cours..." : "Demander le retrait"}
               </Button>
             </form>
           </CardContent>
@@ -128,7 +128,7 @@ export default function Withdraw() {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold mb-4">Withdrawal History</h2>
+        <h2 className="text-lg font-semibold mb-4">Historique des retraits</h2>
         {isLoading ? (
           <div className="space-y-3">{[1,2,3].map(i => <Skeleton key={i} className="h-16" />)}</div>
         ) : withdrawals && (withdrawals as any[]).length > 0 ? (
@@ -146,7 +146,7 @@ export default function Withdraw() {
                       </div>
                       <div className="text-xs text-muted-foreground font-mono truncate max-w-xs">{w.walletAddress}</div>
                     </div>
-                    <div className="text-xs text-muted-foreground">{new Date(w.createdAt).toLocaleDateString()}</div>
+                    <div className="text-xs text-muted-foreground">{new Date(w.createdAt).toLocaleDateString("fr-FR")}</div>
                   </CardContent>
                 </Card>
               );
@@ -154,7 +154,7 @@ export default function Withdraw() {
           </div>
         ) : (
           <Card className="border-border">
-            <CardContent className="py-12 text-center text-muted-foreground">No withdrawals yet</CardContent>
+            <CardContent className="py-12 text-center text-muted-foreground">Aucun retrait pour l'instant</CardContent>
           </Card>
         )}
       </div>

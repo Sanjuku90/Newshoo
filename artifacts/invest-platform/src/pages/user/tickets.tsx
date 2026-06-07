@@ -13,9 +13,18 @@ import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 
 const statusConfig: Record<string, { label: string; icon: any; class: string }> = {
-  open: { label: "Open", icon: MessageSquare, class: "bg-primary/20 text-primary border-primary/30" },
-  in_progress: { label: "In Progress", icon: Clock, class: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" },
-  closed: { label: "Closed", icon: CheckCircle2, class: "bg-secondary text-muted-foreground border-border" },
+  open:        { label: "Ouvert",   icon: MessageSquare, class: "bg-primary/20 text-primary border-primary/30" },
+  in_progress: { label: "En cours", icon: Clock,         class: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" },
+  closed:      { label: "Fermé",    icon: CheckCircle2,  class: "bg-secondary text-muted-foreground border-border" },
+};
+
+const categoryLabels: Record<string, string> = {
+  general:    "Général",
+  deposit:    "Dépôt",
+  withdrawal: "Retrait",
+  investment: "Investissement",
+  kyc:        "Vérification KYC",
+  technical:  "Problème technique",
 };
 
 export default function Tickets() {
@@ -34,12 +43,12 @@ export default function Tickets() {
       { data: { subject: form.subject, message: form.message, category: form.category } },
       {
         onSuccess: () => {
-          toast({ title: "Ticket created!", description: "Our team will respond within 24 hours." });
+          toast({ title: "Ticket créé !", description: "Notre équipe répondra dans les 24 heures." });
           setForm({ subject: "", message: "", category: "general" });
           setShowForm(false);
           refetch();
         },
-        onError: (err: any) => setError(err?.data?.error || "Failed to create ticket"),
+        onError: (err: any) => setError(err?.data?.error || "Échec de la création du ticket"),
       }
     );
   };
@@ -48,11 +57,11 @@ export default function Tickets() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold mb-1">Support Tickets</h1>
-          <p className="text-muted-foreground text-sm">Get help from our support team</p>
+          <h1 className="text-2xl font-bold mb-1">Tickets de support</h1>
+          <p className="text-muted-foreground text-sm">Obtenez de l'aide auprès de notre équipe</p>
         </div>
         <Button onClick={() => setShowForm(true)} className="gap-2">
-          <Plus className="h-4 w-4" /> New Ticket
+          <Plus className="h-4 w-4" /> Nouveau ticket
         </Button>
       </div>
 
@@ -73,9 +82,11 @@ export default function Tickets() {
                         <span className="font-medium">{ticket.subject}</span>
                         <Badge className={`text-xs border ${conf.class}`}><Icon className="h-3 w-3 mr-1" />{conf.label}</Badge>
                       </div>
-                      <div className="text-xs text-muted-foreground capitalize">{ticket.category} · {new Date(ticket.createdAt).toLocaleDateString()}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {categoryLabels[ticket.category] || ticket.category} · {new Date(ticket.createdAt).toLocaleDateString("fr-FR")}
+                      </div>
                     </div>
-                    <div className="text-xs text-muted-foreground">{ticket.messageCount || 0} messages</div>
+                    <div className="text-xs text-muted-foreground">{ticket.messageCount || 0} message{(ticket.messageCount || 0) > 1 ? "s" : ""}</div>
                   </CardContent>
                 </Card>
               </Link>
@@ -86,7 +97,7 @@ export default function Tickets() {
         <Card className="border-border">
           <CardContent className="py-16 text-center text-muted-foreground">
             <MessageSquare className="h-8 w-8 mx-auto mb-3 opacity-40" />
-            <p>No tickets yet. Create one if you need help.</p>
+            <p>Aucun ticket pour l'instant. Créez-en un si vous avez besoin d'aide.</p>
           </CardContent>
         </Card>
       )}
@@ -94,7 +105,7 @@ export default function Tickets() {
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="bg-card border-border">
           <DialogHeader>
-            <DialogTitle>Create Support Ticket</DialogTitle>
+            <DialogTitle>Créer un ticket de support</DialogTitle>
           </DialogHeader>
           {error && (
             <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 border border-destructive/30 rounded-md p-3">
@@ -103,28 +114,28 @@ export default function Tickets() {
           )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label>Category</Label>
+              <Label>Catégorie</Label>
               <select className="w-full bg-input border border-border rounded-md px-3 py-2 text-sm text-foreground" value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))}>
-                <option value="general">General</option>
-                <option value="deposit">Deposit</option>
-                <option value="withdrawal">Withdrawal</option>
-                <option value="investment">Investment</option>
-                <option value="kyc">KYC Verification</option>
-                <option value="technical">Technical Issue</option>
+                <option value="general">Général</option>
+                <option value="deposit">Dépôt</option>
+                <option value="withdrawal">Retrait</option>
+                <option value="investment">Investissement</option>
+                <option value="kyc">Vérification KYC</option>
+                <option value="technical">Problème technique</option>
               </select>
             </div>
             <div className="space-y-2">
-              <Label>Subject</Label>
-              <Input placeholder="Brief description of your issue" value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} required />
+              <Label>Sujet</Label>
+              <Input placeholder="Description brève de votre problème" value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} required />
             </div>
             <div className="space-y-2">
               <Label>Message</Label>
-              <Textarea placeholder="Describe your issue in detail..." value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} rows={4} required />
+              <Textarea placeholder="Décrivez votre problème en détail..." value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} rows={4} required />
             </div>
             <div className="flex gap-3">
-              <Button type="button" variant="outline" onClick={() => setShowForm(false)} className="flex-1">Cancel</Button>
+              <Button type="button" variant="outline" onClick={() => setShowForm(false)} className="flex-1">Annuler</Button>
               <Button type="submit" disabled={createTicket.isPending} className="flex-1">
-                {createTicket.isPending ? "Submitting..." : "Submit Ticket"}
+                {createTicket.isPending ? "Envoi..." : "Envoyer le ticket"}
               </Button>
             </div>
           </form>
